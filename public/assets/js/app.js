@@ -59,13 +59,6 @@
         isNavActive: false,
         disableAction: false,
         paginationPage: 1,
-        activeTab: 0,
-
-        summaryTabs: {
-            period: 'prelim',
-            status: 'all',
-            remark: 'all'
-        },
         
         modals: {
             alert: true,
@@ -85,10 +78,6 @@
             params.page = this.paginationPage;
 
             location = location.pathname + '?' + stringifyUrlParams(params);
-        },
-
-        activateTab: function(index) {
-            this.activeTab = index;
         },
 
         printDocument: function() {
@@ -125,46 +114,4 @@
         data: appData,
         methods: appMethods
     });
-
-    window.addEventListener('beforeunload', function(e) {
-        if (navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
-            app.$set('modals.loading', true);            
-        }
-    }, false);
-
-    var currentPage = getQueryVar('page');
-    var tabSwitcher = document.querySelector('[data-activated-tab]');
-    var mediumEditable = document.querySelector('.medium-editable');
-
-    if (currentPage) {
-        app.$set('paginationPage', currentPage);
-    }
-
-    if (tabSwitcher) {
-        app.activateTab(tabSwitcher.getAttribute('data-activated-tab'));
-    }
-
-    if (mediumEditable) {
-        new MediumEditor(mediumEditable, {
-            imageDragging: false,
-            toolbar: {
-                buttons: [
-                    'h1',
-                    'h2',
-                    'bold',
-                    'italic',
-                    'underline',
-                    'justifyLeft',
-                    'justifyCenter',
-                    'justifyRight',
-                    'justifyFull',
-                    'orderedlist',
-                    'unorderedlist',
-                    'indent',
-                    'outdent',
-                    'removeFormat'
-                ]
-            }
-        });
-    }
 }());

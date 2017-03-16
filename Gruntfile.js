@@ -9,7 +9,7 @@ module.exports = function(grunt){
                 
                 files: [{
                     expand: true,
-                    cwd:    'public/assets/sass',
+                    cwd:    'resources/assets/sass',
                     dest:   'public/assets/css',
                     src:    ['**/*.scss'],
                     ext:    '.css'
@@ -18,7 +18,7 @@ module.exports = function(grunt){
         },
 
         watch: {
-            files: 'public/assets/sass/*.scss',
+            files: 'resources/assets/sass/*.scss',
             
             tasks: [
                 'sass'
@@ -61,11 +61,6 @@ module.exports = function(grunt){
             },
 
             js: {
-                /*
-                    Explicitly selecting files unlike the CSS part as we also got the
-                    medium-editor.min.js file which weighs about 95kb but is only used
-                    in one page. It will be only loaded when needed.
-                 */
                 src: [
                     'public/assets/js/vue.min.js',
                     'public/assets/js/app.min.js'

@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', ['as' => 'index', 'uses' => 'MainController@index']);
+
+Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthController@login']);
