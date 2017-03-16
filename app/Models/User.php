@@ -35,4 +35,25 @@ class User extends Authenticatable
     protected $hidden = [
         'password'
     ];
+
+    public function getRememberToken()
+    {
+        return null;
+    }
+
+    public function setRememberToken($value) {}
+
+    public function getRememberTokenName()
+    {
+        return null;
+    }
+
+    public function setAttribute($key, $value)
+    {
+        $isRememberTokenAttribute = $key == $this->getRememberTokenName();
+
+        if (!$isRememberTokenAttribute) {
+            parent::setAttribute($key, $value);
+        }
+    }
 }

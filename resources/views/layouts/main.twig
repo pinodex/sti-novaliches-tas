@@ -21,6 +21,7 @@
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() }}/assets/img/og-image.png" />
     <link rel="preload" as="script" href="/assets/fonts/icomoon.ttf" />
 {% if config('app.debug') %}
+    <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/bulma.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css" />
 {% else %}
@@ -50,6 +51,42 @@
     <title>{{ page_title }} - STI College Novaliches TAS</title>
 </head>
 <body class="{{ body_class | default('') }}" id="app">
+{% if nav %}
+    <nav class="nav has-shadow is-fixed-top">
+        <div class="container is-fluid">
+            <div class="nav-left">
+                <a href="{{ route('index') }}" class="nav-item has-logo">
+                    <img src="/assets/img/logo-vertical.png" alt="Logo"> TAS Management
+                </a>
+                
+                <a class="nav-item is-tab is-active">
+                    <span class="icon is-small">
+                        <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    </span>
+
+                    Dashboard
+                </a>
+            </div>
+        
+            <span class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        
+            <div class="nav-right nav-menu">
+                <a href="{{ route('auth.logout') }}" class="nav-item is-tab">
+                    <span class="icon is-small">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </span>
+
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+{% endif %}
+
     {% block content %}{% endblock %}
     
     <script type="text/template" id="modal-template">

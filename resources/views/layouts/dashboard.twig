@@ -1,0 +1,53 @@
+{% extends '/layouts/main.twig' %}
+
+{% block content %}
+    <div class="container is-fluid is-marginless full-height">
+        <div class="columns is-main-grid full-height">
+            <div class="column is-2 is-paddingless full-height">
+                <aside class="menu sidebar full-height">
+                    <ul class="menu-list">
+                        <li><a>
+                            <span class="icon">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                            </span>
+
+                            Home
+                        </a></li>
+
+                        <li><a>
+                            <span class="icon">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                            </span>
+
+                            Requests
+                        </a></li>
+                    </ul>
+                    
+                    <p class="menu-label">Administrator</p>
+  
+                    <ul class="menu-list">
+                        <li><a>
+                            <span class="icon">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                            </span>
+
+                            Users
+                        </a></li>
+
+                        <li><a>
+                            <span class="icon">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                            </span>
+
+                            Groups
+                        </a></li>
+                    </ul>
+                </aside>
+            </div>
+
+            <div class="column is-paddingless">
+                {% block subcontent %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -49,4 +49,11 @@ class AuthController extends Controller
             'form' => $form->createView()
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        return redirect()->route('auth.login');
+    }
 }

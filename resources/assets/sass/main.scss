@@ -4,8 +4,50 @@
 
 @import 'icomoon';
 
+html, body {
+    min-height: 100%;
+}
+
 body {
-    background: #f9f9f9;
+    background: #f1f1f1;
+    padding-top: 64px;
+
+    &.login-page {
+        background: #fff;
+    }
+}
+
+nav.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    .nav-item.has-logo {
+        margin-right: 1rem;
+        padding: 0;
+
+        img {
+            max-height: 100%;
+        }
+    }
+
+    .nav-item .icon {
+        margin-right: 0.5em;
+    }
+}
+
+.container.is-fluid {
+    width: 100%;
+}
+
+.full-height {
+    min-height: 100%;
+}
+
+.is-main-grid {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .login-container {
@@ -31,4 +73,35 @@ body {
 .notification.is-small {
     font-size: 12px;
     padding: 10px;
+}
+
+.sidebar.menu {
+    background: #222;
+    padding: 15px 0;
+
+    .menu-label {
+        padding: 0 0.75em;
+    }
+
+    .menu-list {
+        a {
+            color: #eee;
+            border-radius: 0;
+            padding: 0.5em 1em;
+            font-size: 14px;
+            line-height: 1.8em;
+
+            &.is-active {
+                background-color: #111;
+            }
+
+            &:not(.is-active):hover {
+                background-color: #404040;
+            }
+
+            .icon .fa {
+                font-size: 16px;
+            }
+        }
+    }
 }

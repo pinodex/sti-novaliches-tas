@@ -22,4 +22,12 @@
 
 Route::get('/', ['as' => 'index', 'uses' => 'MainController@index']);
 
-Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthController@login']);
+Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthController@login', 'middleware' => ['guest']]);
+
+Route::get('/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
+
+Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.'], function () {
+
+    Route::get('/', 'MainController@index')->name('index');
+
+});

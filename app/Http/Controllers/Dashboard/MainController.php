@@ -9,14 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MainController extends Controller
 {
     public function index()
     {
-        return redirect()->route('auth.login');
+        return view('dashboard.index');
     }
 }
