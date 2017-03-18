@@ -12,24 +12,21 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Extensions\Form;
 use Illuminate\Http\Request;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\Extension\Core\Type;
+use App\Http\Forms\LoginForm;
 
 class AuthController extends Controller
 {
+    protected $form;
+
+    public function __construct()
+    {
+        $this->form = new LoginForm();
+    }
+
     public function login(Request $request)
     {
-        $form = Form::create()
-            ->add('username', Type\TextType::class, [
-                'attr'  => [
-                    'autofocus' => true
-                ]
-            ])
-            ->add('password', Type\PasswordType::class)
-            ->getForm();
-
+        $form = $this->form->getForm();
         $form->handleRequest($request);
 
         if ($form->isValid()) {

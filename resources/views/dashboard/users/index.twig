@@ -5,13 +5,13 @@
 
 {% block subcontent %}
     <div class="columns">
-        <div class="column is-three-quarters">
+        <div class="column is-8">
             <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Group</th>
-                        <th>Action</th>
+                        <th class="is-fit">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,7 @@
                                 <td>N/A</td>
                             {% endif %}
                             <td>
-                                <a href="#" class="button is-small">Edit</a>
+                                <a href="{{ route('dashboard.users.edit', { id: item.id }) }}" class="button is-small">Edit</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -40,6 +40,29 @@
                     {% endfor %}
                 </select>
             </span>
+        </div>
+
+        <div class="column is-4">
+            <nav class="panel">
+                <p class="panel-heading is-small">Search</p>
+                
+                <div class="box">
+                    <form action="{{ app.request.getRequestUri() }}">
+                        <div class="field">
+                            <label class="label">Name</label>
+                            <p class="control">
+                                <input class="input" type="text" name="name" value="{{ input_get('name') }}" />
+                            </p>
+                        </div>
+
+                        <div class="field is-clearfix">
+                            <button type="submit" class="button is-primary is-pulled-right">
+                                <i class="fa fa-search"></i> Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </nav>
         </div>
     </div>
 {% endblock %}

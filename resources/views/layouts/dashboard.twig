@@ -67,6 +67,12 @@
             </div>
 
             <div class="column is-paddingless">
+                {% if session_get('message') %}
+                    <div class="notification is-{{ session_get('message')[0] }} is-main">
+                        {{ session_get('message')[1] }}
+                    </div>
+                {% endif %}
+
                 {% block subcontent %}{% endblock %}
             </div>
         </div>

@@ -15,6 +15,7 @@ use Symfony\Component\Form\Form as SymfonyForm;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Validation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Form
 {
@@ -57,6 +58,7 @@ class Form
         $this->model = $model;
 
         $this->setData($model->toArray());
+        $this->create();
 
         return $this;
     }
@@ -120,6 +122,11 @@ class Form
             }
 
             $violations = $validator->validate($value, $options['constraints']);
+
+            if ($violations->count() == 0) {
+                continue;
+            }
+
             $formErrors[$name] = $violations;
         }
 
@@ -132,5 +139,16 @@ class Form
         }
 
         return $formErrors;
+    }
+
+    protected function toChoices(Collection $data)
+    {
+        $choices = [];
+
+        $data->each(function ($value) use (&$choices) {
+            $choices[$value->name] = $value->id;
+        });
+
+        return $choices;
     }
 }

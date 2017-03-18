@@ -37,6 +37,10 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.']
 
         Route::match(['get', 'post'], '/add', 'UsersController@edit')->name('add');
 
+        Route::match(['get', 'post'], '/add/validate', 'UsersController@validate')->name('add.validate');
+
+        Route::match(['get', 'post'], '/{model}/edit', 'UsersController@edit')->name('edit');
+
     });
 });
 

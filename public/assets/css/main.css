@@ -173,13 +173,25 @@ nav.nav .nav-item .icon {
   box-shadow: none;
 }
 
-.label {
+label, .label {
   font-weight: normal;
+  font-size: 14px;
+}
+
+button .fa,
+.button .fa {
+  font-size: 16px;
+  margin-right: 10px;
 }
 
 .notification.is-small {
   font-size: 12px;
   padding: 10px;
+}
+
+.notification.is-main {
+  margin-bottom: 0;
+  border-radius: 0;
 }
 
 .sidebar.menu {
@@ -225,8 +237,27 @@ nav.nav .nav-item .icon {
   font-size: 14px;
 }
 
+table th.is-fit {
+  width: 1%;
+}
+
 .columns {
   margin: 0;
+}
+
+.select,
+.select select {
+  width: 100%;
+}
+
+.panel .panel-heading.is-small {
+  font-size: 1.1em;
+}
+.panel > .box {
+  padding: 1em;
+  border: 1px solid #dbdbdb;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .page-heading {
@@ -248,6 +279,10 @@ nav.nav .nav-item .icon {
 }
 .page-heading .actions button, .page-heading .actions .button {
   margin-bottom: 0;
+}
+
+.is-margin-top {
+  margin-top: 60px;
 }
 
 /*# sourceMappingURL=main.css.map */
