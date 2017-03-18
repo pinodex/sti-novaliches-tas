@@ -65,7 +65,8 @@ class UsersController extends Controller
         }
 
         return view('dashboard.users.edit', [
-            'form'      => $form->createView()
+            'form'  => $form->createView(),
+            'model' => $model
         ]);
     }
 

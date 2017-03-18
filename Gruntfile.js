@@ -63,6 +63,7 @@ module.exports = function(grunt){
             js: {
                 src: [
                     'public/assets/js/vue.min.js',
+                    'public/assets/js/vue-resource.min.js',
                     'public/assets/js/app.min.js'
                 ],
 

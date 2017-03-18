@@ -8,13 +8,27 @@
 {% block subcontent %}
     <div class="columns">
         <div class="column is-4 is-offset-4">
-            <form action="{{ app.request.getRequestUri() }}" method="POST">
-                {{ form_widget(form) }}
+            <div class="panel">
+                <p class="panel-heading is-small">{{ page_title }}</p>
 
-                <div class="field">
-                    <button class="button is-primary is-pulled-right">Save</button>
+                <div class="box is-clearfix">
+                    <form action="{{ app.request.getRequestUri() }}" method="POST">
+                        {{ form_widget(form) }}
+
+                        <div class="field is-grouped is-grouped-right">
+                            {% if model.id %}
+                                <p class="control">
+                                    <a href="" class="button is-danger is-outlined">Delete</a>
+                                </p>
+                            {% endif %}
+
+                            <p class="control">
+                                <button class="button is-primary">Save</button>
+                            </p>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 {% endblock %}
