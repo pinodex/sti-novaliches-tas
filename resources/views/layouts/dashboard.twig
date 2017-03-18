@@ -1,47 +1,68 @@
 {% extends '/layouts/main.twig' %}
 
+{%
+    set menu = [
+        {
+            header: null,
+            
+            list: [
+                { icon: 'home', identifier: 'home', route: 'dashboard.index', name: 'Home' },
+                { icon: 'envelope', identifier: 'requests', route: 'dashboard.index', name: 'Requests' }
+            ]
+        },
+
+        {
+            header: 'Administrator',
+
+            list: [
+                {
+                    icon: 'user', identifier: 'users', route: 'dashboard.users.index', name: 'Users',
+                    
+                    list: [
+                        { icon: 'plus', identifier: 'add', route: 'dashboard.users.add', name: 'Add User' }
+                    ]
+                },
+
+                { icon: 'users', identifier: 'groups', route: 'dashboard.index', name: 'Groups' }
+            ]  
+        }
+    ]
+%}
+
+{% set active_tab = 'dashboard' %}
+
 {% block content %}
     <div class="container is-fluid is-marginless full-height">
         <div class="columns is-main-grid full-height">
             <div class="column is-2 is-paddingless full-height">
                 <aside class="menu sidebar full-height">
-                    <ul class="menu-list">
-                        <li><a>
-                            <span class="icon">
-                                <i class="fa fa-home" aria-hidden="true"></i>
-                            </span>
+                    {% for item in menu %}
+                        {% if item.header != null %}
+                            <p class="menu-label">{{ item.header }}</p>
+                        {% endif %}
 
-                            Home
-                        </a></li>
+                        <ul class="menu-list">
+                            {% for listItem in item.list %}
+                                <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
+                                    <a href="{{ route(listItem.route) }}">
+                                        <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
+                                    </a>
 
-                        <li><a>
-                            <span class="icon">
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                            </span>
-
-                            Requests
-                        </a></li>
-                    </ul>
-                    
-                    <p class="menu-label">Administrator</p>
-  
-                    <ul class="menu-list">
-                        <li><a>
-                            <span class="icon">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                            </span>
-
-                            Users
-                        </a></li>
-
-                        <li><a>
-                            <span class="icon">
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                            </span>
-
-                            Groups
-                        </a></li>
-                    </ul>
+                                    {% if listItem.list and active_menu starts with listItem.identifier %}
+                                        <ul>
+                                            {% for subItem in listItem.list %}
+                                                <li{{ active_menu == listItem.identifier ~ '.' ~ subItem.identifier ? ' class="is-active"' : '' }}>
+                                                    <a href="{{ route(subItem.route) }}">
+                                                        <span class="icon"><i class="fa fa-{{ subItem.icon }}" aria-hidden="true"></i></span> {{ subItem.name }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </li>    
+                            {% endfor %}
+                        </ul>
+                    {% endfor %}
                 </aside>
             </div>
 

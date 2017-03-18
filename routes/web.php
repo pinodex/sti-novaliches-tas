@@ -30,4 +30,13 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.']
 
     Route::get('/', 'MainController@index')->name('index');
 
+    // UsersController
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+
+        Route::get('/', 'UsersController@index')->name('index');
+
+        Route::match(['get', 'post'], '/add', 'UsersController@edit')->name('add');
+
+    });
 });
+

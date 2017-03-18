@@ -1,0 +1,20 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% form_theme form '/layouts/bulma.twig' %}
+
+{% set page_title = 'Add User' %}
+{% set active_menu = 'users.add' %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-4 is-offset-4">
+            <form action="{{ app.request.getRequestUri() }}" method="POST">
+                {{ form_widget(form) }}
+
+                <div class="field">
+                    <button class="button is-primary is-pulled-right">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

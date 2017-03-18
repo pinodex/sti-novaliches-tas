@@ -1,0 +1,45 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Users' %}
+{% set active_menu = 'users' %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-three-quarters">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Group</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in result %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            {% if item.group %}
+                                <td>
+                                    <a href="#">{{ item.group.name }}</a>
+                                </td>
+                            {% else %}
+                                <td>N/A</td>
+                            {% endif %}
+                            <td>
+                                <a href="#" class="button is-small">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <span class="select">
+                <select name="pages" @change="changePaginationPage" v-model="paginationPage">
+                    {% for i in 1..result.lastPage %}
+                        <option value="{{ i }}">Page {{ i }}</option>
+                    {% endfor %}
+                </select>
+            </span>
+        </div>
+    </div>
+{% endblock %}

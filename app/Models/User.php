@@ -12,11 +12,12 @@
 namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -55,5 +56,10 @@ class User extends Authenticatable
         if (!$isRememberTokenAttribute) {
             parent::setAttribute($key, $value);
         }
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 }
