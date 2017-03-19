@@ -24,7 +24,14 @@
                     ]
                 },
 
-                { icon: 'users', identifier: 'groups', route: 'dashboard.index', name: 'Groups' }
+                {
+                    icon: 'users', identifier: 'groups', route: 'dashboard.groups.index', name: 'Groups',
+
+                    list: [
+                        { icon: 'plus', identifier: 'add', route: 'dashboard.groups.add', name: 'Add Group' },
+                        { icon: 'trash', identifier: 'deleted', route: 'dashboard.groups.deleted', name: 'Deleted' }
+                    ]
+                }
             ]  
         }
     ]
@@ -33,6 +40,48 @@
 {% set active_tab = 'dashboard' %}
 
 {% block content %}
+    <nav class="nav has-shadow is-fixed-top">
+        <div class="container is-fluid">
+            <div class="nav-left">
+                <a href="{{ route('index') }}" class="nav-item has-logo">
+                    <img src="/assets/img/logo-vertical.png" alt="Logo"> TAS Management
+                </a>
+                        
+                {% for item in nav %}
+                    <a class="nav-item is-tab {{ active_tab == item.identifier ? 'is-active' : '' }}">
+                        <span class="icon is-small">
+                            <i class="fa fa-{{ item.icon }}" aria-hidden="true"></i>
+                        </span> {{ item.name }}
+                    </a>
+                {% endfor %}
+            </div>
+                
+            <span class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+                
+            <div class="nav-right nav-menu">
+                <p class="nav-item is-tab">
+                    <span class="icon is-small">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+
+                    Logged in as {{ auth_user().name }}
+                </p>
+
+                <a href="{{ route('auth.logout', {}, false) }}" class="nav-item is-tab">
+                    <span class="icon is-small">
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </span>
+
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container is-fluid is-marginless full-height">
         <div class="columns is-main-grid full-height">
             <div class="column is-2 is-paddingless full-height">

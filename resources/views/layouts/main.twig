@@ -56,42 +56,6 @@
 </head>
 <body class="{{ body_class | default('') }}">
     <div id="app" class="full-height">
-        {% if active_tab != false %}
-            <nav class="nav has-shadow is-fixed-top">
-                <div class="container is-fluid">
-                    <div class="nav-left">
-                        <a href="{{ route('index') }}" class="nav-item has-logo">
-                            <img src="/assets/img/logo-vertical.png" alt="Logo"> TAS Management
-                        </a>
-                        
-                        {% for item in nav %}
-                            <a class="nav-item is-tab {{ active_tab == item.identifier ? 'is-active' : '' }}">
-                                <span class="icon is-small">
-                                    <i class="fa fa-{{ item.icon }}" aria-hidden="true"></i>
-                                </span> {{ item.name }}
-                            </a>
-                        {% endfor %}
-                    </div>
-                
-                    <span class="nav-toggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </span>
-                
-                    <div class="nav-right nav-menu">
-                        <a href="{{ route('auth.logout', {}, false) }}" class="nav-item is-tab">
-                            <span class="icon is-small">
-                                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                            </span>
-
-                            Logout
-                        </a>
-                    </div>
-                </div>
-            </nav>
-        {% endif %}
-
         {% block content %}{% endblock %}
     </div>
     
