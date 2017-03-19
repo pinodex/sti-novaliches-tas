@@ -60,13 +60,17 @@
                 </tbody>
             </table>
 
-            <span class="select">
-                <select name="pages" @change="changePaginationPage" v-model="paginationPage">
-                    {% for i in 1..result.lastPage %}
-                        <option value="{{ i }}">Page {{ i }}</option>
-                    {% endfor %}
-                </select>
-            </span>
+            <div class="columns">
+                <div class="column is-3 is-offset-9 is-paddingless">
+                    <span class="select">
+                        <select name="pages" @change="changePaginationPage" v-model="paginationPage">
+                            {% for i in 1..result.lastPage %}
+                                <option value="{{ i }}">Page {{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                </div>
+            </div>
         </div>
 
         <div class="column is-4">

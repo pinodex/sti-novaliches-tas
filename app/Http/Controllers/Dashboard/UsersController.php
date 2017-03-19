@@ -124,11 +124,4 @@ class UsersController extends Controller
         return redirect()->route('dashboard.users.index')
             ->with('message', ['success', __('user.purged', ['name' => $model->name])]);
     }
-
-    public function validate(Request $request, User $model = null)
-    {
-        $errors = $this->form->validate($request->request->all());
-
-        return response()->json($errors);
-    }
 }

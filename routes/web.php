@@ -34,19 +34,11 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.']
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
 
         Route::get('/', 'UsersController@index')->name('index');
-
         Route::get('/deleted', 'UsersController@deleted')->name('deleted');
-
         Route::match(['get', 'post'], '/add', 'UsersController@edit')->name('add');
-
-        Route::match(['get', 'post'], '/add/validate', 'UsersController@validate')->name('add.validate');
-
         Route::match(['get', 'post'], '/{model}/edit', 'UsersController@edit')->name('edit');
-
         Route::match(['get', 'post'], '/{model}/delete', 'UsersController@delete')->name('delete');
-
         Route::post('/restore', 'UsersController@restore')->name('restore');
-
         Route::post('/purge', 'UsersController@purge')->name('purge');
 
     });
