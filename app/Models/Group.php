@@ -18,8 +18,26 @@ class Group extends Model
 {
     use SoftDeletes;
 
+    protected $fillable = [
+        'name', 'permissions'
+    ];
+
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    public function getPermissionsAttribute($value)
+    {
+        if ($value == null) {
+            return null;
+        }
+
+        return explode(',', $value);
+    }
+
+    public function setPermissionsAttribute(array $value)
+    {
+        $this->attributes['permissions'] = implode(',', $value);
     }
 }

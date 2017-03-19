@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditUserForm;
 use App\Models\User;
+use App\Models\Group;
 
 class UsersController extends Controller
 {
@@ -28,32 +29,39 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         $users = User::with('group');
+        $groups = Group::all();
+
+        $showTrashed = $request->query->get('show') == 'deleted';
+
+        if ($showTrashed) {
+            $users->onlyTrashed();
+        }
 
         if ($searchName = $request->query->get('name')) {
             $users->where('name', 'LIKE', '%' . $searchName . '%');
         }
 
+        if ($searchGroup = $request->query->get('group')) {
+            if ($searchGroup != 'all') {
+                $users->where('group_id', $searchGroup);
+            }
+        }
+
         return view('dashboard.users.index', [
             'result' => $users->paginate(50),
-            'trash'  => false
+            'groups' => $groups,
+            'trash'  => $showTrashed
         ]);
     }
 
     public function deleted(Request $request)
     {
-        $users = User::with('group')->onlyTrashed();
+        $request->query->set('show', 'deleted');
 
-        if ($searchName = $request->query->get('name')) {
-            $users->where('name', 'LIKE', '%' . $searchName . '%');
-        }
-
-        return view('dashboard.users.index', [
-            'result' => $users->paginate(50),
-            'trash'  => true
-        ]);
+        return $this->index($request);
     }
 
-    public function edit(Request $request, User $model = null)
+    public function edit(Request $request, User $model)
     {
         $editMode = $model->id !== null;
 
