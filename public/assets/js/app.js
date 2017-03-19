@@ -55,14 +55,20 @@
         return queryString.substring(0, queryString.length - 1);
     };
 
+    var isNumeric = function isNumeric(value) {
+        return Number(parseFloat(value)) == value;
+    }
+
     var appData = {
         isNavActive: false,
         disableAction: false,
         paginationPage: 1,
+        modelId: 0,
         
         modals: {
             alert: true,
             confirm: false,
+            confirm2: false,
             helpBox: false,
             loading: false
         }
@@ -71,6 +77,10 @@
     var appMethods = {
         toggleNav: function() {
             this.isNavActive = !this.isNavActive;
+        },
+
+        setFormId: function(id) {
+            this.modelId = id;
         },
 
         changePaginationPage: function() {
@@ -92,7 +102,7 @@
             show: {
                 type: Boolean,
                 required: true,
-                twoWay: true    
+                twoWay: true
             }
         },
 
@@ -114,4 +124,10 @@
         data: appData,
         methods: appMethods
     });
+
+    var currentPage = getQueryVar('page');
+
+    if (isNumeric(currentPage)) {
+        app.$set(appData, 'paginationPage', currentPage);
+    }
 }());

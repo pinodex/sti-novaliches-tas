@@ -3,13 +3,23 @@
 {% set page_title = 'Users' %}
 {% set active_menu = 'users' %}
 
+{% if trash %}
+    {% set page_title = 'Deleted Users' %}
+    {% set active_menu = 'users.deleted' %}
+{% endif %}
+
 {% block subcontent %}
     <div class="columns">
         <div class="column is-8">
+            {% if trash %}
+                <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
+            {% endif %}
+
             <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Username</th>
                         <th>Group</th>
                         <th class="is-fit">Action</th>
                     </tr>
@@ -18,15 +28,32 @@
                     {% for item in result %}
                         <tr>
                             <td>{{ item.name }}</td>
+                            <td>{{ item.username }}</td>
                             {% if item.group %}
                                 <td>
-                                    <a href="#">{{ item.group.name }}</a>
+                                    {% if trash %}
+                                        {{ item.group.name }}
+                                    {% else %}
+                                        <a href="#">{{ item.group.name }}</a>
+                                    {% endif %}
                                 </td>
                             {% else %}
                                 <td>N/A</td>
                             {% endif %}
                             <td>
-                                <a href="{{ route('dashboard.users.edit', { id: item.id }) }}" class="button is-small">Edit</a>
+                                {% if trash %}
+                                    <div class="field is-grouped">
+                                        <p class="control">
+                                            <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true; setFormId({{ item.id }})">Restore</button>
+                                        </p>
+
+                                        <p class="control">
+                                            <button class="button is-small is-danger" @click.prevent="modals.confirm = true; setFormId({{ item.id }})">Delete Permanently</button>
+                                        </p>
+                                    </div>
+                                {% else %}
+                                    <a href="{{ route('dashboard.users.edit', { model: item }, false) }}" class="button is-small">Edit</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -65,4 +92,40 @@
             </nav>
         </div>
     </div>
+
+    <modal :show.sync="modals.confirm">
+        <h3 slot="header">Confirm action</h3>
+        
+        <div slot="body">
+            <p>Are you sure you want to permantly delete this user?</p>
+        </div>
+
+        <div slot="footer">
+            <form method="post" action="{{ route('dashboard.users.purge', {}, false) }}">
+                {{ csrf_field() }}
+                <input type="hidden" name="id" v-model="modelId" />
+                    
+                <button type="button" class="button is-light" @click="modals.confirm = false">Cancel</button>
+                <button type="submit" class="button is-danger">Delete Pemanently</button>
+            </form>
+        </div>
+    </modal>
+
+    <modal :show.sync="modals.confirm2">
+        <h3 slot="header">Confirm action</h3>
+        
+        <div slot="body">
+            <p>Are you sure you want to restore this user account?</p>
+        </div>
+
+        <div slot="footer">
+            <form method="post" action="{{ route('dashboard.users.restore', {}, false) }}">
+                {{ csrf_field() }}
+                <input type="hidden" name="id" v-model="modelId" />
+                    
+                <button type="button" class="button is-light" @click="modals.confirm2 = false">Cancel</button>
+                <button type="submit" class="button is-info">Restore User</button>
+            </form>
+        </div>
+    </modal>
 {% endblock %}

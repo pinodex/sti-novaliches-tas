@@ -14,6 +14,10 @@ body.login-page {
   padding-top: 0;
 }
 
+modal, [v-show] {
+  display: none;
+}
+
 nav.nav {
   position: fixed;
   top: 0;
@@ -70,6 +74,7 @@ button .fa,
 .notification.is-small {
   font-size: 12px;
   padding: 10px;
+  margin-bottom: 1em;
 }
 
 .notification.is-main {
@@ -120,8 +125,14 @@ button .fa,
   font-size: 14px;
 }
 
-table th.is-fit {
+.table {
+  font-size: 14px;
+}
+.table th.is-fit {
   width: 1%;
+}
+.table td, .table th {
+  vertical-align: middle;
 }
 
 .columns {
@@ -166,6 +177,60 @@ table th.is-fit {
 
 .is-margin-top {
   margin-top: 60px;
+}
+
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.75);
+  transition: opacity .3s ease;
+  display: table;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  background: #fff;
+  margin: 0px auto;
+  padding: 20px;
+  max-width: 480px;
+  transition: all .3s ease;
+  border-radius: 5px;
+}
+
+.modal-header > * {
+  color: #3273dc;
+  margin: 0;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+.modal-body {
+  margin-bottom: 30px;
+}
+
+.modal-footer {
+  text-align: right;
+}
+.modal-footer button, .modal-footer .button {
+  margin-bottom: 0;
+}
+
+.modal-enter, .modal-leave {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 /*# sourceMappingURL=main.css.map */

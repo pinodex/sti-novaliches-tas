@@ -24,7 +24,7 @@ class UniqueRecordValidator extends ConstraintValidator
 
         $record = call_user_func([$constraint->model, 'where'],
             $constraint->row, $constraint->comparator, $value
-        );
+        )->withTrashed();
 
         if ($record->exists()) {
             $this->context->addViolation($constraint->message);

@@ -34,7 +34,22 @@ class UsersController extends Controller
         }
 
         return view('dashboard.users.index', [
-            'result' => $users->paginate()
+            'result' => $users->paginate(50),
+            'trash'  => false
+        ]);
+    }
+
+    public function deleted(Request $request)
+    {
+        $users = User::with('group')->onlyTrashed();
+
+        if ($searchName = $request->query->get('name')) {
+            $users->where('name', 'LIKE', '%' . $searchName . '%');
+        }
+
+        return view('dashboard.users.index', [
+            'result' => $users->paginate(50),
+            'trash'  => true
         ]);
     }
 
@@ -68,6 +83,46 @@ class UsersController extends Controller
             'form'  => $form->createView(),
             'model' => $model
         ]);
+    }
+
+    public function delete(Request $request, User $model)
+    {
+        $model->delete();
+
+        return redirect()->route('dashboard.users.index')
+            ->with('message', ['success', __('user.deleted', ['name' => $model->name])]);
+    }
+
+    public function restore(Request $request)
+    {
+        $id = $request->request->get('id');
+        $model = User::onlyTrashed()->find($id);
+
+        if (!$model) {
+            return redirect()->route('dashboard.users.index')
+                ->with('message', ['warning', __('user.not_found')]);
+        }
+
+        $model->restore();
+
+        return redirect()->route('dashboard.users.index')
+            ->with('message', ['success', __('user.restored', ['name' => $model->name])]);
+    }
+
+    public function purge(Request $request)
+    {
+        $id = $request->request->get('id');
+        $model = User::onlyTrashed()->find($id);
+
+        if (!$model) {
+            return redirect()->route('dashboard.users.index')
+                ->with('message', ['warning', __('user.not_found')]);
+        }
+
+        $model->forceDelete();
+
+        return redirect()->route('dashboard.users.index')
+            ->with('message', ['success', __('user.purged', ['name' => $model->name])]);
     }
 
     public function validate(Request $request, User $model = null)

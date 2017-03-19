@@ -24,7 +24,6 @@
     <meta property="og:url" content="{{ app.request.uri }}" />
     <meta property="og:description" content="STI College Novaliches Timekeeping Authorization Management" />
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() }}/assets/img/og-image.png" />
-    <link rel="preload" as="script" href="/assets/fonts/icomoon.ttf" />
 {% if config('app.debug') %}
     <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/bulma.css" />
@@ -32,7 +31,7 @@
 {% else %}
     <link rel="stylesheet" type="text/css" href="/assets/css/compiled.css" />
 {% endif %}
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto" />
+    <!--<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto" />-->
     <link rel="apple-touch-icon" sizes="57x57" href="/assets/icon/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="60x60" href="/assets/icon/apple-touch-icon-60x60.png" />
     <link rel="apple-touch-icon" sizes="72x72" href="/assets/icon/apple-touch-icon-72x72.png" />
@@ -81,7 +80,7 @@
                     </span>
                 
                     <div class="nav-right nav-menu">
-                        <a href="{{ route('auth.logout') }}" class="nav-item is-tab">
+                        <a href="{{ route('auth.logout', {}, false) }}" class="nav-item is-tab">
                             <span class="icon is-small">
                                 <i class="fa fa-sign-out" aria-hidden="true"></i>
                             </span>
@@ -97,25 +96,27 @@
     </div>
     
     <script type="text/template" id="modal-template">
-        <div class="modal-mask" v-show="show" transition="modal">
-            <div class="modal-wrapper">
-                <div class="modal-container">
-                    <div class="modal-header">
-                        <slot name="header"></slot>
-                    </div>
-        
-                    <div class="modal-body">
-                        <slot name="body"></slot>
-                    </div>
+        <transition name="modal">
+            <div class="modal-mask" v-show="show">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+                        <div class="modal-header">
+                            <slot name="header"></slot>
+                        </div>
+            
+                        <div class="modal-body">
+                            <slot name="body"></slot>
+                        </div>
 
-                    <div class="modal-footer">
-                        <slot name="footer">
-                            <button type="button" @click="show = false" autofocus>OK</button>
-                        </slot>
+                        <div class="modal-footer">
+                            <slot name="footer">
+                                <button class="button" type="button" @click="show = false" autofocus>OK</button>
+                            </slot>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </transition>
     </script>
 {% if config('app.debug') %}
     <script src="/assets/js/vue.js"></script>
