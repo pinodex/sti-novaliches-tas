@@ -64,6 +64,8 @@
         disableAction: false,
         paginationPage: 1,
         modelId: 0,
+
+        groupDeleteAction: 'move',
         
         modals: {
             alert: true,

@@ -31,8 +31,25 @@ class AccessControl
 
         $user = Auth::user();
 
-        dd($user);
+        if ($user->group->permissions == null)
+        {
+            abort(403);
+        }
 
-        return $next($request);
+        if (array_search('*', $user->group->permissions) !== false) {
+            return $next($request);
+        }
+
+        $requestedPermissions = explode(',', $args);
+
+        foreach ($requestedPermissions as $requestedPermission) {
+            foreach ($user->group->permissions as $allowedPermission) {
+                if (fnmatch($requestedPermission, $allowedPermission)) {
+                    return $next($request);
+                }
+            }
+        }
+
+        abort(403);
     }
 }

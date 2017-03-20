@@ -23,9 +23,15 @@
                         <div class="field is-grouped is-grouped-right">
                             {% if model.id %}
                                 <p class="control">
-                                    <button class="button is-danger is-outlined" @click.prevent="modals.confirm = true">
-                                        <i class="fa fa-trash"></i> Delete
-                                    </button>
+                                    {% if model.users|length > 0 %}
+                                        <a class="button is-danger is-outlined" href="{{ route('dashboard.groups.delete.confirm', { model: model }, false) }}">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </a>
+                                    {% else %}
+                                        <button class="button is-danger is-outlined" @click.prevent="modals.confirm = true">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </button>
+                                    {% endif %}
                                 </p>
                             {% endif %}
 

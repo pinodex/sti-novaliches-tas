@@ -141,9 +141,13 @@ class Form
         return $formErrors;
     }
 
-    protected function toChoices(Collection $data)
+    protected function toChoices(Collection $data, $unassigned = false)
     {
         $choices = [];
+
+        if ($unassigned) {
+            $choices['Unassigned'] = 0;
+        }
 
         $data->each(function ($value) use (&$choices) {
             $choices[$value->name] = $value->id;

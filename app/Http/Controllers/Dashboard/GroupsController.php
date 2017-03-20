@@ -11,9 +11,11 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditGroupForm;
+use App\Http\Forms\DeleteGroupConfirmForm;
 use App\Models\Group;
 
 class GroupsController extends Controller
@@ -55,6 +57,8 @@ class GroupsController extends Controller
 
     public function edit(Request $request, Group $model = null)
     {
+        $model->load('users');
+
         $editMode = $model->id !== null;
 
         $this->form->setModel($model);
@@ -83,10 +87,55 @@ class GroupsController extends Controller
 
     public function delete(Request $request, Group $model)
     {
+        if ($model->users->count() > 0) {
+            return redirect()->route('dashboard.groups.delete.confirm', ['model' => $model]);
+        }
+
         $model->delete();
 
         return redirect()->route('dashboard.groups.index')
             ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
+    }
+
+    public function deleteConfirm(Request $request, Group $model)
+    {
+        $model->load('users');
+
+        $form = new DeleteGroupConfirmForm($model);
+
+        $form = $form->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $action = $form['action']->getData();
+            $targetGroup = $form['group']->getData();
+
+            DB::transaction(function () use ($model, $action, $targetGroup) {
+                switch ($action) {                    
+                    case 'move':
+                        $model->users()->getQuery()->update([
+                            'group_id' => $targetGroup
+                        ]);
+
+                        break;
+
+                    case 'delete':
+                        $model->users()->getQuery()->delete();
+
+                        break;
+                }
+
+                $model->delete();
+            });
+
+            return redirect()->route('dashboard.groups.index')
+                ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
+        }
+
+        return view('dashboard.groups.confirm', [
+            'model' => $model,
+            'form'  => $form->createView()
+        ]);
     }
 
     public function restore(Request $request)

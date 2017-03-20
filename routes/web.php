@@ -26,7 +26,7 @@ Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthCo
 
 Route::get('/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
 
-Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.'], function () {
+Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.', 'middleware' => 'auth'], function () {
 
     Route::get('/', 'MainController@index')->name('index');
 
@@ -48,6 +48,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.']
         Route::match(['get', 'post'], '/add', 'GroupsController@edit')->name('add');
         Route::match(['get', 'post'], '/{model}/edit', 'GroupsController@edit')->name('edit');
         Route::match(['get', 'post'], '/{model}/delete', 'GroupsController@delete')->name('delete');
+        Route::match(['get', 'post'], '/{model}/delete/confirm', 'GroupsController@deleteConfirm')->name('delete.confirm');
         Route::post('/restore', 'GroupsController@restore')->name('restore');
         Route::post('/purge', 'GroupsController@purge')->name('purge');
     });

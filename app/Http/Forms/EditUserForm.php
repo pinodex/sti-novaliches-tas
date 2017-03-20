@@ -60,8 +60,7 @@ class EditUserForm extends Form
         ]);
 
         $this->add('group_id', Type\ChoiceType::class, [
-            'label'     => 'Group',
-            'choices'   => $this->toChoices($groups)
+            'choices'   => $this->toChoices($groups, true)
         ]);
     }
 }

@@ -30,13 +30,7 @@
                             <td>{{ item.name }}</td>
                             <td>{{ item.username }}</td>
                             {% if item.group %}
-                                <td>
-                                    {% if trash %}
-                                        {{ item.group.name }}
-                                    {% else %}
-                                        <a href="#">{{ item.group.name }}</a>
-                                    {% endif %}
-                                </td>
+                                <td>{{ item.group.name }}</td>
                             {% else %}
                                 <td>N/A</td>
                             {% endif %}
