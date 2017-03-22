@@ -179,6 +179,15 @@ button .fa,
   margin-top: 60px;
 }
 
+.user-list .title {
+  font-size: 1rem;
+  font-weight: normal;
+}
+.user-list .subtitle {
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
 .modal-mask {
   position: fixed;
   top: 0;

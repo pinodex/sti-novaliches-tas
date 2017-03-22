@@ -19,21 +19,24 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Username</th>
                         <th>Group</th>
+                        <th>Last Login</th>
                         <th class="is-fit">Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="user-list">
                     {% for item in result %}
                         <tr>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.username }}</td>
+                            <td>
+                                <h1 class="title">{{ item.name }}</h1>
+                                <h2 class="subtitle">@{{ item.username }}</h2>
+                            </td>
                             {% if item.group %}
                                 <td>{{ item.group.name }}</td>
                             {% else %}
                                 <td>N/A</td>
                             {% endif %}
+                            <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
                             <td>
                                 {% if trash %}
                                     <div class="field is-grouped">
