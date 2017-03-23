@@ -59,13 +59,17 @@ class DepartmentsController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
+            Department::where('head_id', $data['head_id'])->update([
+                'head_id' => null
+            ]);
+
             $model->fill($data);
             $model->save();
 
             return redirect()->route('dashboard.departments.index')
                 ->with('message', ['success',
-                    $editMode ? __('group.edited', ['name' => $model->name]) :
-                        __('group.added', ['name' => $model->name])
+                    $editMode ? __('department.edited', ['name' => $model->name]) :
+                        __('department.added', ['name' => $model->name])
                 ]);
         }
 
@@ -84,42 +88,34 @@ class DepartmentsController extends Controller
         $model->delete();
 
         return redirect()->route('dashboard.departments.index')
-            ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
+            ->with('message', ['success', __('department.deleted', ['name' => $model->name])]);
     }
 
     public function deleteConfirm(Request $request, Department $model)
     {
         $model->load('users');
 
-        $form = new DeleteGroupConfirmForm($model);
+        $form = new DeleteDepartmentConfirmForm($model);
 
         $form = $form->getForm();
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $action = $form['action']->getData();
-            $targetGroup = $form['group']->getData();
+            $targetDep = $form['department']->getData();
+            $affectedUsers = $model->users->pluck('id')->toArray();
 
-            DB::transaction(function () use ($model, $action, $targetGroup) {
-                switch ($action) {                    
-                    case 'move':
-                        $model->users()->getQuery()->update([
-                            'group_id' => $targetGroup
-                        ]);
+            DB::transaction(function () use ($model, $targetDep, $affectedUsers) {
+                $model->users()->detach($affectedUsers);
 
-                        break;
-
-                    case 'delete':
-                        $model->users()->getQuery()->delete();
-
-                        break;
+                if ($targetDep) {
+                    Department::findOrFail($targetDep)->users()->attach($affectedUsers);
                 }
 
                 $model->delete();
             });
 
             return redirect()->route('dashboard.departments.index')
-                ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
+                ->with('message', ['success', __('department.deleted', ['name' => $model->name])]);
         }
 
         return view('dashboard.departments.confirm', [
@@ -135,13 +131,13 @@ class DepartmentsController extends Controller
 
         if (!$model) {
             return redirect()->route('dashboard.departments.index')
-                ->with('message', ['warning', __('group.not_found')]);
+                ->with('message', ['warning', __('department.not_found')]);
         }
 
         $model->restore();
 
         return redirect()->route('dashboard.departments.index')
-            ->with('message', ['success', __('group.restored', ['name' => $model->name])]);
+            ->with('message', ['success', __('department.restored', ['name' => $model->name])]);
     }
 
     public function purge(Request $request)
@@ -151,12 +147,12 @@ class DepartmentsController extends Controller
 
         if (!$model) {
             return redirect()->route('dashboard.departments.index')
-                ->with('message', ['warning', __('group.not_found')]);
+                ->with('message', ['warning', __('department.not_found')]);
         }
 
         $model->forceDelete();
 
         return redirect()->route('dashboard.departments.index')
-            ->with('message', ['success', __('group.purged', ['name' => $model->name])]);
+            ->with('message', ['success', __('department.purged', ['name' => $model->name])]);
     }
 }
