@@ -31,6 +31,15 @@
                         { icon: 'plus', identifier: 'add', route: 'dashboard.groups.add', name: 'Add Group' },
                         { icon: 'trash', identifier: 'deleted', route: 'dashboard.groups.deleted', name: 'Deleted Groups' }
                     ]
+                },
+
+                {
+                    icon: 'building', identifier: 'departments', route: 'dashboard.departments.index', name: 'Departments',
+
+                    list: [
+                        { icon: 'plus', identifier: 'add', route: 'dashboard.departments.add', name: 'Add Department' },
+                        { icon: 'trash', identifier: 'deleted', route: 'dashboard.departments.deleted', name: 'Deleted Departments' }
+                    ]
                 }
             ]  
         }
@@ -82,49 +91,43 @@
         </div>
     </nav>
 
-    <div class="container is-fluid is-marginless full-height">
-        <div class="columns is-main-grid full-height">
-            <div class="column is-2 is-paddingless full-height">
-                <aside class="menu sidebar full-height">
-                    {% for item in menu %}
-                        {% if item.header != null %}
-                            <p class="menu-label">{{ item.header }}</p>
+    <aside class="menu sidebar">
+        {% for item in menu %}
+            {% if item.header != null %}
+                <p class="menu-label">{{ item.header }}</p>
+            {% endif %}
+
+            <ul class="menu-list">
+                {% for listItem in item.list %}
+                    <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
+                        <a href="{{ route(listItem.route, {}, false) }}">
+                            <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
+                        </a>
+
+                        {% if listItem.list and active_menu starts with listItem.identifier %}
+                            <ul>
+                                {% for subItem in listItem.list %}
+                                    <li{{ active_menu == listItem.identifier ~ '.' ~ subItem.identifier ? ' class="is-active"' : '' }}>
+                                        <a href="{{ route(subItem.route, {}, false) }}">
+                                            <span class="icon"><i class="fa fa-{{ subItem.icon }}" aria-hidden="true"></i></span> {{ subItem.name }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         {% endif %}
+                    </li>    
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </aside>
 
-                        <ul class="menu-list">
-                            {% for listItem in item.list %}
-                                <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
-                                    <a href="{{ route(listItem.route, {}, false) }}">
-                                        <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
-                                    </a>
-
-                                    {% if listItem.list and active_menu starts with listItem.identifier %}
-                                        <ul>
-                                            {% for subItem in listItem.list %}
-                                                <li{{ active_menu == listItem.identifier ~ '.' ~ subItem.identifier ? ' class="is-active"' : '' }}>
-                                                    <a href="{{ route(subItem.route, {}, false) }}">
-                                                        <span class="icon"><i class="fa fa-{{ subItem.icon }}" aria-hidden="true"></i></span> {{ subItem.name }}
-                                                    </a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                </li>    
-                            {% endfor %}
-                        </ul>
-                    {% endfor %}
-                </aside>
+    <div class="main-container">
+        {% if session_get('message') %}
+            <div class="notification is-{{ session_get('message')[0] }} is-main">
+                {{ session_get('message')[1] }}
             </div>
+        {% endif %}
 
-            <div class="column is-paddingless">
-                {% if session_get('message') %}
-                    <div class="notification is-{{ session_get('message')[0] }} is-main">
-                        {{ session_get('message')[1] }}
-                    </div>
-                {% endif %}
-
-                {% block subcontent %}{% endblock %}
-            </div>
-        </div>
+        {% block subcontent %}{% endblock %}
     </div>
 {% endblock %}

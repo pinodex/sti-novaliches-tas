@@ -1,42 +1,37 @@
 {% extends '/layouts/dashboard.twig' %}
 
-{% set page_title = 'Users' %}
-{% set active_menu = 'users' %}
+{% set page_title = 'Departments' %}
+{% set active_menu = 'departments' %}
 
 {% if trash %}
-    {% set page_title = 'Deleted Users' %}
-    {% set active_menu = 'users.deleted' %}
+    {% set page_title = 'Deleted Departments' %}
+    {% set active_menu = 'departments.deleted' %}
 {% endif %}
 
 {% block subcontent %}
     <div class="columns">
         <div class="column is-8">
             {% if trash %}
-                <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
+                <div class="notification is-info is-small">This page shows the deleted departments. You can restore groups or delete them permanently.</div>
             {% endif %}
 
             <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Group</th>
-                        <th>Last Login</th>
+                        <th>Head</th>
                         <th class="is-fit">Action</th>
                     </tr>
                 </thead>
-                <tbody class="user-list">
+                <tbody>
                     {% for item in result %}
                         <tr>
-                            <td>
-                                <h1 class="title">{{ item.name }}</h1>
-                                <h2 class="subtitle">@{{ item.username }}</h2>
-                            </td>
-                            {% if item.group %}
-                                <td>{{ item.group.name }}</td>
+                            <td>{{ item.name }}</td>
+                            {% if item.head %}
+                                <td>{{ item.head.name }}</td>
                             {% else %}
                                 <td><em>Unassigned</em></td>
                             {% endif %}
-                            <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
                             <td>
                                 {% if trash %}
                                     <div class="field is-grouped">
@@ -51,7 +46,7 @@
                                         </p>
                                     </div>
                                 {% else %}
-                                    <a href="{{ route('dashboard.users.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
+                                    <a href="{{ route('dashboard.departments.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
                                         <i class="fa fa-pencil-square-o is-marginless"></i>
                                     </a>
                                 {% endif %}
@@ -91,25 +86,6 @@
                             </p>
                         </div>
 
-                        <div class="field">
-                            <label class="label">Group</label>
-                            <p class="control">
-                                <span class="select">
-                                    <select name="group">
-                                        <option value="all">All Groups</option>
-                                        <option value="unassigned">Unassigned</option>
-                                        {% for group in groups %}
-                                            {% if input_get('group') == group.id %}
-                                                <option value="{{ group.id }}" selected>{{ group.name }}</option>
-                                            {% else %}
-                                                <option value="{{ group.id }}">{{ group.name }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </span>
-                            </p>
-                        </div>
-
                         <div class="field is-clearfix">
                             <button type="submit" class="button is-primary is-outlined is-pulled-right">
                                 <i class="fa fa-search"></i> Search
@@ -125,11 +101,11 @@
         <h3 slot="header">Confirm action</h3>
         
         <div slot="body">
-            <p>Are you sure you want to permantly delete this user?</p>
+            <p>Are you sure you want to permantly delete this department?</p>
         </div>
 
         <div slot="footer">
-            <form method="post" action="{{ route('dashboard.users.purge', {}, false) }}">
+            <form method="post" action="{{ route('dashboard.departments.purge', {}, false) }}">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" v-model="modelId" />
                     
@@ -143,16 +119,16 @@
         <h3 slot="header">Confirm action</h3>
         
         <div slot="body">
-            <p>Are you sure you want to restore this user account?</p>
+            <p>Are you sure you want to restore this department?</p>
         </div>
 
         <div slot="footer">
-            <form method="post" action="{{ route('dashboard.users.restore', {}, false) }}">
+            <form method="post" action="{{ route('dashboard.departments.restore', {}, false) }}">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" v-model="modelId" />
                     
                 <button type="button" class="button is-light" @click="modals.confirm2 = false">Cancel</button>
-                <button type="submit" class="button is-info">Restore User</button>
+                <button type="submit" class="button is-info">Restore Department</button>
             </form>
         </div>
     </modal>

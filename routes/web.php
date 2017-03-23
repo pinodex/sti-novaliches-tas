@@ -26,7 +26,7 @@ Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthCo
 
 Route::get('/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
 
-Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.', 'middleware' => 'auth'], function () {
+Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => 'auth'], function () {
 
     Route::get('/', 'MainController@index')->name('index');
 
@@ -51,6 +51,18 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'd', 'as' => 'dashboard.',
         Route::match(['get', 'post'], '/{model}/delete/confirm', 'GroupsController@deleteConfirm')->name('delete.confirm');
         Route::post('/restore', 'GroupsController@restore')->name('restore');
         Route::post('/purge', 'GroupsController@purge')->name('purge');
+    });
+
+    // DepartmentsController
+    Route::group(['prefix' => 'departments', 'as' => 'departments.', 'middleware' => 'can:manage_departments'], function () {
+        Route::get('/', 'DepartmentsController@index')->name('index');
+        Route::get('/deleted', 'DepartmentsController@deleted')->name('deleted');
+        Route::match(['get', 'post'], '/add', 'DepartmentsController@edit')->name('add');
+        Route::match(['get', 'post'], '/{model}/edit', 'DepartmentsController@edit')->name('edit');
+        Route::match(['get', 'post'], '/{model}/delete', 'DepartmentsController@delete')->name('delete');
+        Route::match(['get', 'post'], '/{model}/delete/confirm', 'DepartmentsController@deleteConfirm')->name('delete.confirm');
+        Route::post('/restore', 'DepartmentsController@restore')->name('restore');
+        Route::post('/purge', 'DepartmentsController@purge')->name('purge');
     });
 });
 

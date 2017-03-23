@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditUserForm;
 use App\Models\User;
@@ -19,13 +20,6 @@ use App\Models\Group;
 
 class UsersController extends Controller
 {
-    protected $form;
-
-    public function __construct()
-    {
-        $this->form = new EditUserForm();
-    }
-
     public function index(Request $request)
     {
         $users = User::with('group');
@@ -42,9 +36,17 @@ class UsersController extends Controller
         }
 
         if ($searchGroup = $request->query->get('group')) {
-            if ($searchGroup != 'all') {
-                $users->where('group_id', $searchGroup);
-            }
+            $users->where(function (Builder $query) use ($searchGroup) {
+                if ($searchGroup == 'unassigned') {
+                    $query->whereIn('group_id', [null, 0]);
+
+                    return;
+                }
+
+                if ($searchGroup != 'all') {
+                    $query->where('group_id', $searchGroup);
+                }
+            });
         }
 
         return view('dashboard.users.index', [
@@ -65,10 +67,11 @@ class UsersController extends Controller
     {
         $editMode = $model->id !== null;
 
-        $this->form->setModel($model);
+        $model->load('departments');
 
-        $form = $this->form->getForm();
-        $form->handleRequest($request);
+        $form = with(new EditUserForm($model))
+            ->getForm()
+            ->handleRequest($request);
 
         if ($form->isValid()) {
             $data = $form->getData();
@@ -78,6 +81,8 @@ class UsersController extends Controller
             }
 
             $model->fill($data);
+            $model->departments()->sync($data['departments']);
+
             $model->save();
 
             return redirect()->route('dashboard.users.index')

@@ -35,13 +35,17 @@ class Form
      * @param array $data Default form data values
      * @param array $options Form options
      */
-    public function __construct(array $options = [])
+    public function __construct(Model $model = null, array $options = [])
     {
         $options['allow_extra_fields'] = true;
         
         $this->builder = app('form.factory')->createNamedBuilder(
             null, Type\FormType::class, null, $options
         );
+
+        if ($model) {
+            $this->setModel($model);
+        }
 
         $this->create();
     }
@@ -58,7 +62,6 @@ class Form
         $this->model = $model;
 
         $this->setData($model->toArray());
-        $this->create();
 
         return $this;
     }

@@ -14,14 +14,26 @@ namespace App\Http\Forms;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Extensions\Constraints as CustomAssert;
+use App\Models\Department;
 use App\Models\Group;
 use App\Models\User;
 
 class EditUserForm extends Form
 {
+    public function setData($data)
+    {
+        if (!array_key_exists('departments', $data)) {
+            return parent::setData($data);
+        }
+
+        $data['departments'] = array_column($data['departments'], 'id');
+        return parent::setData($data);
+    }
+
     public function create()
     {
         $groups = Group::all();
+        $departments = Department::all();
 
         $this->add('name', Type\TextType::class, [
             'attr' => [
@@ -61,6 +73,12 @@ class EditUserForm extends Form
 
         $this->add('group_id', Type\ChoiceType::class, [
             'choices'   => $this->toChoices($groups, true)
+        ]);
+
+        $this->add('departments', Type\ChoiceType::class, [
+            'choices'   => $this->toChoices($departments),
+            'multiple'  => true,
+            'required'  => false
         ]);
     }
 }

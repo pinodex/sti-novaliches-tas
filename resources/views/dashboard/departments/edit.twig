@@ -2,12 +2,12 @@
 
 {% form_theme form '/layouts/bulma.twig' %}
 
-{% set page_title = 'Edit Group' %}
-{% set active_menu = 'groups' %}
+{% set page_title = 'Edit Department' %}
+{% set active_menu = 'departments' %}
 
 {% if not model.id %}
-    {% set page_title = 'Add Group' %}
-    {% set active_menu = 'groups.add' %}
+    {% set page_title = 'Add Department' %}
+    {% set active_menu = 'departments.add' %}
 {% endif %} 
 
 {% block subcontent %}
@@ -24,7 +24,7 @@
                             {% if model.id %}
                                 <p class="control">
                                     {% if model.users|length > 0 %}
-                                        <a class="button is-danger is-outlined" href="{{ route('dashboard.groups.delete.confirm', { model: model }, false) }}">
+                                        <a class="button is-danger is-outlined" href="{{ route('dashboard.departments.delete.confirm', { model: model }, false) }}">
                                             <i class="fa fa-trash"></i> Delete
                                         </a>
                                     {% else %}
@@ -49,15 +49,15 @@
         <h3 slot="header">Confirm action</h3>
         
         <div slot="body">
-            <p>Are you sure you want to delete this group?</p>
+            <p>Are you sure you want to delete this department?</p>
         </div>
 
         <div slot="footer">
-            <form method="post" action="{{ route('dashboard.groups.delete', { model: model }, false) }}">
+            <form method="post" action="{{ route('dashboard.departments.delete', { model: model }, false) }}">
                 {{ csrf_field() }}
                     
                 <button type="button" class="button is-light" @click="modals.confirm = false">Cancel</button>
-                <button type="submit" class="button is-danger"><i class="fa fa-trash-o"></i> Delete Group</button>
+                <button type="submit" class="button is-danger"><i class="fa fa-trash-o"></i> Delete Department</button>
             </form>
         </div>
     </modal>

@@ -29,14 +29,18 @@
 {%- endblock form_widget_simple %}
 
 {%- block choice_widget_collapsed -%}
-    {%- set size_class = '' -%}
+    {%- set class = '' -%}
 
     {%- for size in ['is-small', 'is-medium', 'is-large'] if size in form.vars.attr.class|default('') -%}
-        {%- set size_class = size -%}
+        {%- set class = size -%}
     {%- endfor -%}
+
+    {%- if form.vars.multiple -%}
+        {%- set class = class ~ ' multiple' -%}
+    {%- endif %}
     
     <p {{ block('form_widget_container_attributes') }}>
-        <span class="{{ ('select ' ~ size_class)|trim }}">
+        <span class="{{ ('select ' ~ class)|trim }}">
             {{- parent() -}}
         </span>
         {{- block('form_errors') -}}

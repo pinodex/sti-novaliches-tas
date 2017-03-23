@@ -12,7 +12,7 @@
     <div class="columns">
         <div class="column is-8">
             {% if trash %}
-                <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
+                <div class="notification is-info is-small">This page shows the deleted groups. You can restore groups or delete them permanently.</div>
             {% endif %}
 
             <table class="table">
@@ -28,7 +28,7 @@
                         <tr>
                             <td>{{ item.name }}</td>
                             <td>
-                                <a href="{{ route('dashboard.users.index', { group: item.id }, false) }}">{{ item.users|length }}</a>
+                                <a href="{{ route('dashboard.users.index', { group: item.id }, false) }}">{{ item.users_count }}</a>
                             </td>
                             <td>
                                 {% if trash %}
@@ -126,7 +126,7 @@
                 <input type="hidden" name="id" v-model="modelId" />
                     
                 <button type="button" class="button is-light" @click="modals.confirm2 = false">Cancel</button>
-                <button type="submit" class="button is-info">Restore User</button>
+                <button type="submit" class="button is-info">Restore Group</button>
             </form>
         </div>
     </modal>

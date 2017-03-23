@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Group::class);
     }
+
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'users_departments', 'department_id', 'user_id');
+    }
 }

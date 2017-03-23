@@ -14,30 +14,30 @@ namespace App\Http\Controllers\Dashboard;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Forms\EditGroupForm;
-use App\Http\Forms\DeleteGroupConfirmForm;
-use App\Models\Group;
+use App\Http\Forms\EditDepartmentForm;
+use App\Http\Forms\DeleteDepartmentConfirmForm;
+use App\Models\Department;
 
-class GroupsController extends Controller
+class DepartmentsController extends Controller
 {
     public function index(Request $request)
     {
-        $groups = Group::withCount('users');
+        $departments = Department::with('head');
 
         $showTrashed = $request->query->get('show') == 'deleted';
 
         if ($showTrashed) {
-            $groups->onlyTrashed();
+            $departments->onlyTrashed();
         }
 
         if ($searchName = $request->query->get('name')) {
-            $groups->where('name', 'LIKE', '%' . $searchName . '%');
+            $departments->where('name', 'LIKE', '%' . $searchName . '%');
         }
 
-        return view('dashboard.groups.index', [
-            'result' => $groups->paginate(50),
-            'groups' => $groups,
-            'trash'  => $showTrashed
+        return view('dashboard.departments.index', [
+            'result'        => $departments->paginate(50),
+            'departments'   => $departments,
+            'trash'         => $showTrashed
         ]);
     }
 
@@ -48,12 +48,11 @@ class GroupsController extends Controller
         return $this->index($request);
     }
 
-    public function edit(Request $request, Group $model)
+    public function edit(Request $request, Department $model)
     {
         $editMode = $model->id !== null;
 
-        $form = with(new EditGroupForm)
-            ->setModel($model)
+        $form = with(new EditDepartmentForm($model))
             ->getForm()
             ->handleRequest($request);
 
@@ -63,32 +62,32 @@ class GroupsController extends Controller
             $model->fill($data);
             $model->save();
 
-            return redirect()->route('dashboard.groups.index')
+            return redirect()->route('dashboard.departments.index')
                 ->with('message', ['success',
                     $editMode ? __('group.edited', ['name' => $model->name]) :
                         __('group.added', ['name' => $model->name])
                 ]);
         }
 
-        return view('dashboard.groups.edit', [
+        return view('dashboard.departments.edit', [
             'form'  => $form->createView(),
             'model' => $model
         ]);
     }
 
-    public function delete(Request $request, Group $model)
+    public function delete(Request $request, Department $model)
     {
         if ($model->users->count() > 0) {
-            return redirect()->route('dashboard.groups.delete.confirm', ['model' => $model]);
+            return redirect()->route('dashboard.departments.delete.confirm', ['model' => $model]);
         }
 
         $model->delete();
 
-        return redirect()->route('dashboard.groups.index')
+        return redirect()->route('dashboard.departments.index')
             ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
     }
 
-    public function deleteConfirm(Request $request, Group $model)
+    public function deleteConfirm(Request $request, Department $model)
     {
         $model->load('users');
 
@@ -119,11 +118,11 @@ class GroupsController extends Controller
                 $model->delete();
             });
 
-            return redirect()->route('dashboard.groups.index')
+            return redirect()->route('dashboard.departments.index')
                 ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
         }
 
-        return view('dashboard.groups.confirm', [
+        return view('dashboard.departments.confirm', [
             'model' => $model,
             'form'  => $form->createView()
         ]);
@@ -132,32 +131,32 @@ class GroupsController extends Controller
     public function restore(Request $request)
     {
         $id = $request->request->get('id');
-        $model = Group::onlyTrashed()->find($id);
+        $model = Department::onlyTrashed()->find($id);
 
         if (!$model) {
-            return redirect()->route('dashboard.groups.index')
+            return redirect()->route('dashboard.departments.index')
                 ->with('message', ['warning', __('group.not_found')]);
         }
 
         $model->restore();
 
-        return redirect()->route('dashboard.groups.index')
+        return redirect()->route('dashboard.departments.index')
             ->with('message', ['success', __('group.restored', ['name' => $model->name])]);
     }
 
     public function purge(Request $request)
     {
         $id = $request->request->get('id');
-        $model = Group::onlyTrashed()->find($id);
+        $model = Department::onlyTrashed()->find($id);
 
         if (!$model) {
-            return redirect()->route('dashboard.groups.index')
+            return redirect()->route('dashboard.departments.index')
                 ->with('message', ['warning', __('group.not_found')]);
         }
 
         $model->forceDelete();
 
-        return redirect()->route('dashboard.groups.index')
+        return redirect()->route('dashboard.departments.index')
             ->with('message', ['success', __('group.purged', ['name' => $model->name])]);
     }
 }
