@@ -1,0 +1,130 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Users' %}
+{% set active_menu = 'users' %}
+
+{% if trash %}
+    {% set page_title = 'Deleted Users' %}
+    {% set active_menu = 'users.deleted' %}
+{% endif %}
+
+{% block subcontent %}
+    <div class="columns page-heading">
+        <div class="column">
+            <h1 class="heading">View User</h1>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column is-4">
+            <div class="card">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">{{ user.name }}</p>
+                            <p class="subtitle is-6">@{{ user.username }}</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        {% if user.department %}
+                            <p><em>Head of <strong>{{ user.department.name }}</strong> department.</em></p>
+                        {% endif %}
+
+                        <div class="info-set">
+                            <div class="info">
+                                <p class="title">Group</p>
+                                <p class="value">{{ user.group ? user.group.name : 'Unassigned' }}</p>
+                            </div>
+
+                            <div class="info">
+                                <p class="title">Departments</p>
+                                <p class="value">
+                                    {% if user.departments|length > 0 %}
+                                        {% for department in user.departments %}
+                                            {{ department.name }}<br />
+                                        {% endfor %}
+                                    {% else %}
+                                        <em>None</em>
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                            <div class="info">
+                                <p class="title">Last login on</p>
+                                <p class="value">{{ user.last_login_at ? user.last_login_at|date('F d, Y h:i A') : 'None recorded' }}</p>
+                            </div>
+
+                            <div class="info">
+                                <p class="title">Created on</p>
+                                <p class="value">{{ user.created_at ? user.created_at|date('F d, Y h:i A') : 'N/A' }}</p>
+                            </div>
+
+                            <div class="info">
+                                <p class="title">Updated on</p>
+                                <p class="value">{{ user.updated_at ? user.updated_at|date('F d, Y h:i A') : 'N/A' }}</p>
+                            </div>
+                        </div>
+
+                        {% if user.profile %}
+                            <hr />
+
+                            <div class="info-set">
+                                <div class="info">
+                                    <p class="title">Alloted leaves</p>
+                                    <p class="value">{{ user.profile.alloted_leaves }}</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column is-8">
+            <div class="panel">
+                <div class="panel-heading is-small">Request History</div>
+                <div class="box is-paddingless">
+                    <table class="table is-marginless">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Date &amp; Time</th>
+                                <th>Recipient</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                            </tr>
+
+                            <tr>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                            </tr>
+
+                            <tr>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                            </tr>
+
+                            <tr>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                                <td>Test</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

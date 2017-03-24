@@ -94,6 +94,10 @@
 
         printDocument: function() {
             window.print();
+        },
+
+        location: function(url) {
+            window.location = url;
         }
     };
 

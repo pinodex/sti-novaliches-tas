@@ -189,6 +189,16 @@ button .fa,
     td, th {
         vertical-align: middle;
     }
+
+    tr.clickable {
+        cursor: pointer;
+
+        &:hover,
+        &:hover .title,
+        &:hover .subtitle {
+            color: hsl(217, 71%,  53%);
+        }
+    }
 }
 
 .columns {
@@ -214,7 +224,7 @@ button .fa,
 }
 
 .page-heading {
-    background: #fff;
+    background: #fff !important;
     border-bottom: 1px solid #ccc;
     margin-bottom: 0 !important;
 
@@ -250,7 +260,36 @@ button .fa,
 
     .subtitle {
         font-size: 0.8rem;
-        font-weight: normal;
+    }
+}
+
+.card .media:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+.title,
+.subtitle {
+    font-weight: 400;
+}
+
+.info-set {
+    .title {
+        font-size: 14px;
+        margin-bottom: 0;
+        color: #666;
+    }
+
+    .title:not(:last-child) {
+        margin-bottom: 0;
+    }
+
+    .value {
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .info + .info {
+        margin-top: 15px;
     }
 }
 

@@ -63,6 +63,15 @@ class UsersController extends Controller
         return $this->index($request);
     }
 
+    public function view(Request $request, User $model)
+    {
+        $model->load(['group', 'department', 'departments', 'profile']);
+
+        return view('dashboard.users.view', [
+            'user'  => $model
+        ]);
+    }
+
     public function edit(Request $request, User $model)
     {
         $editMode = $model->id !== null;

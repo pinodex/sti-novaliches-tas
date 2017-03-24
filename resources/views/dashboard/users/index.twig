@@ -21,15 +21,19 @@
                         <th>Name</th>
                         <th>Group</th>
                         <th>Last Login</th>
-                        <th class="is-fit">Action</th>
+                        {% if trash %}
+                            <th class="is-fit">Actions</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody class="user-list">
                     {% for item in result %}
-                        <tr>
+                        <tr class="clickable" @click="location('{{ route('dashboard.users.view', { model: item }, false) }}')">
                             <td>
-                                <h1 class="title">{{ item.name }}</h1>
-                                <h2 class="subtitle">@{{ item.username }}</h2>
+                                <a href="{{ route('dashboard.users.view', { model: item }, false) }}">
+                                    <h1 class="title">{{ item.name }}</h1>
+                                    <h2 class="subtitle">@{{ item.username }}</h2>
+                                </a>
                             </td>
                             {% if item.group %}
                                 <td>{{ item.group.name }}</td>
@@ -37,8 +41,8 @@
                                 <td><em>Unassigned</em></td>
                             {% endif %}
                             <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
-                            <td>
-                                {% if trash %}
+                            {% if trash %}
+                                <td @click.stop>
                                     <div class="field is-grouped">
                                         <p class="control">
                                             <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true; setFormId({{ item.id }})">Restore</button>
@@ -50,12 +54,8 @@
                                             </button>
                                         </p>
                                     </div>
-                                {% else %}
-                                    <a href="{{ route('dashboard.users.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
-                                        <i class="fa fa-pencil-square-o is-marginless"></i>
-                                    </a>
-                                {% endif %}
-                            </td>
+                                </td>
+                            {% endif %}
                         </tr>
                     {% else %}
                         <tr>

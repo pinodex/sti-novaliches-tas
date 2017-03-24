@@ -59,6 +59,11 @@ class User extends Authenticatable
         }
     }
 
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'id');
+    }
+
     public function group()
     {
         return $this->belongsTo(Group::class);
@@ -67,5 +72,10 @@ class User extends Authenticatable
     public function departments()
     {
         return $this->belongsToMany(Department::class, 'users_departments', 'department_id', 'user_id');
+    }
+
+    public function department()
+    {
+        return $this->hasOne(Department::class, 'head_id');
     }
 }

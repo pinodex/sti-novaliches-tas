@@ -159,6 +159,12 @@ button .fa,
 .table td, .table th {
   vertical-align: middle;
 }
+.table tr.clickable {
+  cursor: pointer;
+}
+.table tr.clickable:hover, .table tr.clickable:hover .title, .table tr.clickable:hover .subtitle {
+  color: #3273dc;
+}
 
 .columns {
   margin: 0;
@@ -180,7 +186,7 @@ button .fa,
 }
 
 .page-heading {
-  background: #fff;
+  background: #fff !important;
   border-bottom: 1px solid #ccc;
   margin-bottom: 0 !important;
 }
@@ -210,7 +216,31 @@ button .fa,
 }
 .user-list .subtitle {
   font-size: 0.8rem;
-  font-weight: normal;
+}
+
+.card .media:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.title,
+.subtitle {
+  font-weight: 400;
+}
+
+.info-set .title {
+  font-size: 14px;
+  margin-bottom: 0;
+  color: #666;
+}
+.info-set .title:not(:last-child) {
+  margin-bottom: 0;
+}
+.info-set .value {
+  font-size: 16px;
+  font-weight: 500;
+}
+.info-set .info + .info {
+  margin-top: 15px;
 }
 
 .modal-mask {
