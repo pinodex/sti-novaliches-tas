@@ -20,9 +20,10 @@ use App\Models\User;
 class EditGroupForm extends Form
 {
     protected $permissions = [
-        'All'               => '*',
-        'Can Manage Groups' => 'manage_groups',
-        'Can Manage Users'  => 'manage_users'
+        'All'                       => '*',
+        'Can Manage Groups'         => 'manage_groups',
+        'Can Manage Users'          => 'manage_users',
+        'Can Manage Leave Settings' => 'manage_leave'
     ];
 
     public function create()
