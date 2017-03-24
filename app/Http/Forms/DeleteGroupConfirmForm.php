@@ -16,38 +16,38 @@ use App\Models\Group;
 
 class DeleteGroupConfirmForm extends Form
 {
-	protected $group;
+    protected $group;
 
-	public function __construct(Group $group)
-	{
-		$this->group = $group;
+    public function __construct(Group $group)
+    {
+        $this->group = $group;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
     public function create()
     {
-    	$groups = Group::where('id', '!=', $this->group->id)->get();
+        $groups = Group::where('id', '!=', $this->group->id)->get();
 
-    	$this->add('action', Type\ChoiceType::class, [
-    		'label' 	=> ' ',
-    		
-    		'attr'		=> [
-    			'v-model' => 'groupDeleteAction'
-    		],
+        $this->add('action', Type\ChoiceType::class, [
+            'label'     => ' ',
+            
+            'attr'      => [
+                'v-model' => 'groupDeleteAction'
+            ],
 
-    		'choices' 	=> [
-    			'Move to other group' => 'move',
-    			'Delete users' => 'delete'
-    		]
-    	]);
+            'choices'   => [
+                'Move to other group' => 'move',
+                'Delete users' => 'delete'
+            ]
+        ]);
 
-    	$this->add('group', Type\ChoiceType::class, [
-    		'label'		=> 'Target group',
-    		'choices'	=> $this->toChoices($groups, true),
-    		'attr'		=> [
-    			':disabled' => 'groupDeleteAction != "move"',
-    		]
-    	]);
+        $this->add('group', Type\ChoiceType::class, [
+            'label'     => 'Target group',
+            'choices'   => $this->toChoices($groups, true),
+            'attr'      => [
+                ':disabled' => 'groupDeleteAction != "move"',
+            ]
+        ]);
     }
 }

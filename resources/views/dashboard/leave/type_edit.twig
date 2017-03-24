@@ -1,0 +1,31 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% form_theme form '/layouts/bulma.twig' %}
+
+{% set page_title = 'Edit Leave Type' %}
+{% set active_menu = 'leave' %}
+
+{% if not model.id %}
+    {% set page_title = 'Add Leave Type' %}
+    {% set active_menu = 'leave' %}
+{% endif %} 
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-4 is-offset-4">
+            <div class="panel">
+                <p class="panel-heading is-small">{{ page_title }}</p>
+
+                <div class="box is-clearfix">
+                    <form action="{{ app.request.getRequestUri() }}" method="POST">
+                        {{ form_widget(form) }}
+
+                        <p class="control">
+                            <button class="button is-primary" type="submit"><i class="fa fa-floppy-o"></i> Save</button>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

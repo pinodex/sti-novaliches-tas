@@ -16,22 +16,22 @@ use App\Models\Department;
 
 class DeleteDepartmentConfirmForm extends Form
 {
-	protected $department;
+    protected $department;
 
-	public function __construct(Department $department)
-	{
-		$this->department = $department;
+    public function __construct(Department $department)
+    {
+        $this->department = $department;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
     public function create()
     {
-    	$departments = Department::where('id', '!=', $this->department->id)->get();
+        $departments = Department::where('id', '!=', $this->department->id)->get();
 
-    	$this->add('department', Type\ChoiceType::class, [
-    		'label'		=> ' ',
-    		'choices'	=> $this->toChoices($departments, true)
-    	]);
+        $this->add('department', Type\ChoiceType::class, [
+            'label'     => ' ',
+            'choices'   => $this->toChoices($departments, true)
+        ]);
     }
 }

@@ -7,7 +7,14 @@
             
             list: [
                 { icon: 'home', identifier: 'home', route: 'dashboard.index', name: 'Home' },
-                { icon: 'envelope', identifier: 'requests', route: 'dashboard.index', name: 'Requests' }
+
+                {
+                    icon: 'envelope', identifier: 'requests', route: 'dashboard.requests.index', name: 'Requests',
+
+                    list: [
+                        { icon: 'user-circle-o', identifier: 'my', route: 'dashboard.requests.index', name: 'My Requests' },
+                    ]
+                }
             ]
         },
 
@@ -40,7 +47,9 @@
                         { icon: 'plus', identifier: 'add', route: 'dashboard.departments.add', name: 'Add Department' },
                         { icon: 'trash', identifier: 'deleted', route: 'dashboard.departments.deleted', name: 'Deleted Departments' }
                     ]
-                }
+                },
+
+                { icon: 'sticky-note', identifier: 'leave', route: 'dashboard.leave.index', name: 'Leave Settings' }
             ]  
         }
     ]

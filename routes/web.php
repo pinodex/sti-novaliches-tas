@@ -30,6 +30,10 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
 
     Route::get('/', 'MainController@index')->name('index');
 
+    Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
+        Route::get('/', 'RequestsController@index')->name('index');
+    });
+
     // UsersController
     Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => 'can:manage_users'], function () {
         Route::get('/', 'UsersController@index')->name('index');
@@ -64,6 +68,14 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::match(['get', 'post'], '/{model}/delete/confirm', 'DepartmentsController@deleteConfirm')->name('delete.confirm');
         Route::post('/restore', 'DepartmentsController@restore')->name('restore');
         Route::post('/purge', 'DepartmentsController@purge')->name('purge');
+    });
+
+    // LeaveController
+    Route::group(['prefix' => 'leave', 'as' => 'leave.', 'middleware' => 'can:manage_leave'], function () {
+        Route::get('/', 'LeaveController@index')->name('index');
+        Route::match(['get', 'post'], '/types/add', 'LeaveController@typeEdit')->name('type.add');
+        Route::match(['get', 'post'], '/types/{model}/edit', 'LeaveController@typeEdit')->name('type.edit');
+        Route::post('/types/delete', 'LeaveController@typeDelete')->name('type.delete');
     });
 });
 
