@@ -29,7 +29,17 @@ class EditDepartmentForm extends Form
         ]);
 
         $this->add('head_id', Type\ChoiceType::class, [
+            'label'     => 'Head',
             'choices'   => $this->toChoices($users, true)
+        ]);
+
+        $this->add('priority', Type\NumberType::class, [
+            'required'  => false
+        ]);
+
+        $this->add('is_global', Type\CheckboxType::class, [
+            'label'     => 'Global',
+            'required'  => false
         ]);
     }
 }

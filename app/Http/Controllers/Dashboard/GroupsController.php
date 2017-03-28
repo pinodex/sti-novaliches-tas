@@ -52,8 +52,7 @@ class GroupsController extends Controller
     {
         $editMode = $model->id !== null;
 
-        $form = with(new EditGroupForm)
-            ->setModel($model)
+        $form = with(new EditGroupForm($model))
             ->getForm()
             ->handleRequest($request);
 

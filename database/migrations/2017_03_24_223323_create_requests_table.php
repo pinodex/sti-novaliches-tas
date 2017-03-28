@@ -22,6 +22,7 @@ class CreateRequestsTable extends Migration
             $table->datetime('to_date');
             $table->integer('days');
             $table->text('reason');
+            $table->boolean('is_approved')->nullable()->default(null);
             $table->timestamps();
         });
     }

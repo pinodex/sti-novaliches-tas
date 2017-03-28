@@ -14,9 +14,12 @@ namespace App\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
+use App\Http\Forms\EditLeaveBalanceForm;
 use App\Http\Forms\EditUserForm;
 use App\Models\User;
 use App\Models\Group;
+use App\Models\LeaveType;
+use App\Models\LeaveBalance;
 
 class UsersController extends Controller
 {
@@ -65,7 +68,7 @@ class UsersController extends Controller
 
     public function view(Request $request, User $model)
     {
-        $model->load(['group', 'department', 'departments', 'profile']);
+        $model->load(['group', 'department', 'departments', 'leaveBalances', 'leaveBalances.leaveType']);
 
         return view('dashboard.users.view', [
             'user'  => $model
@@ -90,9 +93,9 @@ class UsersController extends Controller
             }
 
             $model->fill($data);
-            $model->departments()->sync($data['departments']);
-
             $model->save();
+            
+            $model->departments()->sync($data['departments']);
 
             return redirect()->route('dashboard.users.index')
                 ->with('message', ['success',
@@ -104,6 +107,57 @@ class UsersController extends Controller
         return view('dashboard.users.edit', [
             'form'  => $form->createView(),
             'model' => $model
+        ]);
+    }
+
+    public function balanceEdit(Request $request, User $model)
+    {
+        $model->load('leaveBalances');
+        $leaveTypes = LeaveType::all();
+
+        $form = with(new EditLeaveBalanceForm($model, $leaveTypes))
+            ->getForm()
+            ->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+
+            foreach ($data['leave'] as $key => $value) {
+                $query = LeaveBalance::where([
+                    'user_id'       => $model->id,
+                    'leave_type_id' => $key
+                ]);
+
+                if ($value == 0) {
+                    $query->delete();
+
+                    continue;
+                }
+
+                if ($query->count() > 0) {
+                    $query->update([
+                        'entitlement'   => $value
+                    ]);
+
+                    continue;
+                }
+                
+                LeaveBalance::insert([
+                    'user_id'       => $model->id,
+                    'leave_type_id' => $key,
+                    'entitlement'   => $value
+                ]);
+            }
+
+            return redirect()->route('dashboard.users.view', [
+                'model' => $model
+            ])->with('message', ['success', __('user.edited', ['name' => $model->name])]);
+        }
+
+        return view('dashboard.users.balance_edit', [
+            'user'  => $model,
+            'types' => $leaveTypes,
+            'form'  => $form->createView()
         ]);
     }
 

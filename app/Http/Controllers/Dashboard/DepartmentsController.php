@@ -59,7 +59,11 @@ class DepartmentsController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
-            Department::where('head_id', $data['head_id'])->update([
+            if ($data['priority'] == null) {
+                $data['priority'] = 0;
+            }
+
+            Department::where('head_id', $data['head_id'])->where('id', '!=', $model->id)->update([
                 'head_id' => null
             ]);
 

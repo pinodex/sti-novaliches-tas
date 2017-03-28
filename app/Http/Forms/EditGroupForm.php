@@ -21,6 +21,8 @@ class EditGroupForm extends Form
 {
     protected $permissions = [
         'All'                       => '*',
+        'Can Manage Requests'       => 'manage_requests',
+        'Can Submit Requests'       => 'submit_requests',
         'Can Manage Groups'         => 'manage_groups',
         'Can Manage Users'          => 'manage_users',
         'Can Manage Leave Settings' => 'manage_leave'

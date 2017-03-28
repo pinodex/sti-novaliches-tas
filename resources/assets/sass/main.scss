@@ -210,9 +210,45 @@ button .fa,
     width: 100%;
 }
 
+input[readonly] {
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    height: auto;
+    margin: 0;
+    font-weight: bold;
+}
+
+.datetime-widget {
+    .control {
+        display: inline-block;
+        width: 50%;
+
+        &:first-child .input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+        }
+
+        &:last-child .input {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+        }
+    }
+
+    &:hover .input {
+        border-color: #b5b5b5;
+    }
+}
+
 .panel {
-    .panel-heading.is-small {
-        font-size: 1.1em;
+    .panel-heading {
+        font-weight: 400;
+
+        &.is-small {
+            font-size: 1.1em;
+        }
     }
 
     & > .box {

@@ -59,9 +59,9 @@ class User extends Authenticatable
         }
     }
 
-    public function profile()
+    public function leaveBalances()
     {
-        return $this->hasOne(Profile::class, 'id');
+        return $this->hasMany(LeaveBalance::class);
     }
 
     public function group()
@@ -77,5 +77,10 @@ class User extends Authenticatable
     public function department()
     {
         return $this->hasOne(Department::class, 'head_id');
+    }
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class, 'requestor_id');
     }
 }

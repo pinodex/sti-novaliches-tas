@@ -12,7 +12,8 @@ class GroupsTableSeeder extends Seeder
     public function run()
     {
         DB::table('groups')->insert([
-            'name'          => 'Administrators'
+            'name'          => 'Administrator',
+            'permissions'   => '*'
         ]);
     }
 }

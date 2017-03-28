@@ -19,7 +19,7 @@ class Department extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'head_id'
+        'name', 'head_id', 'is_global', 'priority'
     ];
 
     public function head()
@@ -44,5 +44,15 @@ class Department extends Model
     public function setPermissionsAttribute(array $value)
     {
         $this->attributes['permissions'] = implode(',', $value);
+    }
+
+    public function getIsGlobalAttribute($value)
+    {
+        return $value == 1 ? true : false;
+    }
+
+    public function setIsGlobalAttribute($value)
+    {
+        $this->attributes['is_global'] = $value == 1 ? true : false;
     }
 }

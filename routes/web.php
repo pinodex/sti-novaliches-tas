@@ -32,18 +32,22 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
 
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
         Route::get('/', 'RequestsController@index')->name('index');
+        Route::get('/me', 'RequestsController@me')->name('me');
+        Route::get('/{model}', 'RequestsController@view')->name('view');
+        Route::match(['get', 'post'], '/create', 'RequestsController@create')->name('create');
     });
 
     // UsersController
     Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => 'can:manage_users'], function () {
         Route::get('/', 'UsersController@index')->name('index');
         Route::get('/deleted', 'UsersController@deleted')->name('deleted');
-        Route::get('/{model}', 'UsersController@view')->name('view');
         Route::match(['get', 'post'], '/add', 'UsersController@edit')->name('add');
         Route::match(['get', 'post'], '/{model}/edit', 'UsersController@edit')->name('edit');
+        Route::match(['get', 'post'], '/{model}/balance/edit', 'UsersController@balanceEdit')->name('balance.edit');
         Route::match(['get', 'post'], '/{model}/delete', 'UsersController@delete')->name('delete');
         Route::post('/restore', 'UsersController@restore')->name('restore');
         Route::post('/purge', 'UsersController@purge')->name('purge');
+        Route::get('/{model}', 'UsersController@view')->name('view');
     });
 
     // GroupsController

@@ -28,7 +28,25 @@
                         {% endif %}
 
                         <form action="{{ app.request.getRequestUri() }}" method="POST">
-                            {{ form_widget(form) }}
+                            {{ csrf_field() }}
+
+                            <div class="field">
+                                <p class="control has-icon">
+                                    <input class="input" type="text" name="username" placeholder="Username" autofocus />
+                                    <span class="icon">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="field">
+                                <p class="control has-icon">
+                                    <input class="input" type="password" name="password" placeholder="Password" />
+                                    <span class="icon">
+                                        <i class="fa fa-key"></i>
+                                    </span>
+                                </p>
+                            </div>
 
                             <div class="field">
                                 <button class="button is-primary is-pulled-right">

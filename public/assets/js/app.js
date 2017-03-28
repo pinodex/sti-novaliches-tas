@@ -66,6 +66,13 @@
         modelId: 0,
 
         groupDeleteAction: 'move',
+
+        request: {
+            type: 0,
+            days: 0,
+            balance: 0,
+            balances: window.balances ? balances : {}
+        },
         
         modals: {
             alert: true,

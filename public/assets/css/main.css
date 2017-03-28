@@ -175,6 +175,36 @@ button .fa,
   width: 100%;
 }
 
+input[readonly] {
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  height: auto;
+  margin: 0;
+  font-weight: bold;
+}
+
+.datetime-widget .control {
+  display: inline-block;
+  width: 50%;
+}
+.datetime-widget .control:first-child .input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+.datetime-widget .control:last-child .input {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: none;
+}
+.datetime-widget:hover .input {
+  border-color: #b5b5b5;
+}
+
+.panel .panel-heading {
+  font-weight: 400;
+}
 .panel .panel-heading.is-small {
   font-size: 1.1em;
 }

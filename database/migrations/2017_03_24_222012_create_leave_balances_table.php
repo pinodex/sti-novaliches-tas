@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProfilesTable extends Migration
+class CreateLeaveBalancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
-            $table->integer('id');
-            $table->integer('alloted_leaves')->default(0);
-            $table->timestamps();
+        Schema::create('leave_balances', function (Blueprint $table) {
+            $table->integer('user_id');
+            $table->integer('leave_type_id');
+            $table->integer('entitlement')->default(0);
+
+            $table->primary(['user_id', 'leave_type_id']);
         });
     }
 
@@ -27,6 +29,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('leave_balances');
     }
 }

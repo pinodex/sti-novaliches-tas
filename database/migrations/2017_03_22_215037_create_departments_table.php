@@ -17,6 +17,8 @@ class CreateDepartmentsTable extends Migration
             $table->increments('id');
             $table->integer('head_id')->nullable();
             $table->string('name');
+            $table->boolean('is_global')->default(false);
+            $table->integer('priority')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });
