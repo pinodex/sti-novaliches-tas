@@ -27,6 +27,11 @@
                             </div>
 
                             <div class="field">
+                                <p>Submission Date</p>
+                                <h2 class="subtitle">{{ model.created_at ? model.created_at|date('M d, Y h:i A') : 'N/A' }}</h2>
+                            </div>
+
+                            <div class="field">
                                 <p>Inclusive Days</p>
                                 <h2 class="subtitle">{{ model.from_date|date('m/d/Y h:i A') ~ ' - ' ~ model.to_date|date('m/d/Y h:i A') }}</h2>
                             </div>

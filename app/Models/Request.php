@@ -37,4 +37,19 @@ class Request extends Model
     {
     	return $this->belongsTo(LeaveType::class, 'type_id');
     }
+
+    /**
+     * Get requests for specified approver
+     *
+     * @param \App\Models\User $user Approver
+     * @return \Illuminate\Pagination\LengthAwarePaginator Paginated result
+     */
+    public static function getForApprover(User $user)
+    {
+        if ($user->isInGlobalDepartment()) {
+            return self::paginate(50);
+        }
+
+        return self::where('approver_id', $user->id)->paginate(50);
+    }
 }

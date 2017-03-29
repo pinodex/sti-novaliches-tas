@@ -33,8 +33,8 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
         Route::get('/', 'RequestsController@index')->name('index');
         Route::get('/me', 'RequestsController@me')->name('me');
-        Route::get('/{model}', 'RequestsController@view')->name('view');
         Route::match(['get', 'post'], '/create', 'RequestsController@create')->name('create');
+        Route::get('/{model}', 'RequestsController@view')->name('view');
     });
 
     // UsersController

@@ -13,6 +13,7 @@ namespace App\Http\Middleware;
 
 use Auth;
 use Closure;
+use App\Extensions\Acl;
 
 class AccessControl
 {
@@ -30,24 +31,10 @@ class AccessControl
         }
 
         $user = Auth::user();
+        $isAllowed = call_user_func_array([Acl::for($user), 'can'], explode(',', $args));
 
-        if ($user->group->permissions == null)
-        {
-            abort(403);
-        }
-
-        if (array_search('*', $user->group->permissions) !== false) {
+        if ($isAllowed) {
             return $next($request);
-        }
-
-        $requestedPermissions = explode(',', $args);
-
-        foreach ($requestedPermissions as $requestedPermission) {
-            foreach ($user->group->permissions as $allowedPermission) {
-                if (fnmatch($requestedPermission, $allowedPermission)) {
-                    return $next($request);
-                }
-            }
         }
 
         abort(403);

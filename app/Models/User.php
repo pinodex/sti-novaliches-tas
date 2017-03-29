@@ -83,4 +83,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Request::class, 'requestor_id');
     }
+
+    public function isInGlobalDepartment()
+    {
+        if ($this->department) {
+            return $this->department->is_global;
+        }
+
+        return false;
+    }
 }

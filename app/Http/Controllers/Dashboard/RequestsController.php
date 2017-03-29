@@ -15,6 +15,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\CreateRequestForm;
+use App\Extensions\Acl;
 use App\Models\LeaveBalance;
 use App\Models\Request as RequestModel;
 
@@ -27,7 +28,17 @@ class RequestsController extends Controller
 
     public function index()
     {
-        return view('dashboard.requests.index');
+        $user = Auth::user();
+         
+        if (!Acl::for($user)->can(Acl::MANAGE_REQUESTS)) {
+            return redirect()->route('dashboard.requests.me');
+        }
+
+        $requests = RequestModel::getForApprover($user);
+
+        return view('dashboard.requests.index', [
+            'requests'  => $requests
+        ]);
     }
 
     public function me()

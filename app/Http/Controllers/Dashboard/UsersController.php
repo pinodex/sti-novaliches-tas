@@ -68,7 +68,16 @@ class UsersController extends Controller
 
     public function view(Request $request, User $model)
     {
-        $model->load(['group', 'department', 'departments', 'leaveBalances', 'leaveBalances.leaveType']);
+        $model->load([
+            'group',
+            'department',
+            'departments',
+            'leaveBalances',
+            'leaveBalances.leaveType',
+            'requests',
+            'requests.approver',
+            'requests.type'
+        ]);
 
         return view('dashboard.users.view', [
             'user'  => $model

@@ -14,6 +14,7 @@ namespace App\Http\Forms;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Extensions\Constraints as CustomAssert;
+use App\Extensions\Acl;
 use App\Models\Group;
 use App\Models\User;
 
@@ -21,11 +22,11 @@ class EditGroupForm extends Form
 {
     protected $permissions = [
         'All'                       => '*',
-        'Can Manage Requests'       => 'manage_requests',
-        'Can Submit Requests'       => 'submit_requests',
-        'Can Manage Groups'         => 'manage_groups',
-        'Can Manage Users'          => 'manage_users',
-        'Can Manage Leave Settings' => 'manage_leave'
+        'Can Manage Requests'       => Acl::MANAGE_REQUESTS,
+        'Can Submit Requests'       => Acl::SUBMIT_REQUESTS,
+        'Can Manage Groups'         => Acl::MANAGE_GROUPS,
+        'Can Manage Users'          => Acl::MANAGE_USERS,
+        'Can Manage Leave Settings' => Acl::MANAGE_LEAVE
     ];
 
     public function create()
