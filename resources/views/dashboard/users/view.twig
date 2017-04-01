@@ -3,7 +3,7 @@
 {% set page_title = 'Users' %}
 {% set active_menu = 'users' %}
 
-{% if trash %}
+{% if trash is defined and trash %}
     {% set page_title = 'Deleted Users' %}
     {% set active_menu = 'users.deleted' %}
 {% endif %}

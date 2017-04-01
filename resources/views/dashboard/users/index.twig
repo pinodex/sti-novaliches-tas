@@ -10,10 +10,44 @@
 
 {% block subcontent %}
     <div class="columns">
-        <div class="column is-8">
+        <div class="column is-12">
             {% if trash %}
                 <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
             {% endif %}
+
+            <form action="{{ app.request.getRequestUri() }}">
+                <div class="field has-addons has-addons-right has-contents-below">
+                    <p class="control has-icon">
+                        <input class="input is-small" type="text" name="name" value="{{ input_get('name') }}" placeholder="Search by name&hellip;" />
+
+                        <span class="icon is-small">
+                            <i class="fa fa-user"></i>
+                        </span>
+                    </p>
+
+                    <p class="control">
+                        <span class="select is-small">
+                            <select name="group">
+                                <option value="all">All Groups</option>
+                                <option value="unassigned">Unassigned</option>
+                                {% for group in groups %}
+                                    {% if input_get('group') == group.id %}
+                                        <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                                    {% else %}
+                                        <option value="{{ group.id }}">{{ group.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </span>
+                    </p>
+
+                    <p class="control">
+                        <button type="submit" class="button is-primary is-small">
+                            <i class="fa fa-search is-marginless"></i>
+                        </button>
+                    </p>
+                </div>
+            </form>
 
             <table class="table">
                 <thead>
@@ -76,48 +110,6 @@
                     </span>
                 </div>
             </div>
-        </div>
-
-        <div class="column is-4">
-            <nav class="panel">
-                <p class="panel-heading is-small">Search</p>
-                
-                <div class="box">
-                    <form action="{{ app.request.getRequestUri() }}">
-                        <div class="field">
-                            <label class="label">Name</label>
-                            <p class="control">
-                                <input class="input" type="text" name="name" value="{{ input_get('name') }}" />
-                            </p>
-                        </div>
-
-                        <div class="field">
-                            <label class="label">Group</label>
-                            <p class="control">
-                                <span class="select">
-                                    <select name="group">
-                                        <option value="all">All Groups</option>
-                                        <option value="unassigned">Unassigned</option>
-                                        {% for group in groups %}
-                                            {% if input_get('group') == group.id %}
-                                                <option value="{{ group.id }}" selected>{{ group.name }}</option>
-                                            {% else %}
-                                                <option value="{{ group.id }}">{{ group.name }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </span>
-                            </p>
-                        </div>
-
-                        <div class="field is-clearfix">
-                            <button type="submit" class="button is-primary is-outlined is-pulled-right">
-                                <i class="fa fa-search"></i> Search
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </nav>
         </div>
     </div>
 

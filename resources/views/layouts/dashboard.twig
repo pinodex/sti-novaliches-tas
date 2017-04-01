@@ -60,10 +60,20 @@
 
 {% block content %}
     <nav class="nav has-shadow is-fixed-top">
-        <div class="container is-fluid">
+        <div class="container is-fluid top-nav-container">
             <div class="nav-left">
+                <div class="nav-item toggle-menu-button" @click="sidebarActive = !sidebarActive">
+                    <transition name="fade">
+                        <i class="fa fa-bars" v-show="!sidebarActive"></i>
+                    </transition>
+
+                    <transition name="slide-fade" :duration="{ enter: 1000, leave: 0 }">
+                        <i class="fa fa-chevron-left" v-show="sidebarActive"></i>
+                    </transition>
+                </div>
+
                 <a href="{{ route('index') }}" class="nav-item has-logo">
-                    <img src="/assets/img/logo-vertical.png" alt="Logo"> TAS Management
+                    <img src="/assets/img/logo-vertical.png" alt="Logo"> Employee Portal
                 </a>
                         
                 {% for item in nav %}
@@ -101,43 +111,60 @@
         </div>
     </nav>
 
-    <aside class="menu sidebar">
-        {% for item in menu %}
-            {% if item.header != null %}
-                <p class="menu-label">{{ item.header }}</p>
+    <div class="off-menu" :class="{ active: sidebarActive }">
+        <aside class="menu sidebar">
+            {% for item in menu %}
+                {% if item.header != null %}
+                    <p class="menu-label">{{ item.header }}</p>
+                {% endif %}
+
+                <ul class="menu-list">
+                    {% for listItem in item.list %}
+                        <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
+                            <a href="{{ route(listItem.route, {}, false) }}">
+                                <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
+                            </a>
+
+                            {% if listItem.list is defined and active_menu starts with listItem.identifier %}
+                                <ul>
+                                    {% for subItem in listItem.list %}
+                                        <li{{ active_menu == listItem.identifier ~ '.' ~ subItem.identifier ? ' class="is-active"' : '' }}>
+                                            <a href="{{ route(subItem.route, {}, false) }}">
+                                                <span class="icon"><i class="fa fa-{{ subItem.icon }}" aria-hidden="true"></i></span> {{ subItem.name }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </li>    
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </aside>
+
+        <div class="main-container">
+            {% if session_get('message') %}
+                <div class="notification is-{{ session_get('message')[0] }} is-main">
+                    {{ session_get('message')[1] }}
+                </div>
             {% endif %}
 
-            <ul class="menu-list">
-                {% for listItem in item.list %}
-                    <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
-                        <a href="{{ route(listItem.route, {}, false) }}">
-                            <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
-                        </a>
+            {% block pageheader %}{% endblock %}
 
-                        {% if listItem.list and active_menu starts with listItem.identifier %}
-                            <ul>
-                                {% for subItem in listItem.list %}
-                                    <li{{ active_menu == listItem.identifier ~ '.' ~ subItem.identifier ? ' class="is-active"' : '' }}>
-                                        <a href="{{ route(subItem.route, {}, false) }}">
-                                            <span class="icon"><i class="fa fa-{{ subItem.icon }}" aria-hidden="true"></i></span> {{ subItem.name }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </li>    
-                {% endfor %}
-            </ul>
-        {% endfor %}
-    </aside>
+            <div class="columns">
+                <div class="column is-9 is-paddingless">
+                    {% block subcontent %}{% endblock %}
+                </div>
 
-    <div class="main-container">
-        {% if session_get('message') %}
-            <div class="notification is-{{ session_get('message')[0] }} is-main">
-                {{ session_get('message')[1] }}
+                <div class="column is-3">
+                    <div class="panel">
+                        <div class="panel-heading is-small">Bulletin</div>
+                        <div class="box">
+                            <h2>Lorem ipsum</h2>
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% endif %}
-
-        {% block subcontent %}{% endblock %}
+        </div>
     </div>
 {% endblock %}

@@ -62,7 +62,7 @@ return [
             // (variables and or attributes/methods that do not exist) and
             // replace them with a null value. When set to true, Twig throws an exception instead.
             // default: false
-            'strict_variables' => false,
+            'strict_variables' => true,
 
             // If set to true, auto-escaping will be enabled by default for all templates.
             // default: 'html'

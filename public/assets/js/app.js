@@ -60,7 +60,7 @@
     }
 
     var appData = {
-        isNavActive: false,
+        sidebarActive: false,
         disableAction: false,
         paginationPage: 1,
         modelId: 0,
