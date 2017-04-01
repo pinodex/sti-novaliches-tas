@@ -62,6 +62,7 @@
     var appData = {
         sidebarActive: false,
         disableAction: false,
+        userExtraInfo: false,
         paginationPage: 1,
         modelId: 0,
 
