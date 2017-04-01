@@ -36,4 +36,16 @@
             </table>
         </div>
     </div>
+
+    <div class="columns">
+      	<div class="column is-3 is-offset-9">
+        	<span class="select">
+          		<select name="pages" @change="changePaginationPage" v-model="paginationPage">
+              		{% for i in 1..requests.lastPage %}
+						<option value="{{ i }}">Page {{ i }}</option>
+					{% endfor %}
+				</select>
+			</span>
+		</div>
+	</div>
 {% endblock %}
