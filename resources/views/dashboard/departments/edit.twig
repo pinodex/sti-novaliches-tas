@@ -7,39 +7,42 @@
 
 {% if not model.id %}
     {% set page_title = 'Add Department' %}
-    {% set active_menu = 'departments.add' %}
 {% endif %} 
 
 {% block subcontent %}
     <div class="columns">
-        <div class="column is-4 is-offset-4">
+        <div class="column is-12">
             <div class="panel">
                 <p class="panel-heading is-small">{{ page_title }}</p>
 
                 <div class="box is-clearfix">
-                    <form action="{{ app.request.getRequestUri() }}" method="POST">
-                        {{ form_widget(form) }}
+                    <div class="columns">
+                        <div class="column is-6 is-offset-3">
+                            <form action="{{ app.request.getRequestUri() }}" method="POST">
+                                {{ form_widget(form) }}
 
-                        <div class="field is-grouped is-grouped-right">
-                            {% if model.id %}
-                                <p class="control">
-                                    {% if model.users|length > 0 %}
-                                        <a class="button is-danger is-outlined" href="{{ route('dashboard.departments.delete.confirm', { model: model }, false) }}">
-                                            <i class="fa fa-trash"></i> Delete
-                                        </a>
-                                    {% else %}
-                                        <button class="button is-danger is-outlined" type="button" @click.prevent="modals.confirm = true">
-                                            <i class="fa fa-trash"></i> Delete
-                                        </button>
+                                <div class="field is-grouped is-grouped-right">
+                                    {% if model.id %}
+                                        <p class="control">
+                                            {% if model.users|length > 0 %}
+                                                <a class="button is-danger is-outlined" href="{{ route('dashboard.departments.delete.confirm', { model: model }, false) }}">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </a>
+                                            {% else %}
+                                                <button class="button is-danger is-outlined" type="button" @click.prevent="modals.confirm = true">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </button>
+                                            {% endif %}
+                                        </p>
                                     {% endif %}
-                                </p>
-                            {% endif %}
 
-                            <p class="control">
-                                <button class="button is-primary" type="submit"><i class="fa fa-floppy-o"></i> Save</button>
-                            </p>
+                                    <p class="control">
+                                        <button class="button is-primary" type="submit"><i class="fa fa-floppy-o"></i> Save</button>
+                                    </p>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

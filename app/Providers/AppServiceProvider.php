@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Bulletin;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+        $twig = app('twig');
+        $executed = false;
+
+        view()->composer('*', function ($view) use ($twig, &$executed) {
+            if ($executed) {
+                return;
+            }
+
+            $twig->addGlobal('bulletins', Bulletin::orderBy('created_at', 'DESC')->with('author')->get());
+            $executed = true;
+        });
     }
 
     /**

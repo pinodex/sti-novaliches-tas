@@ -139,8 +139,16 @@ nav.nav .toggle-menu-button .fa {
   border-radius: 5px;
 }
 
+small {
+  font-size: 12px;
+}
+
 .input, .textarea {
   box-shadow: none;
+}
+
+textarea, .textarea {
+  height: 300px;
 }
 
 label, .label {
@@ -199,6 +207,10 @@ button .fa,
   .columns .column.with-divider {
     border-left: 1px solid #eee;
   }
+}
+
+.level.is-small {
+  margin-bottom: 1rem;
 }
 
 .has-contents-below {

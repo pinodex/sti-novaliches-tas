@@ -24,6 +24,7 @@ class EditGroupForm extends Form
         'All'                       => '*',
         'Can Manage Requests'       => Acl::MANAGE_REQUESTS,
         'Can Submit Requests'       => Acl::SUBMIT_REQUESTS,
+        'Can Manage Bulletin'       => Acl::MANAGE_BULLETIN,
         'Can Manage Groups'         => Acl::MANAGE_GROUPS,
         'Can Manage Users'          => Acl::MANAGE_USERS,
         'Can Manage Leave Settings' => Acl::MANAGE_LEAVE

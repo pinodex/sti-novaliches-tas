@@ -15,39 +15,51 @@
                 <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
             {% endif %}
 
-            <form action="{{ app.request.getRequestUri() }}">
-                <div class="field has-addons has-addons-right has-contents-below">
-                    <p class="control has-icon">
-                        <input class="input is-small" type="text" name="name" value="{{ input_get('name') }}" placeholder="Search by name&hellip;" />
-
-                        <span class="icon is-small">
-                            <i class="fa fa-user"></i>
-                        </span>
-                    </p>
-
-                    <p class="control">
-                        <span class="select is-small">
-                            <select name="group">
-                                <option value="all">All Groups</option>
-                                <option value="unassigned">Unassigned</option>
-                                {% for group in groups %}
-                                    {% if input_get('group') == group.id %}
-                                        <option value="{{ group.id }}" selected>{{ group.name }}</option>
-                                    {% else %}
-                                        <option value="{{ group.id }}">{{ group.name }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                        </span>
-                    </p>
-
-                    <p class="control">
-                        <button type="submit" class="button is-primary is-small">
-                            <i class="fa fa-search is-marginless"></i>
-                        </button>
-                    </p>
+            <div class="level is-small">
+                <div class="level-left">
+                    <div class="level-item">
+                        <a href="{{ route('dashboard.users.add', {}, false) }}" class="button is-primary is-small">
+                            <i class="fa fa-plus"></i> Add User
+                        </a>
+                    </div>
                 </div>
-            </form>
+
+                <div class="level-right">
+                    <form action="{{ app.request.getRequestUri() }}" class="level-item">
+                        <div class="field has-addons is-small">
+                            <p class="control has-icon">
+                                <input class="input is-small" type="text" name="name" value="{{ input_get('name') }}" placeholder="Search by name&hellip;" />
+
+                                <span class="icon is-small">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </p>
+
+                            <p class="control">
+                                <span class="select is-small">
+                                    <select name="group">
+                                        <option value="all">All Groups</option>
+                                        <option value="unassigned">Unassigned</option>
+                                        {% for group in groups %}
+                                            {% if input_get('group') == group.id %}
+                                                <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                                            {% else %}
+                                                <option value="{{ group.id }}">{{ group.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </p>
+
+                            <p class="control">
+                                <button type="submit" class="button is-dark is-small">
+                                    <i class="fa fa-search is-marginless"></i>
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <table class="table">
                 <thead>
@@ -62,24 +74,22 @@
                 </thead>
                 <tbody class="user-list">
                     {% for item in result %}
-                        <tr class="clickable" @click="location('{{ route('dashboard.users.view', { model: item }, false) }}')">
-                            <td>
-                                <a href="{{ route('dashboard.users.view', { model: item }, false) }}">
+                        {% if trash %}
+                            <tr>
+                                <td>
                                     <h1 class="title">{{ item.name }}</h1>
                                     <h2 class="subtitle">@{{ item.username }}</h2>
-                                </a>
-                            </td>
-                            {% if item.group %}
-                                <td>{{ item.group.name }}</td>
-                            {% else %}
-                                <td><em>Unassigned</em></td>
-                            {% endif %}
-                            <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
-                            {% if trash %}
+                                </td>
+                                {% if item.group %}
+                                    <td>{{ item.group.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
                                 <td @click.stop>
                                     <div class="field is-grouped">
                                         <p class="control">
-                                            <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true; setFormId({{ item.id }})">Restore</button>
+                                            <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true;setFormId({{ item.id }})">Restore</button>
                                         </p>
 
                                         <p class="control">
@@ -89,8 +99,23 @@
                                         </p>
                                     </div>
                                 </td>
-                            {% endif %}
-                        </tr>
+                            </tr>
+                        {% else %}
+                            <tr class="clickable" @click="location('{{ route('dashboard.users.view', { model: item }, false) }}')">
+                                <td>
+                                    <a href="{{ route('dashboard.users.view', { model: item }, false) }}">
+                                        <h1 class="title">{{ item.name }}</h1>
+                                        <h2 class="subtitle">@{{ item.username }}</h2>
+                                    </a>
+                                </td>
+                                {% if item.group %}
+                                    <td>{{ item.group.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
+                            </tr>
+                        {% endif %}
                     {% else %}
                         <tr>
                             <td colspan="3">No results found</td>

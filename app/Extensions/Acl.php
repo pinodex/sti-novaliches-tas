@@ -19,6 +19,8 @@ class Acl
 
     const SUBMIT_REQUESTS = 'submit_requests';
 
+    const MANAGE_BULLETIN = 'manage_bulletin';
+
     const MANAGE_GROUPS = 'manage_groups';
 
     const MANAGE_USERS = 'manage_users';

@@ -174,8 +174,16 @@ nav.nav {
     }
 }
 
+small {
+    font-size: 12px;
+}
+
 .input, .textarea {
     box-shadow: none;
+}
+
+textarea, .textarea {
+    height: 300px;
 }
 
 label, .label {
@@ -243,6 +251,10 @@ button .fa,
             border-left: 1px solid #eee;
         }
     }
+}
+
+.level.is-small {
+    margin-bottom: 1rem;
 }
 
 .has-contents-below {

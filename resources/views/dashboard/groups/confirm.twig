@@ -7,36 +7,40 @@
 
 {% block subcontent %}
     <div class="columns">
-        <div class="column is-6 is-offset-3">
+        <div class="column is-12">
             <div class="panel">
                 <p class="panel-heading is-small">{{ page_title }}</p>
 
                 <div class="box is-clearfix">
-                    <p>The group <strong>{{ model.name }}</strong> is not empty. The following users will be affected:</p>
+                    <div class="columns">
+                        <div class="column is-6 is-offset-3">
+                            <p>The group <strong>{{ model.name }}</strong> is not empty. The following users will be affected:</p>
 
-                    <div class="content">
-                        <ul class="list">
-                            {% for user in model.users %}
-                                <li>{{ user.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
+                            <div class="content">
+                                <ul class="list">
+                                    {% for user in model.users %}
+                                        <li>{{ user.name }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
 
-                    <p>Please select an action for the affected users.</p>
+                            <p>Please select an action for the affected users.</p>
 
-                    <form action="{{ route('dashboard.groups.delete.confirm', { model: model }, false) }}" method="POST">
-                        {{ form_widget(form) }}
+                            <form action="{{ route('dashboard.groups.delete.confirm', { model: model }, false) }}" method="POST">
+                                {{ form_widget(form) }}
 
-                        <div class="field is-grouped is-grouped-right">
-                            <p class="control">
-                                <a href="{{ route('dashboard.groups.index', {}, false) }}" class="button is-outline">Cancel</a>
-                            </p>
+                                <div class="field is-grouped is-grouped-right">
+                                    <p class="control">
+                                        <a href="{{ route('dashboard.groups.index', {}, false) }}" class="button is-outline">Cancel</a>
+                                    </p>
 
-                            <p class="control">
-                                <button class="button is-danger" type="submit"><i class="fa fa-trash"></i> Confirm</button>
-                            </p>
+                                    <p class="control">
+                                        <button class="button is-danger" type="submit"><i class="fa fa-trash"></i> Confirm</button>
+                                    </p>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

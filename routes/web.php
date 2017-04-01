@@ -37,6 +37,13 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::get('/{model}', 'RequestsController@view')->name('view');
     });
 
+    Route::group(['prefix' => 'bulletins', 'as' => 'bulletins.'], function () {
+        Route::get('/', 'BulletinsController@index')->name('index');
+        Route::match(['get', 'post'], '/create', 'BulletinsController@edit')->name('create');
+        Route::match(['get', 'post'], '/{model}/edit', 'BulletinsController@edit')->name('edit');
+        Route::match(['get', 'post'], '/{model}/delete', 'BulletinsController@delete')->name('delete');
+    });
+
     // UsersController
     Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => 'can:manage_users'], function () {
         Route::get('/', 'UsersController@index')->name('index');

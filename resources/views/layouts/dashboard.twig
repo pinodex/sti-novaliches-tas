@@ -15,7 +15,9 @@
                         { icon: 'plus', identifier: 'create', route: 'dashboard.requests.create', name: 'Create Request' },
                         { icon: 'user-circle-o', identifier: 'me', route: 'dashboard.requests.me', name: 'My Requests' }
                     ]
-                }
+                },
+
+                { icon: 'sticky-note-o', identifier: 'bulletin', route: 'dashboard.bulletins.index', name: 'Bulletin' },
             ]
         },
 
@@ -27,7 +29,6 @@
                     icon: 'user', identifier: 'users', route: 'dashboard.users.index', name: 'Users',
                     
                     list: [
-                        { icon: 'plus', identifier: 'add', route: 'dashboard.users.add', name: 'Add User' },
                         { icon: 'trash', identifier: 'deleted', route: 'dashboard.users.deleted', name: 'Deleted Users' }
                     ]
                 },
@@ -36,7 +37,6 @@
                     icon: 'users', identifier: 'groups', route: 'dashboard.groups.index', name: 'Groups',
 
                     list: [
-                        { icon: 'plus', identifier: 'add', route: 'dashboard.groups.add', name: 'Add Group' },
                         { icon: 'trash', identifier: 'deleted', route: 'dashboard.groups.deleted', name: 'Deleted Groups' }
                     ]
                 },
@@ -45,7 +45,6 @@
                     icon: 'building', identifier: 'departments', route: 'dashboard.departments.index', name: 'Departments',
 
                     list: [
-                        { icon: 'plus', identifier: 'add', route: 'dashboard.departments.add', name: 'Add Department' },
                         { icon: 'trash', identifier: 'deleted', route: 'dashboard.departments.deleted', name: 'Deleted Departments' }
                     ]
                 },
@@ -57,6 +56,8 @@
 %}
 
 {% set active_tab = 'dashboard' %}
+
+{% set enable_bulletin = bulletins|length > 0 %}
 
 {% block content %}
     <nav class="nav has-shadow is-fixed-top">
@@ -152,26 +153,30 @@
             {% block pageheader %}{% endblock %}
 
             <div class="columns">
-                <div class="column is-9 is-paddingless">
+                <div class="column is-paddingless {{ enable_bulletin ? 'is-9' : 'is-12' }}">
                     {% block subcontent %}{% endblock %}
                 </div>
 
-                <div class="column is-3">
-                    {% block pageside %}{% endblock %}
-                    
-                    <div class="panel">
-                        <div class="panel-heading is-small">Bulletin</div>
-                        <div class="box">
-                            <h2 class="subtitle">Lorem ipsum</h2>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                        </div>
+                {% if enable_bulletin %}
+                    <div class="column is-3">
+                        {% block pageside %}{% endblock %}
+
+                        {% for bulletin in bulletins %}
+                            <article class="message">
+                                <div class="message-header">
+                                    <p class="is-4">{{ bulletin.title}}</p>
+                                </div>
+                                <div class="message-body">
+                                    {{ bulletin.contents|nl2br }}
+
+                                    <p>
+                                        <small>Posted by {{ bulletin.author ? bulletin.author.name : 'N/A' }} on {{ bulletin.created_at|date('M d, h:i a') }}</small>
+                                    </p>
+                                </div>
+                            </article>
+                        {% endfor %}
                     </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>
