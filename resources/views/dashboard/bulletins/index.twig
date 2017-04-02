@@ -28,7 +28,7 @@
                 <tbody>
                 	{% for item in bulletins %}
                 		<tr>
-                			<td>{{ item.title }}</td>
+                			<td>{{ item.title ? item.title : 'Untitled' }}</td>
                 			<td>
                 				{{ item.author ? item.author.name : 'N/A' }}
 

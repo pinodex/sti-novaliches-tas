@@ -21,7 +21,7 @@ class BulletinsController extends Controller
 {
     public function index()
     {
-        $bulletins = Bulletin::with('author', 'lastAuthor')->get();
+        $bulletins = Bulletin::orderBy('created_at', 'DESC')->with('author', 'lastAuthor')->get();
 
         return view('dashboard.bulletins.index', [
             'bulletins' => $bulletins

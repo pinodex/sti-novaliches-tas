@@ -24,7 +24,9 @@ class EditBulletinForm extends Form
         $this->add('title', Type\TextType::class, [
             'attr'  => [
                 'autofocus' => true
-            ]
+            ],
+
+            'required' => false
         ]);
 
         $this->add('contents', Type\TextareaType::class);

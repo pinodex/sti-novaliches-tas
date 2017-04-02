@@ -163,9 +163,11 @@
 
                         {% for bulletin in bulletins %}
                             <article class="message">
-                                <div class="message-header">
-                                    <p class="is-4">{{ bulletin.title}}</p>
-                                </div>
+                                {% if bulletin.title %}
+                                    <div class="message-header">
+                                        <p class="is-4">{{ bulletin.title}}</p>
+                                    </div>
+                                {% endif %}
                                 <div class="message-body">
                                     {{ bulletin.contents|nl2br }}
 
