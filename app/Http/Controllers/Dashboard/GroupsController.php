@@ -25,19 +25,23 @@ class GroupsController extends Controller
         $groups = Group::withCount('users');
 
         $showTrashed = $request->query->get('show') == 'deleted';
+        $isAll = true;
 
         if ($showTrashed) {
             $groups->onlyTrashed();
+            $isAll = false;
         }
 
         if ($searchName = $request->query->get('name')) {
             $groups->where('name', 'LIKE', '%' . $searchName . '%');
+            $isAll = false;
         }
 
         return view('dashboard.groups.index', [
             'result' => $groups->paginate(50),
             'groups' => $groups,
-            'trash'  => $showTrashed
+            'trash'  => $showTrashed,
+            'is_all' => $isAll
         ]);
     }
 

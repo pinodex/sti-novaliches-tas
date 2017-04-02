@@ -29,25 +29,28 @@ class UsersController extends Controller
         $groups = Group::all();
 
         $showTrashed = $request->query->get('show') == 'deleted';
+        $isAll = true;
 
         if ($showTrashed) {
             $users->onlyTrashed();
+            $isAll = false;
         }
 
         if ($searchName = $request->query->get('name')) {
             $users->where('name', 'LIKE', '%' . $searchName . '%');
+            $isAll = false;
         }
 
         if ($searchGroup = $request->query->get('group')) {
-            $users->where(function (Builder $query) use ($searchGroup) {
+            $users->where(function (Builder $query) use ($searchGroup, &$isAll) {
                 if ($searchGroup == 'unassigned') {
-                    $query->whereIn('group_id', [null, 0]);
-
-                    return;
+                    $isAll = false;
+                    return $query->whereIn('group_id', [null, 0]);
                 }
 
                 if ($searchGroup != 'all') {
-                    $query->where('group_id', $searchGroup);
+                    $isAll = false;
+                    return $query->where('group_id', $searchGroup);
                 }
             });
         }
@@ -55,7 +58,8 @@ class UsersController extends Controller
         return view('dashboard.users.index', [
             'result' => $users->paginate(50),
             'groups' => $groups,
-            'trash'  => $showTrashed
+            'trash'  => $showTrashed,
+            'is_all' => $isAll
         ]);
     }
 

@@ -11,22 +11,45 @@
 {% block subcontent %}
     <div class="columns">
         <div class="column is-12">
-            {% if trash %}
-                <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
-            {% endif %}
-
             <div class="level is-small">
                 <div class="level-left">
                     <div class="level-item">
-                        <a href="{{ route('dashboard.users.add', {}, false) }}" class="button is-primary is-small">
-                            <i class="fa fa-plus"></i> Add User
-                        </a>
+                        <div class="tabs is-small">
+                            <ul>
+                                <li class="{{ is_all ? 'is-active' : '' }}">
+                                    <a href="{{ route('dashboard.users.index', {}, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-user"></i></span>
+                                        <span>All</span>
+                                    </a>
+                                </li>
+                                <li class="{{ trash ? 'is-active' : '' }}">
+                                    <a href="{{ route('dashboard.users.deleted', {}, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-trash"></i></span>
+                                        <span>Deleted</span>
+                                    </a>
+                                </li>
+                                {% if not is_all and not trash %}
+                                    <li class="is-active">
+                                        <a href="#" @click.prevent>
+                                            <span class="icon is-small"><i class="fa fa-search"></i></span>
+                                            <span>Search Results</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
                 <div class="level-right">
                     <form action="{{ app.request.getRequestUri() }}" class="level-item">
                         <div class="field has-addons is-small">
+                            <p class="control">
+                                <a href="{{ route('dashboard.users.add', {}, false) }}" class="button is-primary is-small">
+                                    <i class="fa fa-plus"></i> Add User
+                                </a>
+                            </p>
+
                             <p class="control has-icon">
                                 <input class="input is-small" type="text" name="name" value="{{ input_get('name') }}" placeholder="Search by name&hellip;" />
 
@@ -60,6 +83,10 @@
                     </form>
                 </div>
             </div>
+
+            {% if trash %}
+                <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
+            {% endif %}
 
             <table class="table">
                 <thead>

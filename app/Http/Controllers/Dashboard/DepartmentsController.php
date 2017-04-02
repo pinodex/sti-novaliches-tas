@@ -25,19 +25,23 @@ class DepartmentsController extends Controller
         $departments = Department::with('head');
 
         $showTrashed = $request->query->get('show') == 'deleted';
+        $isAll = true;
 
         if ($showTrashed) {
             $departments->onlyTrashed();
+            $isAll = false;
         }
 
         if ($searchName = $request->query->get('name')) {
             $departments->where('name', 'LIKE', '%' . $searchName . '%');
+            $isAll = false;
         }
 
         return view('dashboard.departments.index', [
             'result'        => $departments->paginate(50),
             'departments'   => $departments,
-            'trash'         => $showTrashed
+            'trash'         => $showTrashed,
+            'is_all'        => $isAll
         ]);
     }
 

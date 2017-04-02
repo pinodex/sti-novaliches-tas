@@ -11,22 +11,45 @@
 {% block subcontent %}
     <div class="columns">
         <div class="column is-12">
-            {% if trash %}
-                <div class="notification is-info is-small">This page shows the deleted departments. You can restore groups or delete them permanently.</div>
-            {% endif %}
-
             <div class="level is-small">
                 <div class="level-left">
                     <div class="level-item">
-                        <a href="{{ route('dashboard.departments.add', {}, false) }}" class="button is-primary is-small">
-                            <i class="fa fa-plus"></i> Add Department
-                        </a>
+                        <div class="tabs is-small">
+                            <ul>
+                                <li class="{{ is_all ? 'is-active' : '' }}">
+                                    <a href="{{ route('dashboard.departments.index', {}, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-building"></i></span>
+                                        <span>All</span>
+                                    </a>
+                                </li>
+                                <li class="{{ trash ? 'is-active' : '' }}">
+                                    <a href="{{ route('dashboard.departments.deleted', {}, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-trash"></i></span>
+                                        <span>Deleted</span>
+                                    </a>
+                                </li>
+                                {% if not is_all and not trash %}
+                                    <li class="is-active">
+                                        <a href="#" @click.prevent>
+                                            <span class="icon is-small"><i class="fa fa-search"></i></span>
+                                            <span>Search Results</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
                 <div class="level-right">
                     <form action="{{ app.request.getRequestUri() }}" class="level-item">
                         <div class="field has-addons is-small">
+                            <p class="control">
+                                <a href="{{ route('dashboard.departments.add', {}, false) }}" class="button is-primary is-small">
+                                    <i class="fa fa-plus"></i> Add Department
+                                </a>
+                            </p>
+
                             <p class="control has-icon">
                                 <input class="input is-small" type="text" name="name" value="{{ input_get('name') }}" placeholder="Search by name&hellip;" />
 
@@ -45,11 +68,17 @@
                 </div>
             </div>
 
+            {% if trash %}
+                <div class="notification is-info is-small">This page shows the deleted departments. You can restore groups or delete them permanently.</div>
+            {% endif %}
+
             <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Head</th>
+                        {% if not trash %}
+                            <th>Head</th>
+                        {% endif %}
                         <th class="is-fit">Action</th>
                     </tr>
                 </thead>
@@ -57,10 +86,14 @@
                     {% for item in result %}
                         <tr>
                             <td>{{ item.name }}</td>
-                            {% if item.head %}
-                                <td>{{ item.head.name }}</td>
-                            {% else %}
-                                <td><em>Unassigned</em></td>
+                            {% if not trash %}
+                                {% if item.head %}
+                                    <td>
+                                        <a href="{{ route('dashboard.users.view', { model: item.head }, false) }}">{{ item.head.name }}</a>
+                                    </td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
                             {% endif %}
                             <td>
                                 {% if trash %}
