@@ -30,7 +30,7 @@ class UsersController extends Controller
 {
     public function index(Request $request)
     {
-        $users = User::with('group');
+        $users = User::with('group', 'picture');
         $groups = Group::all();
 
         $showTrashed = $request->query->get('show') == 'deleted';
@@ -275,7 +275,7 @@ class UsersController extends Controller
 
         $model->forceDelete();
 
-        return redirect()->route('dashboard.users.index')
+        return redirect()->route('dashboard.users.deleted')
             ->with('message', ['success', __('user.purged', ['name' => $model->name])]);
     }
 }
