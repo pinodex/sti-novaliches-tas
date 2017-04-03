@@ -181,6 +181,8 @@ return [
 
         Barryvdh\Form\ServiceProvider::class,
         TwigBridge\ServiceProvider::class,
+
+        Intervention\Image\ImageServiceProvider::class
     ],
 
     /*
@@ -232,6 +234,7 @@ return [
 
         'Twig' => TwigBridge\Facade\Twig::class,
         'FormFactory' => Barryvdh\Form\Facade\FormFactory::class,
+        'Image' => Intervention\Image\Facades\Image::class
     ],
 
 ];

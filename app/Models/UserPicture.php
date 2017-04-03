@@ -13,9 +13,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LeaveType extends Model
+class UserPicture extends Model
 {
-	protected $fillable = [
-        'name'
+	public $timestamps = false;
+
+    public $incrementing = false;
+
+    protected $primaryKey = 'user_id';
+
+    protected $fillable = [
+        'user_id', 'image_path', 'thumbnail_path'
     ];
 }

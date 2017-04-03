@@ -11,15 +11,20 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use Image;
+use Storage;
+use Ramsey\Uuid\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditLeaveBalanceForm;
+use App\Http\Forms\EditUserPictureForm;
 use App\Http\Forms\EditUserForm;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\LeaveType;
 use App\Models\LeaveBalance;
+use App\Models\UserPicture;
 
 class UsersController extends Controller
 {
@@ -120,6 +125,66 @@ class UsersController extends Controller
         return view('dashboard.users.edit', [
             'form'  => $form->createView(),
             'model' => $model
+        ]);
+    }
+
+    public function pictureEdit(Request $request, User $model)
+    {
+        $model->load('picture');
+
+        $form = with(new EditUserPictureForm)
+            ->getForm()
+            ->handleRequest($request);
+
+        if ($form->isValid()) {
+            $uploadedImage = $form['image']->getData();
+
+            try {
+                $image = Image::make($uploadedImage);
+            } catch (\Exception $e) {
+                return redirect()->route('dashboard.users.picture.edit', [
+                    'model' => $model
+                ])->with('message', ['danger', __('user.picture_error')]);
+            }
+
+            $uuid = Uuid::uuid4()->toString();
+            $storage = Storage::disk('public');
+
+            $imageTarget = sprintf('avatars/%s.image.jpg', $uuid);
+            $thumbTarget = sprintf('avatars/%s.thumb.jpg', $uuid);
+
+            $storage->put($imageTarget, $image->fit(512)->stream('jpg', 75));
+            $storage->put($thumbTarget, $image->fit(64)->stream('jpg', 50));
+
+            $userPicture = new UserPicture();
+            $previousImage = null;
+            $previousThumb = null;
+
+            if ($model->picture) {
+                $userPicture = $model->picture;
+                
+                $previousImage = $model->picture->image_path;
+                $previousThumb = $model->picture->thumbnail_path;
+            }
+
+            $userPicture->fill([
+                'user_id'           => $model->id,
+                'image_path'        => $imageTarget,
+                'thumbnail_path'    => $thumbTarget
+            ]);
+
+            $userPicture->save();
+
+            $storage->delete([$previousImage, $previousThumb]);
+
+            return redirect()->route('dashboard.users.view', [
+                'model' => $model
+            ])->with('message', ['success', __('user.picture_updated')]);
+        }
+
+        return view('dashboard.users.picture_edit', [
+            'model' => $model,
+            'form'  => $form->createView()
         ]);
     }
 

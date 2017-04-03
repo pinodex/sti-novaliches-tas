@@ -248,6 +248,10 @@ button .fa,
 .columns {
     margin: 0;
 
+    &:last-child {
+        margin-bottom: 0;
+    }
+
     @media (min-width: 768px) {
         .column.with-divider {
             border-left: 1px solid #eee;
@@ -347,6 +351,15 @@ input[readonly] {
 }
 
 .user-list {
+    .avatar-column {
+        width: 52px;
+    }
+
+    .avatar {
+        height: 32px;
+        width: 32px;
+    }
+
     .title {
         font-size: 1rem;
         font-weight: 600;
@@ -361,6 +374,34 @@ input[readonly] {
     box-shadow: none;
     border-radius: 0;
     margin-bottom: 0;
+    padding: 0;
+    overflow: hidden;
+
+    .picture {
+        display: block;
+        height: 64px;
+        width: 64px;
+
+        position: relative;
+
+        img {
+            height: 64px;
+            width: 64px;
+        }
+
+        .icon {
+            position: absolute;
+            height: 64px;
+            width: 64px;
+
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+
+        &:not(:hover) .icon {
+            display: none;
+        }
+    }
 
     .title {
         font-size: 20px;

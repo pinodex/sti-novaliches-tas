@@ -59,6 +59,11 @@ class User extends Authenticatable
         }
     }
 
+    public function picture()
+    {
+        return $this->hasOne(UserPicture::class);
+    }
+
     public function leaveBalances()
     {
         return $this->hasMany(LeaveBalance::class);

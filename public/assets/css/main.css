@@ -204,6 +204,9 @@ button .fa,
 .columns {
   margin: 0;
 }
+.columns:last-child {
+  margin-bottom: 0;
+}
 @media (min-width: 768px) {
   .columns .column.with-divider {
     border-left: 1px solid #eee;
@@ -288,6 +291,13 @@ input[readonly] {
   margin-top: 60px;
 }
 
+.user-list .avatar-column {
+  width: 52px;
+}
+.user-list .avatar {
+  height: 32px;
+  width: 32px;
+}
 .user-list .title {
   font-size: 1rem;
   font-weight: 600;
@@ -300,6 +310,28 @@ input[readonly] {
   box-shadow: none;
   border-radius: 0;
   margin-bottom: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.user-box .picture {
+  display: block;
+  height: 64px;
+  width: 64px;
+  position: relative;
+}
+.user-box .picture img {
+  height: 64px;
+  width: 64px;
+}
+.user-box .picture .icon {
+  position: absolute;
+  height: 64px;
+  width: 64px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+.user-box .picture:not(:hover) .icon {
+  display: none;
 }
 .user-box .title {
   font-size: 20px;

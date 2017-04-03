@@ -42,12 +42,27 @@ class EditUserForm extends Form
         ]);
         
         $this->add('username', Type\TextType::class, [
-            'constraints' => new CustomAssert\UniqueRecord([
-                'model'     => User::class,
-                'exclude'   => $this->model ? $this->model->username : null,
-                'row'       => 'username',
-                'message'   => 'Username already in use.'
-            ])
+            'constraints' => [
+                new CustomAssert\UniqueRecord([
+                    'model'     => User::class,
+                    'exclude'   => $this->model ? $this->model->username : null,
+                    'row'       => 'username',
+                    'message'   => 'Username already in use.'
+                ]),
+
+                new Assert\Regex([
+                    'pattern'   => '/^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$/',
+                    'match'     => true,
+                    'message'   => 'Username can only contain alphanumeric characters and dashes'
+                ]),
+
+                new Assert\Length([
+                    'min'           => 4,
+                    'max'           => 32,
+                    'minMessage'    => 'Username must contain at least 4 characters',
+                    'maxMessage'    => 'Username cannot be more than 32 characters'
+                ])
+            ]
         ]);
         
         $this->add('email', Type\EmailType::class, [

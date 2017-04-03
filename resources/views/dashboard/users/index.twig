@@ -88,9 +88,12 @@
                 <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
             {% endif %}
 
-            <table class="table">
+            <table class="table user-list">
                 <thead>
                     <tr>
+                        {% if not trash %}
+                            <th class="avatar-column">&nbsp;</th>
+                        {% endif %}
                         <th>Name</th>
                         <th>Group</th>
                         <th>Last Login</th>
@@ -99,7 +102,7 @@
                         {% endif %}
                     </tr>
                 </thead>
-                <tbody class="user-list">
+                <tbody>
                     {% for item in result %}
                         {% if trash %}
                             <tr>
@@ -129,6 +132,13 @@
                             </tr>
                         {% else %}
                             <tr class="clickable" @click="location('{{ route('dashboard.users.view', { model: item }, false) }}')">
+                                <td>
+                                    {% if item.picture %}
+                                        <img class="avatar" src="{{ '/storage/' ~ item.picture.thumbnail_path }}" alt="User Avatar" />
+                                    {% else %}
+                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <a href="{{ route('dashboard.users.view', { model: item }, false) }}">
                                         <h1 class="title">{{ item.name }}</h1>
