@@ -45,7 +45,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
     });
 
     // UsersController
-    Route::group(['prefix' => 'users', 'as' => 'users.', 'middleware' => 'can:manage_users'], function () {
+    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('/', 'UsersController@index')->name('index');
         Route::get('/deleted', 'UsersController@deleted')->name('deleted');
         Route::match(['get', 'post'], '/add', 'UsersController@edit')->name('add');
@@ -59,7 +59,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
     });
 
     // GroupsController
-    Route::group(['prefix' => 'groups', 'as' => 'groups.', 'middleware' => 'can:manage_groups'], function () {
+    Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
         Route::get('/', 'GroupsController@index')->name('index');
         Route::get('/deleted', 'GroupsController@deleted')->name('deleted');
         Route::match(['get', 'post'], '/add', 'GroupsController@edit')->name('add');
@@ -71,7 +71,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
     });
 
     // DepartmentsController
-    Route::group(['prefix' => 'departments', 'as' => 'departments.', 'middleware' => 'can:manage_departments'], function () {
+    Route::group(['prefix' => 'departments', 'as' => 'departments.'], function () {
         Route::get('/', 'DepartmentsController@index')->name('index');
         Route::get('/deleted', 'DepartmentsController@deleted')->name('deleted');
         Route::match(['get', 'post'], '/add', 'DepartmentsController@edit')->name('add');
@@ -83,11 +83,15 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
     });
 
     // LeaveController
-    Route::group(['prefix' => 'leave', 'as' => 'leave.', 'middleware' => 'can:manage_leave'], function () {
+    Route::group(['prefix' => 'leave', 'as' => 'leave.'], function () {
         Route::get('/', 'LeaveController@index')->name('index');
         Route::match(['get', 'post'], '/types/add', 'LeaveController@typeEdit')->name('type.add');
         Route::match(['get', 'post'], '/types/{model}/edit', 'LeaveController@typeEdit')->name('type.edit');
         Route::post('/types/delete', 'LeaveController@typeDelete')->name('type.delete');
+    });
+
+    Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+        Route::match(['get', 'post'], '/', 'SettingsController@index')->name('index');
     });
 });
 

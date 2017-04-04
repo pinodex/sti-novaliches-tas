@@ -1,6 +1,12 @@
 {% extends '/layouts/main.twig' %}
 
 {%
+    set nav = [
+    
+    ]
+%}
+
+{%
     set menu = [
         {
             header: null,
@@ -51,6 +57,14 @@
 
                 { icon: 'sticky-note', identifier: 'leave', route: 'dashboard.leave.index', name: 'Leave Settings' }
             ]  
+        },
+
+        {
+            header: 'Account',
+
+            list: [
+                { icon: 'cog', identifier: 'settings', route: 'dashboard.settings.index', name: 'Settings' }
+            ]  
         }
     ]
 %}
@@ -93,13 +107,15 @@
             </span>
                 
             <div class="nav-right nav-menu">
-                <p class="nav-item is-tab">
-                    <span class="icon is-small">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                    </span>
+                <a href="{{ route('dashboard.settings.index', {}, false) }}" class="nav-item is-tab">
+                    {% if auth_user().picture %}
+                        <img class="avatar" src="{{ '/storage/' ~ auth_user().picture.thumbnail_path }}" alt="User Avatar" />
+                    {% else %}
+                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
+                    {% endif %}
 
-                    Logged in as {{ auth_user().name }}
-                </p>
+                    <span>{{ auth_user().name }}</span>
+                </a>
 
                 <a href="{{ route('auth.logout', {}, false) }}" class="nav-item is-tab">
                     <span class="icon is-small">

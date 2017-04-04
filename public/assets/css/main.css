@@ -50,6 +50,10 @@ nav.nav .toggle-menu-button .fa {
   position: absolute;
   left: 17px;
 }
+nav.nav .avatar {
+  margin-right: 10px;
+  border-radius: 100%;
+}
 
 .sidebar.menu {
   position: fixed;

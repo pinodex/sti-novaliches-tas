@@ -38,6 +38,10 @@ class User extends Authenticatable
         'password'
     ];
 
+    protected $with = [
+        'picture'
+    ];
+
     public function getRememberToken()
     {
         return null;
