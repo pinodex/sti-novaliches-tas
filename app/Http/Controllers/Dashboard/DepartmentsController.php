@@ -17,9 +17,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Forms\EditDepartmentForm;
 use App\Http\Forms\DeleteDepartmentConfirmForm;
 use App\Models\Department;
+use App\Extensions\Acl;
 
 class DepartmentsController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::MANAGE_DEPARTMENTS);
+    }
+
     /**
      * Departments index page
      * 

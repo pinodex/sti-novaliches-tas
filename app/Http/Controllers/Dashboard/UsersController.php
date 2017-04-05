@@ -23,9 +23,15 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\LeaveType;
 use App\Models\UserPicture;
+use App\Extensions\Acl;
 
 class UsersController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::MANAGE_USERS);
+    }
+
     /**
      * Users index page
      * 

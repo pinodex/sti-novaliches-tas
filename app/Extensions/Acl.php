@@ -61,12 +61,20 @@ class Acl
     /**
      * Check if user has granted permissions
      * 
-     * @param array $permissions Permission names
+     * @param array|string $permissions Permission names
      * 
      * @return boolean
      */
     public function can($permissions)
     {
+        if (!is_array($permissions)) {
+            $permissions = [$permissions];
+        }
+        
+        if (array_search('*', $permissions) !== false) {
+            return true;
+        }
+
         if ($this->permissions == null) {
             return false;
         }

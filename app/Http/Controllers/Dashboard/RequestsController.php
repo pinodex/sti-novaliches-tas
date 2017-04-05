@@ -15,17 +15,11 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\CreateRequestForm;
-use App\Extensions\Acl;
 use App\Models\LeaveBalance;
 use App\Models\Request as RequestModel;
 
 class RequestsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('can:submit_requests')->only('create');
-    }
-
     /**
      * Requests index page
      * 

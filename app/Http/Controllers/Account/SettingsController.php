@@ -29,12 +29,17 @@ class SettingsController extends Controller
     {
         $user = Auth::user();
 
+        if ($user->require_password_change) {
+            session()->flash('message', ['warning', __('settings.password_change_required')]);
+        }
+
         $form = with(new SettingsForm($user))
             ->getForm()
             ->handleRequest($request);
 
         if ($form->isValid()) {
             $user->fill($form->getData());
+            $user->require_password_change = false;
             $user->save();
 
             return redirect()->route('dashboard.index')

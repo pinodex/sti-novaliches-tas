@@ -16,10 +16,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditGroupForm;
 use App\Http\Forms\DeleteGroupConfirmForm;
+use App\Extensions\Acl;
 use App\Models\Group;
 
 class GroupsController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::MANAGE_GROUPS);
+    }
+
     /**
      * Groups index page
      * 
