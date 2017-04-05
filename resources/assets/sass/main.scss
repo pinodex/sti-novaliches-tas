@@ -47,15 +47,21 @@ nav.nav {
     }
 
     .toggle-menu-button {
-        position: relative;
-        background: #3273dc;
-        color: #fff;
-        width: 52px;
-        cursor: pointer;
+            position: relative;
+            background: #3273dc;
+            color: #fff;
+            width: 52px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
 
         .fa {
             position: absolute;
             left: 17px;
+
+            font-size: 20px;
         }
     }
 

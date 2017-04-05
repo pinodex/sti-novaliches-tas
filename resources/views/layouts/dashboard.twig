@@ -75,7 +75,7 @@
     <nav class="nav has-shadow is-fixed-top">
         <div class="container is-fluid top-nav-container">
             <div class="nav-left">
-                <div class="nav-item toggle-menu-button" @click="sidebarActive = !sidebarActive">
+                <button class="nav-item toggle-menu-button" @click="sidebarActive = !sidebarActive">
                     <transition name="fade">
                         <i class="fa fa-bars" v-show="!sidebarActive"></i>
                     </transition>
@@ -83,7 +83,7 @@
                     <transition name="slide-fade" :duration="{ enter: 1000, leave: 0 }">
                         <i class="fa fa-chevron-left" v-show="sidebarActive"></i>
                     </transition>
-                </div>
+                </button>
 
                 <a href="{{ route('index') }}" class="nav-item has-logo">
                     <img src="/assets/img/logo-vertical.png" alt="Logo"> Employee Portal
