@@ -44,7 +44,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::get('/', 'BulletinsController@index')->name('index');
         Route::match(['get', 'post'], '/create', 'BulletinsController@edit')->name('create');
         Route::match(['get', 'post'], '/{model}/edit', 'BulletinsController@edit')->name('edit');
-        Route::match(['get', 'post'], '/{model}/delete', 'BulletinsController@delete')->name('delete');
+        Route::post('/{model}/delete', 'BulletinsController@delete')->name('delete');
 
     });
 
@@ -57,7 +57,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::match(['get', 'post'], '/{model}/edit', 'UsersController@edit')->name('edit');
         Route::match(['get', 'post'], '/{model}/picture/edit', 'UsersController@pictureEdit')->name('picture.edit');
         Route::match(['get', 'post'], '/{model}/balance/edit', 'UsersController@balanceEdit')->name('balance.edit');
-        Route::match(['get', 'post'], '/{model}/delete', 'UsersController@delete')->name('delete');
+        Route::post('/{model}/delete', 'UsersController@delete')->name('delete');
         Route::post('/restore', 'UsersController@restore')->name('restore');
         Route::post('/purge', 'UsersController@purge')->name('purge');
         Route::get('/{model}', 'UsersController@view')->name('view');
@@ -71,7 +71,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::get('/deleted', 'GroupsController@deleted')->name('deleted');
         Route::match(['get', 'post'], '/add', 'GroupsController@edit')->name('add');
         Route::match(['get', 'post'], '/{model}/edit', 'GroupsController@edit')->name('edit');
-        Route::match(['get', 'post'], '/{model}/delete', 'GroupsController@delete')->name('delete');
+        Route::post('/{model}/delete', 'GroupsController@delete')->name('delete');
         Route::match(['get', 'post'], '/{model}/delete/confirm', 'GroupsController@deleteConfirm')->name('delete.confirm');
         Route::post('/restore', 'GroupsController@restore')->name('restore');
         Route::post('/purge', 'GroupsController@purge')->name('purge');
@@ -85,7 +85,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::get('/deleted', 'DepartmentsController@deleted')->name('deleted');
         Route::match(['get', 'post'], '/add', 'DepartmentsController@edit')->name('add');
         Route::match(['get', 'post'], '/{model}/edit', 'DepartmentsController@edit')->name('edit');
-        Route::match(['get', 'post'], '/{model}/delete', 'DepartmentsController@delete')->name('delete');
+        Route::post('/{model}/delete', 'DepartmentsController@delete')->name('delete');
         Route::match(['get', 'post'], '/{model}/delete/confirm', 'DepartmentsController@deleteConfirm')->name('delete.confirm');
         Route::post('/restore', 'DepartmentsController@restore')->name('restore');
         Route::post('/purge', 'DepartmentsController@purge')->name('purge');
