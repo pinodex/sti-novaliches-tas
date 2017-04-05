@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Account;
 
 use Auth;
 use Illuminate\Http\Request;
@@ -34,7 +34,7 @@ class SettingsController extends Controller
                 ->with('message', ['success', __('settings.password_updated')]);
         }
 
-        return view('dashboard.settings.index', [
+        return view('account.settings.index', [
             'form' => $form->createView()
         ]);
     }

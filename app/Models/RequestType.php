@@ -13,9 +13,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LeaveType extends Model
+class RequestType extends Model
 {
 	protected $fillable = [
-        'name'
+        'name', 'incur_days', 'property_type', 'property_label'
     ];
 }

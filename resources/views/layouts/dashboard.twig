@@ -53,9 +53,7 @@
                     list: [
                         { icon: 'trash', identifier: 'deleted', route: 'dashboard.departments.deleted', name: 'Deleted Departments' }
                     ]
-                },
-
-                { icon: 'sticky-note', identifier: 'leave', route: 'dashboard.leave.index', name: 'Leave Settings' }
+                }
             ]  
         },
 
@@ -63,7 +61,7 @@
             header: 'Account',
 
             list: [
-                { icon: 'cog', identifier: 'settings', route: 'dashboard.settings.index', name: 'Settings' }
+                { icon: 'cog', identifier: 'settings', route: 'account.settings.index', name: 'Account Settings' }
             ]  
         }
     ]
@@ -107,7 +105,7 @@
             </span>
                 
             <div class="nav-right nav-menu">
-                <a href="{{ route('dashboard.settings.index', {}, false) }}" class="nav-item is-tab">
+                <a href="{{ route('account.settings.index', {}, false) }}" class="nav-item is-tab">
                     {% if auth_user().picture %}
                         <img class="avatar" src="{{ '/storage/' ~ auth_user().picture.thumbnail_path }}" alt="User Avatar" />
                     {% else %}
