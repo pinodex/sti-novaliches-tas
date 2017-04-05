@@ -22,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
         $twig = app('twig');
         $executed = false;
 
+        $twig->addGlobal('nav', config('menu.top'));
+        $twig->addGlobal('menu', config('menu.side'));
+
         view()->composer('*', function ($view) use ($twig, &$executed) {
             if ($executed) {
                 return;

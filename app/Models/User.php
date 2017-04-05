@@ -15,6 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\PasswordHashable;
+use App\Extensions\Acl;
 
 class User extends Authenticatable
 {
@@ -111,5 +112,17 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    /**
+     * Check if user has granted permissions
+     * 
+     * @param string $permissions,... Permission name
+     * 
+     * @return boolean
+     */
+    public function canDo(...$permissions)
+    {
+        return Acl::for($this)->can($permissions);
     }
 }

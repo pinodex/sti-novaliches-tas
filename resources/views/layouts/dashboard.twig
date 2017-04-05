@@ -1,72 +1,5 @@
 {% extends '/layouts/main.twig' %}
 
-{%
-    set nav = [
-    
-    ]
-%}
-
-{%
-    set menu = [
-        {
-            header: null,
-            
-            list: [
-                { icon: 'home', identifier: 'home', route: 'dashboard.index', name: 'Home' },
-
-                {
-                    icon: 'envelope', identifier: 'requests', route: 'dashboard.requests.index', name: 'Requests',
-
-                    list: [
-                        { icon: 'plus', identifier: 'create', route: 'dashboard.requests.create', name: 'Create Request' },
-                        { icon: 'user-circle-o', identifier: 'me', route: 'dashboard.requests.me', name: 'My Requests' }
-                    ]
-                },
-
-                { icon: 'sticky-note-o', identifier: 'bulletin', route: 'dashboard.bulletins.index', name: 'Bulletin' },
-            ]
-        },
-
-        {
-            header: 'Administrator',
-
-            list: [
-                {
-                    icon: 'user', identifier: 'users', route: 'dashboard.users.index', name: 'Users',
-                    
-                    list: [
-                        { icon: 'trash', identifier: 'deleted', route: 'dashboard.users.deleted', name: 'Deleted Users' }
-                    ]
-                },
-
-                {
-                    icon: 'users', identifier: 'groups', route: 'dashboard.groups.index', name: 'Groups',
-
-                    list: [
-                        { icon: 'trash', identifier: 'deleted', route: 'dashboard.groups.deleted', name: 'Deleted Groups' }
-                    ]
-                },
-
-                {
-                    icon: 'building', identifier: 'departments', route: 'dashboard.departments.index', name: 'Departments',
-
-                    list: [
-                        { icon: 'trash', identifier: 'deleted', route: 'dashboard.departments.deleted', name: 'Deleted Departments' }
-                    ]
-                }
-            ]  
-        },
-
-        {
-            header: 'Account',
-
-            list: [
-                { icon: 'cog', identifier: 'settings', route: 'account.settings.index', name: 'Account Settings' }
-            ]  
-        }
-    ]
-%}
-
 {% set active_tab = 'dashboard' %}
 
 {% set enable_bulletin = bulletins|length > 0 %}
@@ -128,13 +61,13 @@
 
     <div class="off-menu" :class="{ active: sidebarActive }">
         <aside class="menu sidebar">
-            {% for item in menu %}
+            {% for item in menu if auth_user().canDo(item.visibility is defined ? item.visibility : '*') %}
                 {% if item.header != null %}
                     <p class="menu-label">{{ item.header }}</p>
                 {% endif %}
 
                 <ul class="menu-list">
-                    {% for listItem in item.list %}
+                    {% for listItem in item.list if auth_user().canDo(listItem.visibility is defined ? listItem.visibility : '*') %}
                         <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
                             <a href="{{ route(listItem.route, {}, false) }}">
                                 <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
@@ -142,7 +75,7 @@
 
                             {% if listItem.list is defined and active_menu starts with listItem.identifier %}
                                 <ul>
-                                    {% for subItem in listItem.list %}
+                                    {% for subItem in listItem.list if auth_user().canDo(subItem.visibility is defined ? subItem.visility : '*') %}
                                         <li{{ active_menu == listItem.identifier ~ '.' ~ subItem.identifier ? ' class="is-active"' : '' }}>
                                             <a href="{{ route(subItem.route, {}, false) }}">
                                                 <span class="icon"><i class="fa fa-{{ subItem.icon }}" aria-hidden="true"></i></span> {{ subItem.name }}
