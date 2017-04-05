@@ -64,11 +64,6 @@ class User extends Authenticatable
         return $this->hasOne(UserPicture::class);
     }
 
-    public function leaveBalances()
-    {
-        return $this->hasMany(LeaveBalance::class);
-    }
-
     public function group()
     {
         return $this->belongsTo(Group::class);

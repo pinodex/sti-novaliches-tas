@@ -23,7 +23,6 @@ use App\Http\Forms\EditUserForm;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\LeaveType;
-use App\Models\LeaveBalance;
 use App\Models\UserPicture;
 
 class UsersController extends Controller
@@ -81,8 +80,6 @@ class UsersController extends Controller
             'group',
             'department',
             'departments',
-            'leaveBalances',
-            'leaveBalances.leaveType',
             'requests',
             'requests.approver',
             'requests.type'
