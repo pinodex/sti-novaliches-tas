@@ -61,11 +61,11 @@ class Acl
     /**
      * Check if user has granted permissions
      * 
-     * @param string $permissions,... Permission name
+     * @param array $permissions Permission names
      * 
      * @return boolean
      */
-    public function can(...$permissions)
+    public function can($permissions)
     {
         if ($this->permissions == null) {
             return false;

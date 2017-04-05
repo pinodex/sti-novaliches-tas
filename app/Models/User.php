@@ -27,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'group_id', 'name', 'username', 'email', 'password',
+        'group_id', 'name', 'username', 'email', 'password', 'require_password_change'
     ];
 
     /**
@@ -100,6 +100,16 @@ class User extends Authenticatable
         }
     }
 
+    public function getRequirePasswordChangeAttribute($value)
+    {
+        return $value == 1 ? true : false;
+    }
+
+    public function setRequirePasswordChangeAttribute($value)
+    {
+        $this->attributes['require_password_change'] = $value == 1 ? true : false;
+    }
+
     /**
      * Check if the department headed by this user is a global department
      * 
@@ -121,7 +131,7 @@ class User extends Authenticatable
      * 
      * @return boolean
      */
-    public function canDo(...$permissions)
+    public function canDo($permissions)
     {
         return Acl::for($this)->can($permissions);
     }

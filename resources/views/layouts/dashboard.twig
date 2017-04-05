@@ -61,13 +61,13 @@
 
     <div class="off-menu" :class="{ active: sidebarActive }">
         <aside class="menu sidebar">
-            {% for item in menu if auth_user().canDo(item.visibility is defined ? item.visibility : '*') %}
+            {% for item in menu if auth_user().canDo(item.visibility is defined ? item.visibility : ['*']) %}
                 {% if item.header != null %}
                     <p class="menu-label">{{ item.header }}</p>
                 {% endif %}
 
                 <ul class="menu-list">
-                    {% for listItem in item.list if auth_user().canDo(listItem.visibility is defined ? listItem.visibility : '*') %}
+                    {% for listItem in item.list if auth_user().canDo(listItem.visibility is defined ? listItem.visibility : ['*']) %}
                         <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
                             <a href="{{ route(listItem.route, {}, false) }}">
                                 <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
@@ -75,7 +75,7 @@
 
                             {% if listItem.list is defined and active_menu starts with listItem.identifier %}
                                 <ul>
-                                    {% for subItem in listItem.list if auth_user().canDo(subItem.visibility is defined ? subItem.visility : '*') %}
+                                    {% for subItem in listItem.list if auth_user().canDo(subItem.visibility is defined ? subItem.visility : ['*']) %}
                                         <li{{ active_menu == listItem.identifier ~ '.' ~ subItem.identifier ? ' class="is-active"' : '' }}>
                                             <a href="{{ route(subItem.route, {}, false) }}">
                                                 <span class="icon"><i class="fa fa-{{ subItem.icon }}" aria-hidden="true"></i></span> {{ subItem.name }}

@@ -64,7 +64,7 @@ return [
                     'identifier'    => 'users',
                     'route'         => 'dashboard.users.index',
                     'name'          => 'Users',
-                    'visibility'    => ['manage_users'],
+                    'visibility'    => [ Acl::MANAGE_USERS ],
                     
                     'list' => [
                         [
