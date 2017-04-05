@@ -47,7 +47,8 @@ class DeleteGroupConfirmForm extends Form
             'choices'   => $this->toChoices($groups, true),
             'attr'      => [
                 ':disabled' => 'groupDeleteAction != "move"',
-            ]
+            ],
+            'required'  => false
         ]);
     }
 }
