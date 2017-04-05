@@ -19,15 +19,30 @@ use App\Models\Bulletin;
 
 class BulletinsController extends Controller
 {
+    /**
+     * Bulletins index page
+     * 
+     * @return mixed
+     */
     public function index()
     {
-        $bulletins = Bulletin::orderBy('created_at', 'DESC')->with('author', 'lastAuthor')->get();
+        $bulletins = Bulletin::orderBy('created_at', 'DESC')
+            ->with('author', 'lastAuthor')
+            ->get();
 
         return view('dashboard.bulletins.index', [
             'bulletins' => $bulletins
         ]);
     }
 
+    /**
+     * Bulletin edit page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Bulletin $model Bulletin model object
+     * 
+     * @return mixed
+     */
     public function edit(Request $request, Bulletin $model)
     {
         $form = with(new EditBulletinForm($model))
@@ -38,10 +53,12 @@ class BulletinsController extends Controller
             $data = $form->getData();
 
             if (!$model->id) {
+                // The model is fresh
                 $data['author_id'] = Auth::id();
             }
 
             if ($model->id) {
+                // The model is edited
                 $data['last_author_id'] = Auth::id();
             }
 
@@ -58,6 +75,14 @@ class BulletinsController extends Controller
         ]);
     }
 
+    /**
+     * Bulletin delete page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Bulletin $model Bulletin model object
+     * 
+     * @return mixed
+     */
     public function delete(Request $request, Bulletin $model)
     {
         $model->delete();

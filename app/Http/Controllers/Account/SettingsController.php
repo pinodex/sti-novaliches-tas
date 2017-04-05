@@ -18,6 +18,13 @@ use App\Http\Forms\SettingsForm;
 
 class SettingsController extends Controller
 {
+    /**
+     * User account settings page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function index(Request $request)
     {
         $user = Auth::user();

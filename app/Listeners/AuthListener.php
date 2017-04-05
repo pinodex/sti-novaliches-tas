@@ -21,8 +21,7 @@ class AuthListener
     /**
      * Handle the event.
      *
-     * @param  SomeEvent  $event
-     * @return void
+     * @param \Illuminate\Auth\Events\Login $event
      */
     public function handle(Login $event)
     {

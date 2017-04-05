@@ -16,6 +16,11 @@ use App\Http\Controllers\Controller;
 
 class MainController extends Controller
 {
+    /**
+     * Dashboard index page
+     * 
+     * @return mixed
+     */
     public function index()
     {
         return view('dashboard.index');

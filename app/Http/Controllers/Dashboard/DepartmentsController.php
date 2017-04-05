@@ -20,6 +20,13 @@ use App\Models\Department;
 
 class DepartmentsController extends Controller
 {
+    /**
+     * Departments index page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function index(Request $request)
     {
         $departments = Department::with('head');
@@ -45,6 +52,13 @@ class DepartmentsController extends Controller
         ]);
     }
 
+    /**
+     * Deleted departments page. Calls index route with show=delete query param
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function deleted(Request $request)
     {
         $request->query->set('show', 'deleted');
@@ -52,6 +66,14 @@ class DepartmentsController extends Controller
         return $this->index($request);
     }
 
+    /**
+     * Department edit page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Department $model Department model object
+     * 
+     * @return mixed
+     */
     public function edit(Request $request, Department $model)
     {
         $editMode = $model->id !== null;
@@ -67,6 +89,7 @@ class DepartmentsController extends Controller
                 $data['priority'] = 0;
             }
 
+            // Set other department with the same head to unassigned
             Department::where('head_id', $data['head_id'])->where('id', '!=', $model->id)->update([
                 'head_id' => null
             ]);
@@ -87,6 +110,14 @@ class DepartmentsController extends Controller
         ]);
     }
 
+    /**
+     * Department delete action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Department $model Department model object
+     * 
+     * @return mixed
+     */
     public function delete(Request $request, Department $model)
     {
         if ($model->users->count() > 0) {
@@ -99,10 +130,16 @@ class DepartmentsController extends Controller
             ->with('message', ['success', __('department.deleted', ['name' => $model->name])]);
     }
 
+    /**
+     * Department delete confirmation page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Department $model Department model object
+     * 
+     * @return mixed
+     */
     public function deleteConfirm(Request $request, Department $model)
     {
-        $model->load('users');
-
         $form = new DeleteDepartmentConfirmForm($model);
 
         $form = $form->getForm();
@@ -113,6 +150,7 @@ class DepartmentsController extends Controller
             $affectedUsers = $model->users->pluck('id')->toArray();
 
             DB::transaction(function () use ($model, $targetDep, $affectedUsers) {
+                // Move users to another department
                 $model->users()->detach($affectedUsers);
 
                 if ($targetDep) {
@@ -132,6 +170,13 @@ class DepartmentsController extends Controller
         ]);
     }
 
+    /**
+     * Department restore action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     *
+     * @return mixed
+     */
     public function restore(Request $request)
     {
         $id = $request->request->get('id');
@@ -148,6 +193,13 @@ class DepartmentsController extends Controller
             ->with('message', ['success', __('department.restored', ['name' => $model->name])]);
     }
 
+    /**
+     * Department permanent delete action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function purge(Request $request)
     {
         $id = $request->request->get('id');

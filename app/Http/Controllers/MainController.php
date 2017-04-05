@@ -15,6 +15,11 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+    /**
+     * Index page
+     * 
+     * @return mixed
+     */
     public function index()
     {
         return redirect()->route('auth.login');

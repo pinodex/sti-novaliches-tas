@@ -26,6 +26,11 @@ class RequestsController extends Controller
         $this->middleware('can:submit_requests')->only('create');
     }
 
+    /**
+     * Requests index page
+     * 
+     * @return mixed
+     */
     public function index()
     {
         $user = Auth::user();
@@ -41,16 +46,28 @@ class RequestsController extends Controller
         ]);
     }
 
+    /**
+     * Current user submitted requests page
+     * 
+     * @return mixed
+     */
     public function me()
     {
         $requests = Auth::user()->requests;
-        $requests->load('approver', 'type');
 
         return view('dashboard.requests.me', [
             'requests'  => $requests
         ]);
     }
 
+    /**
+     * Request view page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Request $model Request model object
+     * 
+     * @return mixed
+     */
     public function view(Request $request, RequestModel $model)
     {
         $model->load('requestor', 'approver', 'type');
@@ -60,11 +77,16 @@ class RequestsController extends Controller
         ]);
     }
 
+    /**
+     * Create request page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function create(Request $request)
     {
         $user = Auth::user();
-
-        $user->load('departments', 'departments.head', 'leaveBalances', 'leaveBalances.leaveType');
 
         $form = with(new CreateRequestForm($user))
             ->getForm()
@@ -73,25 +95,14 @@ class RequestsController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
-            $data['days'] = 1;
-
             RequestModel::create($data);
 
             return redirect()->route('dashboard.requests.index')
                 ->with('message', ['success', __('request.created')]);
         }
 
-        $balances = [];
-
-        $user->leaveBalances->each(function (LeaveBalance $balance) use (&$balances) {
-            if ($balance->leaveType) {
-                $balances[$balance->leaveType->id] = $balance->entitlement;
-            }
-        });
-
         return view('dashboard.requests.create', [
-            'form'              => $form->createView(),
-            'requestBalances'   => $balances
+            'form'              => $form->createView()
         ]);
     }
 }

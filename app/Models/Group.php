@@ -22,6 +22,9 @@ class Group extends Model
         'name', 'permissions'
     ];
 
+    /**
+     * Get group users
+     */
     public function users()
     {
         return $this->hasMany(User::class);

@@ -27,22 +27,42 @@ class Acl
 
     const MANAGE_LEAVE = 'manage_leave';
 
+    /**
+     * @var array Allowed permissions
+     */
     private $permissions;
 
+    /**
+     * Constructs Acl
+     * 
+     * @param \App\Models\User $user User instance
+     */
     public function __construct(User $user)
     {
         $this->permissions = $user->group->permissions;
     }
 
+    /**
+     * Get Acl instance for user
+     * 
+     * @param \App\Models\User $user User instance
+     * 
+     * @return \App\Extensions\Acl Acl instance
+     */
     public static function for(User $user)
     {
         return new self($user);
     }
 
-    public function can()
+    /**
+     * Check if user has granted permissions
+     * 
+     * @param string $permissions,... Permission name
+     * 
+     * @return boolean
+     */
+    public function can(...$permissions)
     {
-        $args = func_get_args();
-
         if ($this->permissions == null) {
             return false;
         }
@@ -51,7 +71,7 @@ class Acl
             return true;
         }
 
-        foreach ($args as $requestedPermission) {
+        foreach ($permissions as $requestedPermission) {
             foreach ($this->permissions as $allowedPermission) {
                 if (fnmatch($requestedPermission, $allowedPermission)) {
                     return true;

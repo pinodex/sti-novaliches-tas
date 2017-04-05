@@ -19,11 +19,17 @@ class Bulletin extends Model
         'author_id', 'last_author_id', 'title', 'contents'
     ];
 
+    /**
+     * Get bulletin author
+     */
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
     }
 
+    /**
+     * Get bulletin last editor
+     */
     public function lastAuthor()
     {
         return $this->belongsTo(User::class, 'last_author_id');

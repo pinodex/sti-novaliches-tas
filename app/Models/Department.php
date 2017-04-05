@@ -22,14 +22,20 @@ class Department extends Model
         'name', 'head_id', 'is_global', 'priority'
     ];
 
+    /**
+     * Get department head
+     */
     public function head()
     {
         return $this->belongsTo(User::class, 'head_id');
     }
 
+    /**
+     * Get department users
+     */
     public function users()
     {
-    	return $this->belongsToMany(User::class, 'users_departments', 'user_id', 'department_id');
+        return $this->belongsToMany(User::class, 'users_departments', 'user_id', 'department_id');
     }
 
     public function getPermissionsAttribute($value)

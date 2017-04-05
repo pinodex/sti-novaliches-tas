@@ -30,6 +30,46 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get user picture
+     */
+    public function picture()
+    {
+        return $this->hasOne(UserPicture::class);
+    }
+
+    /**
+     * Get user group
+     */
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+
+    /**
+     * Get user departments
+     */
+    public function departments()
+    {
+        return $this->belongsToMany(Department::class, 'users_departments', 'department_id', 'user_id');
+    }
+
+    /**
+     * Get headed department
+     */
+    public function department()
+    {
+        return $this->hasOne(Department::class, 'head_id');
+    }
+
+    /**
+     * Get user requests
+     */
+    public function requests()
+    {
+        return $this->hasMany(Request::class, 'requestor_id');
+    }
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -59,31 +99,11 @@ class User extends Authenticatable
         }
     }
 
-    public function picture()
-    {
-        return $this->hasOne(UserPicture::class);
-    }
-
-    public function group()
-    {
-        return $this->belongsTo(Group::class);
-    }
-
-    public function departments()
-    {
-        return $this->belongsToMany(Department::class, 'users_departments', 'department_id', 'user_id');
-    }
-
-    public function department()
-    {
-        return $this->hasOne(Department::class, 'head_id');
-    }
-
-    public function requests()
-    {
-        return $this->hasMany(Request::class, 'requestor_id');
-    }
-
+    /**
+     * Check if the department headed by this user is a global department
+     * 
+     * @return bool
+     */
     public function isInGlobalDepartment()
     {
         if ($this->department) {

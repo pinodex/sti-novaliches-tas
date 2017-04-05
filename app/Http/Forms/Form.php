@@ -105,6 +105,13 @@ class Form
      */
     public function create() {}
 
+    /**
+     * Validate form
+     * 
+     * @param array $data Form data
+     * 
+     * @return array
+     */
     public function validate(array $data)
     {
         $validator = Validation::createValidator();
@@ -144,6 +151,14 @@ class Form
         return $formErrors;
     }
 
+    /**
+     * Generate form select field choices from model collection
+     * 
+     * @param \Illuminate\Support\Collection $data Model collection
+     * @param bool $unassigned Add unassigned option
+     * 
+     * @return array
+     */
     protected function toChoices(Collection $data, $unassigned = false)
     {
         $choices = [];

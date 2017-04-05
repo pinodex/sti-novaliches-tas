@@ -15,6 +15,11 @@ use App\Models\User;
 
 class UserObserver
 {
+    /**
+     * On user model deleted event
+     * 
+     * @param \App\Models\User $user User model object
+     */
     public function deleted(User $user)
     {
         if ($user->isForceDeleting()) {
@@ -26,6 +31,11 @@ class UserObserver
         $user->picture()->delete();
     }
 
+    /**
+     * On user model restored event
+     * 
+     * @param \App\Models\User $user User model object
+     */
     public function restored(User $user)
     {
         $user->picture()->restore();

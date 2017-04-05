@@ -20,6 +20,13 @@ use App\Models\Group;
 
 class GroupsController extends Controller
 {
+    /**
+     * Groups index page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function index(Request $request)
     {
         $groups = Group::withCount('users');
@@ -45,6 +52,13 @@ class GroupsController extends Controller
         ]);
     }
 
+    /**
+     * Deleted groups page. Calls index route with show=delete query param
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function deleted(Request $request)
     {
         $request->query->set('show', 'deleted');
@@ -52,6 +66,14 @@ class GroupsController extends Controller
         return $this->index($request);
     }
 
+    /**
+     * Group edit page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Group $model Group model object
+     * 
+     * @return mixed
+     */
     public function edit(Request $request, Group $model)
     {
         $editMode = $model->id !== null;
@@ -79,6 +101,14 @@ class GroupsController extends Controller
         ]);
     }
 
+    /**
+     * Group delete action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Group $model Group model object
+     * 
+     * @return mixed
+     */
     public function delete(Request $request, Group $model)
     {
         if ($model->users->count() > 0) {
@@ -91,10 +121,16 @@ class GroupsController extends Controller
             ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
     }
 
+    /**
+     * Group delete confirmation page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Group $model Group model object
+     * 
+     * @return mixed
+     */
     public function deleteConfirm(Request $request, Group $model)
     {
-        $model->load('users');
-
         $form = new DeleteGroupConfirmForm($model);
 
         $form = $form->getForm();
@@ -104,17 +140,21 @@ class GroupsController extends Controller
             $action = $form['action']->getData();
             $targetGroup = $form['group']->getData();
 
+            if (!$targetGroup) {
+                $targetGroup = null;
+            }
+
             DB::transaction(function () use ($model, $action, $targetGroup) {
                 switch ($action) {                    
                     case 'move':
-                        $model->users()->getQuery()->update([
+                        $model->users()->update([
                             'group_id' => $targetGroup
                         ]);
 
                         break;
 
                     case 'delete':
-                        $model->users()->getQuery()->delete();
+                        $model->users()->delete();
 
                         break;
                 }
@@ -132,6 +172,13 @@ class GroupsController extends Controller
         ]);
     }
 
+    /**
+     * Group restore action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function restore(Request $request)
     {
         $id = $request->request->get('id');
@@ -148,6 +195,13 @@ class GroupsController extends Controller
             ->with('message', ['success', __('group.restored', ['name' => $model->name])]);
     }
 
+    /**
+     * Group permanent delete action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function purge(Request $request)
     {
         $id = $request->request->get('id');

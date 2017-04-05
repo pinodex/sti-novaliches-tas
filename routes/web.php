@@ -56,7 +56,6 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::match(['get', 'post'], '/add', 'UsersController@edit')->name('add');
         Route::match(['get', 'post'], '/{model}/edit', 'UsersController@edit')->name('edit');
         Route::match(['get', 'post'], '/{model}/picture/edit', 'UsersController@pictureEdit')->name('picture.edit');
-        Route::match(['get', 'post'], '/{model}/balance/edit', 'UsersController@balanceEdit')->name('balance.edit');
         Route::post('/{model}/delete', 'UsersController@delete')->name('delete');
         Route::post('/restore', 'UsersController@restore')->name('restore');
         Route::post('/purge', 'UsersController@purge')->name('purge');

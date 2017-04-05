@@ -17,7 +17,6 @@ use Ramsey\Uuid\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
-use App\Http\Forms\EditLeaveBalanceForm;
 use App\Http\Forms\EditUserPictureForm;
 use App\Http\Forms\EditUserForm;
 use App\Models\User;
@@ -27,6 +26,13 @@ use App\Models\UserPicture;
 
 class UsersController extends Controller
 {
+    /**
+     * Users index page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function index(Request $request)
     {
         $users = User::with('group', 'picture');
@@ -67,6 +73,13 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Deleted users page. Calls index route with show=delete query param
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function deleted(Request $request)
     {
         $request->query->set('show', 'deleted');
@@ -74,27 +87,32 @@ class UsersController extends Controller
         return $this->index($request);
     }
 
+    /**
+     * User view page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\User $model User model object
+     * 
+     * @return mixed
+     */
     public function view(Request $request, User $model)
     {
-        $model->load([
-            'group',
-            'department',
-            'departments',
-            'requests',
-            'requests.approver',
-            'requests.type'
-        ]);
-
         return view('dashboard.users.view', [
             'user'  => $model
         ]);
     }
 
+    /**
+     * User edit page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\User $model User model object
+     * 
+     * @return mixed
+     */
     public function edit(Request $request, User $model)
     {
         $editMode = $model->id !== null;
-
-        $model->load('departments');
 
         $form = with(new EditUserForm($model))
             ->getForm()
@@ -125,10 +143,16 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * User picture edit page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\User $model User model object
+     * 
+     * @return mixed
+     */
     public function pictureEdit(Request $request, User $model)
     {
-        $model->load('picture');
-
         $form = with(new EditUserPictureForm)
             ->getForm()
             ->handleRequest($request);
@@ -154,6 +178,7 @@ class UsersController extends Controller
             $storage->put($thumbTarget, $image->fit(64)->stream('jpg', 50));
 
             $userPicture = new UserPicture();
+            
             $previousImage = null;
             $previousThumb = null;
 
@@ -171,7 +196,6 @@ class UsersController extends Controller
             ]);
 
             $userPicture->save();
-
             $storage->delete([$previousImage, $previousThumb]);
 
             return redirect()->route('dashboard.users.view', [
@@ -185,57 +209,14 @@ class UsersController extends Controller
         ]);
     }
 
-    public function balanceEdit(Request $request, User $model)
-    {
-        $model->load('leaveBalances');
-        $leaveTypes = LeaveType::all();
-
-        $form = with(new EditLeaveBalanceForm($model, $leaveTypes))
-            ->getForm()
-            ->handleRequest($request);
-
-        if ($form->isValid()) {
-            $data = $form->getData();
-
-            foreach ($data['leave'] as $key => $value) {
-                $query = LeaveBalance::where([
-                    'user_id'       => $model->id,
-                    'leave_type_id' => $key
-                ]);
-
-                if ($value == 0) {
-                    $query->delete();
-
-                    continue;
-                }
-
-                if ($query->count() > 0) {
-                    $query->update([
-                        'entitlement'   => $value
-                    ]);
-
-                    continue;
-                }
-                
-                LeaveBalance::insert([
-                    'user_id'       => $model->id,
-                    'leave_type_id' => $key,
-                    'entitlement'   => $value
-                ]);
-            }
-
-            return redirect()->route('dashboard.users.view', [
-                'model' => $model
-            ])->with('message', ['success', __('user.edited', ['name' => $model->name])]);
-        }
-
-        return view('dashboard.users.balance_edit', [
-            'user'  => $model,
-            'types' => $leaveTypes,
-            'form'  => $form->createView()
-        ]);
-    }
-
+    /**
+     * User delete action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\User $model User model object
+     * 
+     * @return mixed
+     */
     public function delete(Request $request, User $model)
     {
         $model->delete();
@@ -244,6 +225,13 @@ class UsersController extends Controller
             ->with('message', ['success', __('user.deleted', ['name' => $model->name])]);
     }
 
+    /**
+     * User restore action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function restore(Request $request)
     {
         $id = $request->request->get('id');
@@ -260,6 +248,13 @@ class UsersController extends Controller
             ->with('message', ['success', __('user.restored', ['name' => $model->name])]);
     }
 
+    /**
+     * User permanently delete action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function purge(Request $request)
     {
         $id = $request->request->get('id');

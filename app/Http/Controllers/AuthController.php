@@ -17,17 +17,18 @@ use App\Http\Forms\LoginForm;
 
 class AuthController extends Controller
 {
-    protected $form;
-
-    public function __construct()
-    {
-        $this->form = new LoginForm();
-    }
-
+    /**
+     * Login page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
     public function login(Request $request)
     {
-        $form = $this->form->getForm();
-        $form->handleRequest($request);
+        $form = with(new LoginForm)
+            ->getForm()
+            ->handleRequest($request);
 
         if ($form->isValid()) {
             $data = $form->getData();
@@ -47,7 +48,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    /**
+     * Logout action
+     * 
+     * @return mixed
+     */
+    public function logout()
     {
         Auth::logout();
 
