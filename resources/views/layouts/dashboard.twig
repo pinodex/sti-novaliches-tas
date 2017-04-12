@@ -39,8 +39,8 @@
                 
             <div class="nav-right nav-menu">
                 <a href="{{ route('account.settings.index', {}, false) }}" class="nav-item is-tab">
-                    {% if auth_user().picture %}
-                        <img class="avatar" src="{{ '/storage/' ~ auth_user().picture.thumbnail_path }}" alt="User Avatar" />
+                    {% if auth_user().thumbnail_path %}
+                        <img class="avatar" src="{{ '/storage/' ~ auth_user().thumbnail_path }}" alt="User Avatar" />
                     {% else %}
                         <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                     {% endif %}

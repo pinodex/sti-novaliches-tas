@@ -86,11 +86,6 @@ class EditUserForm extends Form
             ])
         ]);
 
-        $this->add('require_password_change', Type\CheckboxType::class, [
-            'label'     => 'Require password change on login',
-            'required'  => false
-        ]);
-
         $this->add('group_id', Type\ChoiceType::class, [
             'label'     => 'Group ',
             'choices'   => $this->toChoices($groups, true)

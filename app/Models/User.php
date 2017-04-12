@@ -27,16 +27,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'group_id', 'name', 'username', 'email', 'password', 'require_password_change'
+        'group_id', 'name', 'username', 'email', 'password'
     ];
-
-    /**
-     * Get user picture
-     */
-    public function picture()
-    {
-        return $this->hasOne(UserPicture::class);
-    }
 
     /**
      * Get user group
@@ -98,16 +90,6 @@ class User extends Authenticatable
         if (!$isRememberTokenAttribute) {
             parent::setAttribute($key, $value);
         }
-    }
-
-    public function getRequirePasswordChangeAttribute($value)
-    {
-        return $value == 1 ? true : false;
-    }
-
-    public function setRequirePasswordChangeAttribute($value)
-    {
-        $this->attributes['require_password_change'] = $value == 1 ? true : false;
     }
 
     /**

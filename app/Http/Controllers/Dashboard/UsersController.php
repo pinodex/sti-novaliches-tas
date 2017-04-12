@@ -41,7 +41,7 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::with('group', 'picture');
+        $users = User::with('group');
         $groups = Group::all();
 
         $showTrashed = $request->query->get('show') == 'deleted';
@@ -164,10 +164,10 @@ class UsersController extends Controller
             ->handleRequest($request);
 
         if ($form->isValid()) {
-            $uploadedImage = $form['image']->getData();
+            $uploadedImage = $form['picture']->getData();
 
             try {
-                $image = Image::make($uploadedImage);
+                $picture = Image::make($uploadedImage);
             } catch (\Exception $e) {
                 return redirect()->route('dashboard.users.picture.edit', [
                     'model' => $model
@@ -177,32 +177,21 @@ class UsersController extends Controller
             $uuid = Uuid::uuid4()->toString();
             $storage = Storage::disk('public');
 
-            $imageTarget = sprintf('avatars/%s.image.jpg', $uuid);
+            $pictureTarget = sprintf('avatars/%s.picture.jpg', $uuid);
             $thumbTarget = sprintf('avatars/%s.thumb.jpg', $uuid);
 
-            $storage->put($imageTarget, $image->fit(512)->stream('jpg', 75));
-            $storage->put($thumbTarget, $image->fit(64)->stream('jpg', 50));
+            $storage->put($pictureTarget, $picture->fit(512)->stream('jpg', 75));
+            $storage->put($thumbTarget, $picture->fit(64)->stream('jpg', 50));
 
-            $userPicture = new UserPicture();
-            
-            $previousImage = null;
-            $previousThumb = null;
-
-            if ($model->picture) {
-                $userPicture = $model->picture;
-                
-                $previousImage = $model->picture->image_path;
-                $previousThumb = $model->picture->thumbnail_path;
-            }
-
-            $userPicture->fill([
-                'user_id'           => $model->id,
-                'image_path'        => $imageTarget,
-                'thumbnail_path'    => $thumbTarget
+            $storage->delete([
+                $model->picture_path,
+                $model->thumbnail_path
             ]);
 
-            $userPicture->save();
-            $storage->delete([$previousImage, $previousThumb]);
+            $model->picture_path = $pictureTarget;
+            $model->thumbnail_path = $thumbTarget;
+            
+            $model->save();
 
             return redirect()->route('dashboard.users.view', [
                 'model' => $model

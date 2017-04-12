@@ -19,8 +19,8 @@
                                 <i class="fa fa-pencil"></i>
                             </div>
 
-                            {% if user.picture %}
-                                <img src="{{ '/storage/' ~ user.picture.thumbnail_path }}" alt="User Avatar" />
+                            {% if user.thumbnail_path %}
+                                <img src="{{ '/storage/' ~ user.thumbnail_path }}" alt="User Avatar" />
                             {% else %}
                                 <img src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                             {% endif %}

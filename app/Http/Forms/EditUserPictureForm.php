@@ -18,7 +18,7 @@ class EditUserPictureForm extends Form
 {
     public function create()
     {
-        $this->add('image', Type\FileType::class, [
+        $this->add('picture', Type\FileType::class, [
             'constraints'   => new Assert\Image(),
             'attr'          => [
                 'accept'    => 'image/*'

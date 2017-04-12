@@ -14,8 +14,8 @@
                 <div class="box is-clearfix">
                     <div class="columns">
                         <div class="column">
-                            {% if model.picture %}
-                                <img src="{{ '/storage/' ~ model.picture.image_path }}" alt="User Avatar" />
+                            {% if model.picture_path %}
+                                <img src="{{ '/storage/' ~ model.picture_path }}" alt="User Avatar" />
                             {% else %}
                                 <img src="/assets/img/default-image.jpg" alt="User Avatar" />
                             {% endif %}
