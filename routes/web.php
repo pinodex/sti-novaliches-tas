@@ -91,6 +91,19 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
 
     });
 
+    Route::group(['prefix' => 'employees', 'as' => 'employees.'], function () {
+
+        Route::get('/', 'EmployeeController@index')->name('index');
+        Route::get('/deleted', 'EmployeeController@deleted')->name('deleted');
+        Route::match(['get', 'post'], '/add', 'EmployeeController@edit')->name('add');
+        Route::match(['get', 'post'], '/{model}/edit', 'EmployeeController@edit')->name('edit');
+        Route::post('/{model}/delete', 'EmployeeController@delete')->name('delete');
+        Route::post('/restore', 'EmployeeController@restore')->name('restore');
+        Route::post('/purge', 'EmployeeController@purge')->name('purge');
+        Route::get('/{model}', 'EmployeeController@view')->name('view');
+
+    });
+
 });
 
 Route::group(['namespace' => 'Account', 'prefix' => 'account', 'as' => 'account.', 'middleware' => 'auth'], function () {

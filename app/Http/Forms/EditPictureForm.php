@@ -14,7 +14,7 @@ namespace App\Http\Forms;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditUserPictureForm extends Form
+class EditPictureForm extends Form
 {
     public function create()
     {

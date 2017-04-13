@@ -108,6 +108,14 @@ return [
                             'name'          => 'Deleted Departments'
                         ]
                     ]
+                ],
+
+                [
+                    'icon'          => 'address-book',
+                    'identifier'    => 'employees',
+                    'route'         => 'dashboard.employees.index',
+                    'name'          => 'Employees',
+                    'visibility'    => [ Acl::MANAGE_EMPLOYEES ],
                 ]
             ]  
         ],

@@ -1,0 +1,40 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% form_theme form '/layouts/bulma.twig' %}
+
+{% set page_title = 'Edit user picture' %}
+{% set active_menu = 'users' %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-12">
+            <div class="panel">
+                <p class="panel-heading is-small">{{ page_title }}</p>
+
+                <div class="box is-clearfix">
+                    <div class="columns">
+                        <div class="column">
+                            {% if model.picture_path %}
+                                <img src="{{ '/storage/' ~ model.picture_path }}" alt="User Avatar" />
+                            {% else %}
+                                <img src="/assets/img/default-image.jpg" alt="User Avatar" />
+                            {% endif %}
+                        </div>
+                        
+                        <div class="column">
+                            <form action="{{ app.request.getRequestUri() }}" method="POST" enctype="multipart/form-data">
+                                {{ form_widget(form) }}
+
+                                <div class="field is-grouped is-grouped-right">
+                                    <p class="control">
+                                        <button class="button is-primary" type="submit"><i class="fa fa-floppy-o"></i> Save</button>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -17,7 +17,7 @@ use Ramsey\Uuid\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
-use App\Http\Forms\EditUserPictureForm;
+use App\Http\Forms\EditPictureForm;
 use App\Http\Forms\EditUserForm;
 use App\Models\User;
 use App\Models\Group;

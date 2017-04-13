@@ -19,7 +19,7 @@ class Department extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'head_id', 'is_global', 'priority'
+        'name', 'head_id'
     ];
 
     /**
@@ -27,38 +27,14 @@ class Department extends Model
      */
     public function head()
     {
-        return $this->belongsTo(User::class, 'head_id');
+        return $this->belongsTo(Employee::class, 'head_id');
     }
 
     /**
-     * Get department users
+     * Get department employees
      */
-    public function users()
+    public function employees()
     {
-        return $this->belongsToMany(User::class, 'users_departments', 'user_id', 'department_id');
-    }
-
-    public function getPermissionsAttribute($value)
-    {
-        if ($value == null) {
-            return null;
-        }
-
-        return explode(',', $value);
-    }
-
-    public function setPermissionsAttribute(array $value)
-    {
-        $this->attributes['permissions'] = implode(',', $value);
-    }
-
-    public function getIsGlobalAttribute($value)
-    {
-        return $value == 1 ? true : false;
-    }
-
-    public function setIsGlobalAttribute($value)
-    {
-        $this->attributes['is_global'] = $value == 1 ? true : false;
+        return $this->hasMany(Employee::class);
     }
 }

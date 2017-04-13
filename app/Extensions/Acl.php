@@ -16,19 +16,13 @@ use App\Models\User;
 class Acl
 {
     const ALL = '*';
-    
     const MANAGE_REQUESTS = 'manage_requests';
-
     const SUBMIT_REQUESTS = 'submit_requests';
-
     const MANAGE_BULLETIN = 'manage_bulletin';
-
     const MANAGE_GROUPS = 'manage_groups';
-
     const MANAGE_USERS = 'manage_users';
-
     const MANAGE_DEPARTMENTS = 'manage_departments';
-
+    const MANAGE_EMPLOYEES = 'manage_employees';
     const MANAGE_LEAVE = 'manage_leave';
 
     /**
