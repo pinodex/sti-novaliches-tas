@@ -11,15 +11,17 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\PasswordHashable;
+use App\Traits\WithPicture;
 use App\Extensions\Acl;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, PasswordHashable;
+    use SoftDeletes,
+        PasswordHashable,
+        WithPicture;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +32,7 @@ class User extends Authenticatable
         'group_id',
         'name',
         'username',
-        'email',
+        'email_address',
         'password'
     ];
 

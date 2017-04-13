@@ -91,9 +91,7 @@
             <table class="table user-list">
                 <thead>
                     <tr>
-                        {% if not trash %}
-                            <th class="avatar-column">&nbsp;</th>
-                        {% endif %}
+                        <th class="avatar-column">&nbsp;</th>
                         <th>Name</th>
                         <th>Group</th>
                         <th>Last Login</th>
@@ -106,6 +104,13 @@
                     {% for item in result %}
                         {% if trash %}
                             <tr>
+                                <td>
+                                    {% if item.thumbnail_path %}
+                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
+                                    {% else %}
+                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <h1 class="title">{{ item.name }}</h1>
                                     <h2 class="subtitle">@{{ item.username }}</h2>
@@ -133,13 +138,11 @@
                         {% else %}
                             <tr class="clickable" @click="location('{{ route('dashboard.users.view', { model: item }, false) }}')">
                                 <td>
-                                    <a href="{{ route('dashboard.users.picture.edit', { model: item }, false) }}">
-                                        {% if item.thumbnail_path %}
-                                            <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
-                                        {% else %}
-                                            <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
-                                        {% endif %}
-                                    </a>
+                                    {% if item.thumbnail_path %}
+                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
+                                    {% else %}
+                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
+                                    {% endif %}
                                 </td>
                                 <td>
                                     <a href="{{ route('dashboard.users.view', { model: item }, false) }}">

@@ -14,17 +14,13 @@
             <div class="box user-box">
                 <div class="columns">
                     <div class="column is-1">
-                        <a href="{{ route('dashboard.users.picture.edit', { model: user }, false) }}" class="picture">
-                            <div class="icon">
-                                <i class="fa fa-pencil"></i>
-                            </div>
-
+                        <div class="picture">
                             {% if user.thumbnail_path %}
                                 <img src="{{ '/storage/' ~ user.thumbnail_path }}" alt="User Avatar" />
                             {% else %}
                                 <img src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                             {% endif %}
-                        </a>
+                        </div>
                     </div>
 
                     <div class="column">

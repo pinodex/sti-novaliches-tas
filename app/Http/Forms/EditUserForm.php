@@ -20,20 +20,18 @@ use App\Models\User;
 
 class EditUserForm extends Form
 {
-    public function setData($data)
-    {
-        if (!array_key_exists('departments', $data)) {
-            return parent::setData($data);
-        }
-
-        $data['departments'] = array_column($data['departments'], 'id');
-        return parent::setData($data);
-    }
-
     public function create()
     {
         $groups = Group::all();
-        $departments = Department::all();
+
+        $this->add('picture', Type\FileType::class, [
+            'label'         => 'Picture (leave if not changing)',
+            'constraints'   => new Assert\Image(),
+            'attr'          => [
+                'accept'    => 'image/*'
+            ],
+            'required'      => false
+        ]);
 
         $this->add('name', Type\TextType::class, [
             'attr' => [
@@ -65,11 +63,11 @@ class EditUserForm extends Form
             ]
         ]);
         
-        $this->add('email', Type\EmailType::class, [
+        $this->add('email_address', Type\EmailType::class, [
             'constraints' => new CustomAssert\UniqueRecord([
                 'model'     => User::class,
-                'exclude'   => $this->model ? $this->model->email : null,
-                'row'       => 'email',
+                'exclude'   => $this->model ? $this->model->email_address : null,
+                'row'       => 'email_address',
                 'message'   => 'Email already in use.'
             ])
         ]);
@@ -87,14 +85,8 @@ class EditUserForm extends Form
         ]);
 
         $this->add('group_id', Type\ChoiceType::class, [
-            'label'     => 'Group ',
+            'label'     => 'Group',
             'choices'   => $this->toChoices($groups, true)
-        ]);
-
-        $this->add('departments', Type\ChoiceType::class, [
-            'choices'   => $this->toChoices($departments),
-            'multiple'  => true,
-            'required'  => false
         ]);
     }
 }

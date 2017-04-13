@@ -38,6 +38,7 @@ class Form
     public function __construct(Model $model = null, array $options = [])
     {
         $options['allow_extra_fields'] = true;
+        $options['translation_domain'] = false;
         
         $this->builder = app('form.factory')->createNamedBuilder(
             null, Type\FormType::class, null, $options

@@ -11,13 +11,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use Image;
-use Storage;
-use Ramsey\Uuid\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
-use App\Http\Forms\EditPictureForm;
 use App\Http\Forms\EditUserForm;
 use App\Models\User;
 use App\Models\Group;
@@ -132,9 +128,14 @@ class UsersController extends Controller
             }
 
             $model->fill($data);
-            $model->save();
+
+            if ($data['picture']) {
+                try {
+                    $model->picture = $data['picture'];
+                } catch (\Exception $e) {}
+            }
             
-            $model->departments()->sync($data['departments']);
+            $model->save();
 
             return redirect()->route('dashboard.users.index')
                 ->with('message', ['success',
@@ -146,61 +147,6 @@ class UsersController extends Controller
         return view('dashboard.users.edit', [
             'form'  => $form->createView(),
             'model' => $model
-        ]);
-    }
-
-    /**
-     * User picture edit page
-     * 
-     * @param \Illuminate\Http\Request $request Request object
-     * @param \App\Models\User $model User model object
-     * 
-     * @return mixed
-     */
-    public function pictureEdit(Request $request, User $model)
-    {
-        $form = with(new EditUserPictureForm)
-            ->getForm()
-            ->handleRequest($request);
-
-        if ($form->isValid()) {
-            $uploadedImage = $form['picture']->getData();
-
-            try {
-                $picture = Image::make($uploadedImage);
-            } catch (\Exception $e) {
-                return redirect()->route('dashboard.users.picture.edit', [
-                    'model' => $model
-                ])->with('message', ['danger', __('user.picture_error')]);
-            }
-
-            $uuid = Uuid::uuid4()->toString();
-            $storage = Storage::disk('public');
-
-            $pictureTarget = sprintf('avatars/%s.picture.jpg', $uuid);
-            $thumbTarget = sprintf('avatars/%s.thumb.jpg', $uuid);
-
-            $storage->put($pictureTarget, $picture->fit(512)->stream('jpg', 75));
-            $storage->put($thumbTarget, $picture->fit(64)->stream('jpg', 50));
-
-            $storage->delete([
-                $model->picture_path,
-                $model->thumbnail_path
-            ]);
-
-            $model->picture_path = $pictureTarget;
-            $model->thumbnail_path = $thumbTarget;
-            
-            $model->save();
-
-            return redirect()->route('dashboard.users.view', [
-                'model' => $model
-            ])->with('message', ['success', __('user.picture_updated')]);
-        }
-
-        return view('dashboard.users.picture_edit', [
-            'model' => $model,
-            'form'  => $form->createView()
         ]);
     }
 

@@ -14,7 +14,6 @@ namespace App\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditEmployeeForm;
-use App\Http\Forms\EditPictureForm;
 use App\Models\Employee;
 
 class EmployeeController extends Controller
