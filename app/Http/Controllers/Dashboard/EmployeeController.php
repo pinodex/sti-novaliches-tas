@@ -12,8 +12,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditEmployeeForm;
+use App\Models\Department;
 use App\Models\Employee;
 
 class EmployeeController extends Controller
@@ -28,6 +30,7 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         $result = Employee::with('department');
+        $departments = Department::all();
 
         $showTrashed = $request->query->get('show') == 'deleted';
         $isAll = true;
@@ -42,10 +45,29 @@ class EmployeeController extends Controller
             $isAll = false;
         }
 
+        if ($department = $request->query->get('department')) {
+            $result->where(function (Builder $query) use ($department, &$isAll) {
+                if ($department == 'unassigned') {
+                    $query->whereIn('department_id', [null, 0]);
+                    $isAll = false;
+
+                    return;
+                }
+
+                if ($department != 'all') {
+                    $query->where('department_id', $department);
+                    $isAll = false;
+
+                    return;
+                }
+            });
+        }
+
         return view('dashboard.employees.index', [
-            'result'    => $result->paginate(50),
-            'trash'     => $showTrashed,
-            'is_all'    => $isAll
+            'result'        => $result->paginate(50),
+            'departments'   => $departments,
+            'trash'         => $showTrashed,
+            'is_all'        => $isAll
         ]);
     }
 

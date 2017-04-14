@@ -58,6 +58,22 @@
                             </p>
 
                             <p class="control">
+                                <span class="select is-small">
+                                    <select name="department">
+                                        <option value="all" {{ input_get('department') == 'all' ? 'selected' : '' }}>All Departments</option>
+                                        <option value="unassigned" {{ input_get('department') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
+                                        {% for department in departments %}
+                                            {% if input_get('department') == department.id %}
+                                                <option value="{{ department.id }}" selected>{{ department.name }}</option>
+                                            {% else %}
+                                                <option value="{{ department.id }}">{{ department.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </p>
+
+                            <p class="control">
                                 <button type="submit" class="button is-dark is-small">
                                     <i class="fa fa-search is-marginless"></i>
                                 </button>

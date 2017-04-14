@@ -89,7 +89,7 @@
                             {% if not trash %}
                                 {% if item.head %}
                                     <td>
-                                        <a href="{{ route('dashboard.users.view', { model: item.head }, false) }}">{{ item.head.name }}</a>
+                                        <a href="{{ route('dashboard.employees.view', { model: item.head }, false) }}">{{ item.head.name }}</a>
                                     </td>
                                 {% else %}
                                     <td><em>Unassigned</em></td>
@@ -109,9 +109,19 @@
                                         </p>
                                     </div>
                                 {% else %}
-                                    <a href="{{ route('dashboard.departments.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
-                                        <i class="fa fa-pencil-square-o is-marginless"></i>
-                                    </a>
+                                    <div class="field is-grouped">
+                                        <p class="control">
+                                            <a href="{{ route('dashboard.employees.index', { department: item }, false) }}" class="button is-small" title="View department employees">
+                                                <i class="fa fa-address-book is-marginless"></i>
+                                            </a>
+                                        </p>
+
+                                        <p class="control">
+                                            <a href="{{ route('dashboard.departments.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
+                                                <i class="fa fa-pencil-square-o is-marginless"></i>
+                                            </a>
+                                        </p>
+                                    </div>
                                 {% endif %}
                             </td>
                         </tr>

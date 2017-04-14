@@ -61,8 +61,8 @@
                             <p class="control">
                                 <span class="select is-small">
                                     <select name="group">
-                                        <option value="all">All Groups</option>
-                                        <option value="unassigned">Unassigned</option>
+                                        <option value="all" {{ input_get('group') == 'all' ? 'selected' : '' }}>All Groups</option>
+                                        <option value="unassigned" {{ input_get('group') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
                                         {% for group in groups %}
                                             {% if input_get('group') == group.id %}
                                                 <option value="{{ group.id }}" selected>{{ group.name }}</option>

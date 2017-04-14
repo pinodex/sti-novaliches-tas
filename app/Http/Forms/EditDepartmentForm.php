@@ -14,13 +14,13 @@ namespace App\Http\Forms;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Extensions\Constraints as CustomAssert;
-use App\Models\User;
+use App\Models\Employee;
 
 class EditDepartmentForm extends Form
 {
     public function create()
     {
-        $users = User::all();
+        $employees = Employee::all();
 
         $this->add('name', Type\TextType::class, [
             'attr' => [
@@ -30,16 +30,7 @@ class EditDepartmentForm extends Form
 
         $this->add('head_id', Type\ChoiceType::class, [
             'label'     => 'Head',
-            'choices'   => $this->toChoices($users, true)
-        ]);
-
-        $this->add('priority', Type\NumberType::class, [
-            'required'  => false
-        ]);
-
-        $this->add('is_global', Type\CheckboxType::class, [
-            'label'     => 'Global',
-            'required'  => false
+            'choices'   => $this->toChoices($employees, true)
         ]);
     }
 }
