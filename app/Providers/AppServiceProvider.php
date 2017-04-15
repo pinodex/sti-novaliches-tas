@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\UserObserver;
@@ -30,8 +31,10 @@ class AppServiceProvider extends ServiceProvider
                 return;
             }
 
-            $twig->addGlobal('bulletins', Bulletin::orderBy('created_at', 'DESC')->with('author')->get());
-            $executed = true;
+            if (Auth::check()) {
+                $twig->addGlobal('bulletins', Bulletin::orderBy('created_at', 'DESC')->with('author')->get());
+                $executed = true;
+            }
         });
 
         User::observe(UserObserver::class);
