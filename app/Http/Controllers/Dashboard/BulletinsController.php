@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditBulletinForm;
 use App\Models\Bulletin;
-use App\Extensions\Acl;
+use App\Components\Acl;
 
 class BulletinsController extends Controller
 {

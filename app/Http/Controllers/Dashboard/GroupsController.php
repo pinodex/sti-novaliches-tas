@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditGroupForm;
 use App\Http\Forms\DeleteGroupConfirmForm;
-use App\Extensions\Acl;
+use App\Components\Acl;
 use App\Models\Group;
 
 class GroupsController extends Controller

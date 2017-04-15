@@ -19,7 +19,7 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\LeaveType;
 use App\Models\UserPicture;
-use App\Extensions\Acl;
+use App\Components\Acl;
 
 class UsersController extends Controller
 {

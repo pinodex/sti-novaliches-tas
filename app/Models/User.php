@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\PasswordHashable;
 use App\Traits\WithPicture;
-use App\Extensions\Acl;
+use App\Components\Acl;
 
 class User extends Authenticatable
 {

@@ -14,7 +14,7 @@ namespace App\Http\Forms;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Constraints as CustomAssert;
-use App\Extensions\Acl;
+use App\Components\Acl;
 use App\Models\Group;
 use App\Models\User;
 

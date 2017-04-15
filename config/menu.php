@@ -1,6 +1,6 @@
 <?php
 
-use App\Extensions\Acl;
+use App\Components\Acl;
 
 return [
     'top' => [

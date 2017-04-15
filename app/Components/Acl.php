@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Extensions;
+namespace App\Components;
 
 use App\Models\User;
 
@@ -45,7 +45,7 @@ class Acl
      * 
      * @param \App\Models\User $user User instance
      * 
-     * @return \App\Extensions\Acl Acl instance
+     * @return \App\Components\Acl Acl instance
      */
     public static function for(User $user)
     {

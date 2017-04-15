@@ -13,7 +13,7 @@ namespace App\Http\Middleware;
 
 use Auth;
 use Closure;
-use App\Extensions\Acl;
+use App\Components\Acl;
 
 class AccessControl
 {

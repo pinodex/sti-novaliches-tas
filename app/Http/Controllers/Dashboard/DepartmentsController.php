@@ -17,7 +17,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Forms\EditDepartmentForm;
 use App\Http\Forms\DeleteDepartmentConfirmForm;
 use App\Models\Department;
-use App\Extensions\Acl;
+use App\Components\Acl;
 
 class DepartmentsController extends Controller
 {
