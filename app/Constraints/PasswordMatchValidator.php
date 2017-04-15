@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Extensions\Constraints;
+namespace App\Constraints;
 
 use Hash;
 use Symfony\Component\Validator\Constraint;

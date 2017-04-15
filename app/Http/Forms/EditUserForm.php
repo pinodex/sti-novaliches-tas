@@ -13,7 +13,7 @@ namespace App\Http\Forms;
 
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Extensions\Constraints as CustomAssert;
+use App\Constraints as CustomAssert;
 use App\Models\Department;
 use App\Models\Group;
 use App\Models\User;
