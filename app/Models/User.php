@@ -103,30 +103,6 @@ class User extends AbstractUser
         return $this->belongsTo(Group::class);
     }
 
-    /**
-     * Get user departments
-     */
-    public function departments()
-    {
-        return $this->belongsToMany(Department::class, 'users_departments', 'department_id', 'user_id');
-    }
-
-    /**
-     * Get headed department
-     */
-    public function department()
-    {
-        return $this->hasOne(Department::class, 'head_id');
-    }
-
-    /**
-     * Get user requests
-     */
-    public function requests()
-    {
-        return $this->hasMany(Request::class, 'requestor_id');
-    }
-
     public function setAttribute($key, $value)
     {
         $isRememberTokenAttribute = $key == $this->getRememberTokenName();

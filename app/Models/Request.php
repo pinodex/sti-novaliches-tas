@@ -15,7 +15,7 @@ class Request extends Model
      */
     public function requestor()
     {
-        return $this->belongsTo(User::class, 'requestor_id');
+        return $this->belongsTo(Employee::class, 'requestor_id');
     }
 
     /**
@@ -23,7 +23,7 @@ class Request extends Model
      */
     public function approver()
     {
-        return $this->belongsTo(User::class, 'approver_id');
+        return $this->belongsTo(Employee::class, 'approver_id');
     }
 
     /**
