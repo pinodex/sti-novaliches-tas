@@ -110,7 +110,7 @@ class EmployeeController extends Controller
      */
     public function logs(Request $request, Employee $model)
     {
-        $logs = $model->logs()->paginate(50);
+        $logs = $model->logs()->orderBy('id', 'DESC')->paginate(50);
 
         return view('dashboard.employees.logs', [
             'user'  => $model,
