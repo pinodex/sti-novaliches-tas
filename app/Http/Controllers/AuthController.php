@@ -40,6 +40,10 @@ class AuthController extends Controller
                 ]);
             }
 
+            if ($next = $request->query->get('next')) {
+                return redirect($request->getSchemeAndHttpHost() . '/' . ltrim(urldecode($next), '/'));
+            }
+
             return Auth::user()->getRedirectAction();
         }
 
