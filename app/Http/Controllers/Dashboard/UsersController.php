@@ -134,6 +134,10 @@ class UsersController extends Controller
                     $model->picture = $data['picture'];
                 } catch (\Exception $e) {}
             }
+
+            if ($data['require_password_change']) {
+                $model->last_password_change_at = null;
+            }
             
             $model->save();
 

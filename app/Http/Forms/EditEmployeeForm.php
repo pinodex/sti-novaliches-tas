@@ -85,6 +85,11 @@ class EditEmployeeForm extends Form
             ])
         ]);
 
+        $this->add('require_password_change', Type\CheckboxType::class, [
+            'label'             => 'Require password change on login',
+            'required'          => false
+        ]);
+
         $this->add('type', Type\ChoiceType::class, [
             'choices'   => Employee::$types
         ]);

@@ -29,25 +29,28 @@ class SettingsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->require_password_change) {
-            session()->flash('message', ['warning', __('settings.password_change_required')]);
-        }
-
         $form = with(new SettingsForm($user))
             ->getForm()
             ->handleRequest($request);
 
         if ($form->isValid()) {
-            $user->fill($form->getData());
-            $user->require_password_change = false;
+            $data = $form->getData();
+
+            $user->fill($data);
+            
+            $user->last_password_change_at = date('Y-m-d H:i:s');
+            
             $user->save();
+
+            $user->log($request, 'change_password');
 
             return redirect()->route('dashboard.index')
                 ->with('message', ['success', __('settings.password_updated')]);
         }
 
         return view('account.settings.index', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'password_change_required' => $user->last_password_change_at == null
         ]);
     }
 }

@@ -149,6 +149,10 @@ class EmployeeController extends Controller
                 } catch (\Exception $e) {}
             }
 
+            if ($data['require_password_change']) {
+                $model->last_password_change_at = null;
+            }
+
             $model->save();
 
             return redirect()->route('dashboard.employees.index')
