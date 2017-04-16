@@ -11,13 +11,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Components\MultiAuth\AbstractUser;
 use App\Traits\PasswordHashable;
 use App\Traits\SearchableName;
 use App\Traits\WithPicture;
 
-class Employee extends Model
+class Employee extends AbstractUser
 {
     const TYPE_FULL_TIME = 'full_time';
 
@@ -63,6 +63,43 @@ class Employee extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return 'employee:' . $this->attributes['id'];
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->attributes['password'];
+    }
+
+    public function getRememberToken()
+    {
+        return null;
+    }
+
+    public function setRememberToken($value) {}
+
+    public function getRememberTokenName()
+    {
+        return null;
+    }
+
+    public function getRedirectAction()
+    {
+        return redirect()->route('dashboard.index');
+    }
+
+    public function canDo($permissions)
+    {
+        return false;
+    }
 
     /**
      * Get full name from name components

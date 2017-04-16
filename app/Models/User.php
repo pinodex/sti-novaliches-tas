@@ -12,12 +12,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Traits\PasswordHashable;
-use App\Traits\WithPicture;
+use App\Components\MultiAuth\AbstractUser;
 use App\Components\Acl;
+use App\Traits\WithPicture;
+use App\Traits\PasswordHashable;
 
-class User extends Authenticatable
+class User extends AbstractUser
 {
     use SoftDeletes,
         PasswordHashable,
@@ -48,6 +48,52 @@ class User extends Authenticatable
         'updated_at',
         'deleted_at'
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password'
+    ];
+    
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return 'user:' . $this->attributes['id'];
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->attributes['password'];
+    }
+
+    public function getRememberToken()
+    {
+        return null;
+    }
+
+    public function setRememberToken($value) {}
+
+    public function getRememberTokenName()
+    {
+        return null;
+    }
+
+    public function getRedirectAction()
+    {
+        return redirect()->route('dashboard.index');
+    }
+
+    public function canDo($permissions)
+    {
+        return Acl::for($this)->can($permissions);
+    }
 
     /**
      * Get user group
@@ -81,27 +127,6 @@ class User extends Authenticatable
         return $this->hasMany(Request::class, 'requestor_id');
     }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password'
-    ];
-
-    public function getRememberToken()
-    {
-        return null;
-    }
-
-    public function setRememberToken($value) {}
-
-    public function getRememberTokenName()
-    {
-        return null;
-    }
-
     public function setAttribute($key, $value)
     {
         $isRememberTokenAttribute = $key == $this->getRememberTokenName();
@@ -123,17 +148,5 @@ class User extends Authenticatable
         }
 
         return false;
-    }
-
-    /**
-     * Check if user has granted permissions
-     * 
-     * @param string $permissions,... Permission name
-     * 
-     * @return boolean
-     */
-    public function canDo($permissions)
-    {
-        return Acl::for($this)->can($permissions);
     }
 }

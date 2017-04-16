@@ -40,7 +40,7 @@ class AuthController extends Controller
                 ]);
             }
 
-            return redirect()->route('index');
+            return Auth::user()->getRedirectAction();
         }
 
         return view('auth.login', [
