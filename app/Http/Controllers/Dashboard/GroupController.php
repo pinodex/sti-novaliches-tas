@@ -19,7 +19,7 @@ use App\Http\Forms\DeleteGroupConfirmForm;
 use App\Components\Acl;
 use App\Models\Group;
 
-class GroupsController extends Controller
+class GroupController extends Controller
 {
     public function __construct()
     {

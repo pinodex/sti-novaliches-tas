@@ -37,61 +37,61 @@ Route::group([
 
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
 
-        Route::get('/', 'RequestsController@index')->name('index');
-        Route::get('/me', 'RequestsController@me')->name('me');
-        Route::match(['get', 'post'], '/create', 'RequestsController@create')->name('create');
-        Route::get('/{model}', 'RequestsController@view')->name('view');
+        Route::get('/', 'RequestController@index')->name('index');
+        Route::get('/me', 'RequestController@me')->name('me');
+        Route::match(['get', 'post'], '/create', 'RequestController@create')->name('create');
+        Route::get('/{model}', 'RequestController@view')->name('view');
 
     });
 
     Route::group(['prefix' => 'bulletins', 'as' => 'bulletins.'], function () {
 
-        Route::get('/', 'BulletinsController@index')->name('index');
-        Route::match(['get', 'post'], '/create', 'BulletinsController@edit')->name('create');
-        Route::match(['get', 'post'], '/{model}/edit', 'BulletinsController@edit')->name('edit');
-        Route::post('/{model}/delete', 'BulletinsController@delete')->name('delete');
+        Route::get('/', 'BulletinController@index')->name('index');
+        Route::match(['get', 'post'], '/create', 'BulletinController@edit')->name('create');
+        Route::match(['get', 'post'], '/{model}/edit', 'BulletinController@edit')->name('edit');
+        Route::post('/{model}/delete', 'BulletinController@delete')->name('delete');
 
     });
 
-    // UsersController
+    // UserController
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
 
-        Route::get('/', 'UsersController@index')->name('index');
-        Route::get('/deleted', 'UsersController@deleted')->name('deleted');
-        Route::match(['get', 'post'], '/add', 'UsersController@edit')->name('add');
-        Route::match(['get', 'post'], '/{model}/edit', 'UsersController@edit')->name('edit');
-        Route::post('/{model}/delete', 'UsersController@delete')->name('delete');
-        Route::post('/restore', 'UsersController@restore')->name('restore');
-        Route::post('/purge', 'UsersController@purge')->name('purge');
-        Route::get('/{model}', 'UsersController@view')->name('view');
+        Route::get('/', 'UserController@index')->name('index');
+        Route::get('/deleted', 'UserController@deleted')->name('deleted');
+        Route::match(['get', 'post'], '/add', 'UserController@edit')->name('add');
+        Route::match(['get', 'post'], '/{model}/edit', 'UserController@edit')->name('edit');
+        Route::post('/{model}/delete', 'UserController@delete')->name('delete');
+        Route::post('/restore', 'UserController@restore')->name('restore');
+        Route::post('/purge', 'UserController@purge')->name('purge');
+        Route::get('/{model}', 'UserController@view')->name('view');
 
     });
 
-    // GroupsController
+    // GroupController
     Route::group(['prefix' => 'groups', 'as' => 'groups.'], function () {
 
-        Route::get('/', 'GroupsController@index')->name('index');
-        Route::get('/deleted', 'GroupsController@deleted')->name('deleted');
-        Route::match(['get', 'post'], '/add', 'GroupsController@edit')->name('add');
-        Route::match(['get', 'post'], '/{model}/edit', 'GroupsController@edit')->name('edit');
-        Route::post('/{model}/delete', 'GroupsController@delete')->name('delete');
-        Route::match(['get', 'post'], '/{model}/delete/confirm', 'GroupsController@deleteConfirm')->name('delete.confirm');
-        Route::post('/restore', 'GroupsController@restore')->name('restore');
-        Route::post('/purge', 'GroupsController@purge')->name('purge');
+        Route::get('/', 'GroupController@index')->name('index');
+        Route::get('/deleted', 'GroupController@deleted')->name('deleted');
+        Route::match(['get', 'post'], '/add', 'GroupController@edit')->name('add');
+        Route::match(['get', 'post'], '/{model}/edit', 'GroupController@edit')->name('edit');
+        Route::post('/{model}/delete', 'GroupController@delete')->name('delete');
+        Route::match(['get', 'post'], '/{model}/delete/confirm', 'GroupController@deleteConfirm')->name('delete.confirm');
+        Route::post('/restore', 'GroupController@restore')->name('restore');
+        Route::post('/purge', 'GroupController@purge')->name('purge');
 
     });
 
-    // DepartmentsController
+    // DepartmentController
     Route::group(['prefix' => 'departments', 'as' => 'departments.'], function () {
 
-        Route::get('/', 'DepartmentsController@index')->name('index');
-        Route::get('/deleted', 'DepartmentsController@deleted')->name('deleted');
-        Route::match(['get', 'post'], '/add', 'DepartmentsController@edit')->name('add');
-        Route::match(['get', 'post'], '/{model}/edit', 'DepartmentsController@edit')->name('edit');
-        Route::post('/{model}/delete', 'DepartmentsController@delete')->name('delete');
-        Route::match(['get', 'post'], '/{model}/delete/confirm', 'DepartmentsController@deleteConfirm')->name('delete.confirm');
-        Route::post('/restore', 'DepartmentsController@restore')->name('restore');
-        Route::post('/purge', 'DepartmentsController@purge')->name('purge');
+        Route::get('/', 'DepartmentController@index')->name('index');
+        Route::get('/deleted', 'DepartmentController@deleted')->name('deleted');
+        Route::match(['get', 'post'], '/add', 'DepartmentController@edit')->name('add');
+        Route::match(['get', 'post'], '/{model}/edit', 'DepartmentController@edit')->name('edit');
+        Route::post('/{model}/delete', 'DepartmentController@delete')->name('delete');
+        Route::match(['get', 'post'], '/{model}/delete/confirm', 'DepartmentController@deleteConfirm')->name('delete.confirm');
+        Route::post('/restore', 'DepartmentController@restore')->name('restore');
+        Route::post('/purge', 'DepartmentController@purge')->name('purge');
 
     });
 

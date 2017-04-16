@@ -18,7 +18,7 @@ use App\Http\Forms\CreateRequestForm;
 use App\Models\LeaveBalance;
 use App\Models\Request as RequestModel;
 
-class RequestsController extends Controller
+class RequestController extends Controller
 {
     /**
      * Requests index page

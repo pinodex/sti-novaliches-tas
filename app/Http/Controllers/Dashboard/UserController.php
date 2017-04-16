@@ -21,7 +21,7 @@ use App\Models\LeaveType;
 use App\Models\UserPicture;
 use App\Components\Acl;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     public function __construct()
     {

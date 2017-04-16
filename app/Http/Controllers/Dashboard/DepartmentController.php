@@ -19,7 +19,7 @@ use App\Http\Forms\DeleteDepartmentConfirmForm;
 use App\Models\Department;
 use App\Components\Acl;
 
-class DepartmentsController extends Controller
+class DepartmentController extends Controller
 {
     public function __construct()
     {

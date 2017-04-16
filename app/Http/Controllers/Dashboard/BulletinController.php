@@ -18,7 +18,7 @@ use App\Http\Forms\EditBulletinForm;
 use App\Models\Bulletin;
 use App\Components\Acl;
 
-class BulletinsController extends Controller
+class BulletinController extends Controller
 {
     public function __construct()
     {
