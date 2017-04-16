@@ -14,7 +14,7 @@ namespace App\Http\Middleware;
 use Auth;
 use Closure;
 
-class RequirePasswordChange
+class CheckProvider
 {
     /**
      * Handle an incoming request.
@@ -23,12 +23,18 @@ class RequirePasswordChange
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $provider)
     {
-        if (Auth::user()->last_password_change_at == null) {
-            return redirect()->route('account.settings.index');
+        $providers = Auth::getProvider()->getProviders();
+
+        if (array_key_exists($provider, $providers)) {
+            $providingModel = $providers[$provider]::getProvidingModel();
+
+            if (get_class(Auth::user()) == $providingModel) {
+                return $next($request);
+            }
         }
 
-        return $next($request);
+        abort(401);
     }
 }

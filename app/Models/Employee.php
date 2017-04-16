@@ -139,7 +139,7 @@ class Employee extends AbstractUser
 
     public function getRedirectAction()
     {
-        return redirect()->route('dashboard.index');
+        return redirect()->route('employee.index');
     }
 
     public function canDo($permissions)

@@ -26,6 +26,11 @@ class BaseProvider implements BaseUserProvider
         $this->providers = $providers;
     }
 
+    public function getProviders()
+    {
+        return $this->providers;
+    }
+
     public function retrieveById($identifier)
     {
         $identifier = explode(':', $identifier);

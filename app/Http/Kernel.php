@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'can' => \App\Http\Middleware\AccessControl::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'require_password_change' => \App\Http\Middleware\RequirePasswordChange::class
+        'require_password_change' => \App\Http\Middleware\RequirePasswordChange::class,
+        'provider' => \App\Http\Middleware\CheckProvider::class
     ];
 }

@@ -26,7 +26,12 @@ Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthCo
 
 Route::get('/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
 
-Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dashboard.', 'middleware' => ['auth', 'require_password_change']], function () {
+Route::group([
+    'namespace'     => 'Dashboard',
+    'prefix'        => 'dashboard',
+    'as'            => 'dashboard.',
+    'middleware'    => ['auth', 'require_password_change', 'provider:user']
+], function () {
 
     Route::get('/', 'MainController@index')->name('index');
 
@@ -104,6 +109,17 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::get('/{model}/logs', 'EmployeeController@logs')->name('logs');
 
     });
+
+});
+
+Route::group([
+    'namespace'     => 'Employee',
+    'prefix'        => 'employee',
+    'as'            => 'employee.',
+    'middleware'    => ['auth', 'require_password_change', 'provider:employee']
+], function () {
+
+    Route::get('/', 'MainController@index')->name('index');
 
 });
 
