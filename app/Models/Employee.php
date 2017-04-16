@@ -11,6 +11,7 @@
 
 namespace App\Models;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Components\MultiAuth\AbstractUser;
 use App\Traits\PasswordHashable;
@@ -23,7 +24,7 @@ class Employee extends AbstractUser
         PasswordHashable,
         SearchableName,
         WithPicture;
-        
+
     const TYPE_FULL_TIME = 'full_time';
 
     const TYPE_PART_TIME = 'part_time';
@@ -95,6 +96,24 @@ class Employee extends AbstractUser
     public function logs()
     {
         return $this->hasMany(EmployeeLog::class);
+    }
+
+    /**
+     * Log action for employee
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param string $action Action code
+     */
+    public function log(Request $request, $action)
+    {
+        $log = new EmployeeLog();
+
+        $log->action = $action;
+        $log->timestamp = date('Y-m-d H:i:s');
+        $log->ip_address = $request->ip();
+        $log->user_agent = $request->header('User-Agent');
+
+        $this->logs()->save($log);
     }
 
     public function getAuthIdentifierName()

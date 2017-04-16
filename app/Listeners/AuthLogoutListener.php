@@ -2,11 +2,12 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Employee;
 
-class AuthListener
+class AuthLogoutListener
 {
     /**
      * Create the event listener.
@@ -21,11 +22,12 @@ class AuthListener
     /**
      * Handle the event.
      *
-     * @param \Illuminate\Auth\Events\Login $event
+     * @param \Illuminate\Auth\Events\Logout $event
      */
-    public function handle(Login $event)
+    public function handle(Logout $event)
     {
-        $event->user->last_login_at = date('Y-m-d H:i:s');
-        $event->user->save();
+        if ($event->user instanceof Employee) {
+            $event->user->log(request(), 'logout');
+        }
     }
 }

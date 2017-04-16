@@ -54,6 +54,8 @@ class EmployeeProvider implements ProviderInterface
             $user->last_login_at = date('Y-m-d H:i:s');
             $user->save();
 
+            $user->log(request(), 'login');
+
             return true;
         }
 

@@ -95,8 +95,26 @@ class EmployeeController extends Controller
      */
     public function view(Request $request, Employee $model)
     {
-        return view('dashboard.employees.view', [
+        return view('dashboard.employees.history', [
             'user'  => $model
+        ]);
+    }
+
+    /**
+     * Employee logs page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Employee $model Employee model object
+     * 
+     * @return mixed
+     */
+    public function logs(Request $request, Employee $model)
+    {
+        $logs = $model->logs()->paginate(50);
+
+        return view('dashboard.employees.logs', [
+            'user'  => $model,
+            'logs'  => $logs
         ]);
     }
 

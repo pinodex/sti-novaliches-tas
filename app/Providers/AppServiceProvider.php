@@ -35,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
                 $twig->addGlobal('bulletins', Bulletin::orderBy('created_at', 'DESC')->with('author')->get());
                 $executed = true;
             }
+
+            $twig->addGlobal('current_route', request()->route()->getName());
         });
 
         User::observe(UserObserver::class);

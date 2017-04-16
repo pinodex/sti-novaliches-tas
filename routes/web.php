@@ -90,6 +90,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
 
     });
 
+    // EmployeesController
     Route::group(['prefix' => 'employees', 'as' => 'employees.'], function () {
 
         Route::get('/', 'EmployeeController@index')->name('index');
@@ -100,6 +101,7 @@ Route::group(['namespace' => 'Dashboard', 'prefix' => 'dashboard', 'as' => 'dash
         Route::post('/restore', 'EmployeeController@restore')->name('restore');
         Route::post('/purge', 'EmployeeController@purge')->name('purge');
         Route::get('/{model}', 'EmployeeController@view')->name('view');
+        Route::get('/{model}/logs', 'EmployeeController@logs')->name('logs');
 
     });
 
