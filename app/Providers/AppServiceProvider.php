@@ -5,9 +5,7 @@ namespace App\Providers;
 use Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-use App\Observers\UserObserver;
 use App\Models\Bulletin;
-use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,8 +36,6 @@ class AppServiceProvider extends ServiceProvider
 
             $twig->addGlobal('current_route', request()->route()->getName());
         });
-
-        User::observe(UserObserver::class);
     }
 
     /**
