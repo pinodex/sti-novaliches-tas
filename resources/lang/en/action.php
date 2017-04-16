@@ -1,6 +1,7 @@
 <?php
 
 return [
-    'login'         => 'Employee login',
-    'logout'        => 'Employee logout'
+    'login'             => 'Login',
+    'logout'            => 'Logout',
+    'change_password'   => 'Change Password'
 ];

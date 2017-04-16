@@ -13,6 +13,7 @@ namespace App\Components\MultiAuth;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 abstract class AbstractUser extends Model implements Authenticatable
 {
@@ -31,4 +32,12 @@ abstract class AbstractUser extends Model implements Authenticatable
      * @return boolean
      */
     abstract public function canDo($permissions);
+
+    /**
+     * Log action for employee
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param string $action Action code
+     */
+    abstract public function log(Request $request, $action);
 }

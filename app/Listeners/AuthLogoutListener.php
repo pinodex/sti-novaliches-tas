@@ -26,8 +26,6 @@ class AuthLogoutListener
      */
     public function handle(Logout $event)
     {
-        if ($event->user instanceof Employee) {
-            $event->user->log(request(), 'logout');
-        }
+        $event->user->log(request(), 'logout');
     }
 }

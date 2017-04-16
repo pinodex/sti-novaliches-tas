@@ -97,13 +97,7 @@ class Employee extends AbstractUser
     {
         return $this->hasMany(EmployeeLog::class);
     }
-
-    /**
-     * Log action for employee
-     * 
-     * @param \Illuminate\Http\Request $request Request object
-     * @param string $action Action code
-     */
+    
     public function log(Request $request, $action)
     {
         $log = new EmployeeLog();

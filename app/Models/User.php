@@ -11,6 +11,7 @@
 
 namespace App\Models;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Components\MultiAuth\AbstractUser;
 use App\Components\Acl;
@@ -64,6 +65,11 @@ class User extends AbstractUser
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function log(Request $request, $action)
+    {
+        
     }
     
     public function getAuthIdentifierName()
