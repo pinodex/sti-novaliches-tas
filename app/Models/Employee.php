@@ -19,6 +19,11 @@ use App\Traits\WithPicture;
 
 class Employee extends AbstractUser
 {
+    use SoftDeletes,
+        PasswordHashable,
+        SearchableName,
+        WithPicture;
+        
     const TYPE_FULL_TIME = 'full_time';
 
     const TYPE_PART_TIME = 'part_time';
@@ -27,11 +32,6 @@ class Employee extends AbstractUser
         'Full Time' => self::TYPE_FULL_TIME,
         'Part Time' => self::TYPE_PART_TIME
     ];
-
-    use SoftDeletes,
-        PasswordHashable,
-        SearchableName,
-        WithPicture;
 
     /**
      * The attributes that are mass assignable.
@@ -63,6 +63,39 @@ class Employee extends AbstractUser
         'updated_at',
         'deleted_at'
     ];
+
+    /**
+     * Get full name from name components
+     * 
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return sprintf('%s, %s',
+            $this->last_name,
+            $this->first_name
+        );
+    }
+
+    /**
+     * Get the associated department models
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    /**
+     * Get the associated employee logs
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs()
+    {
+        return $this->hasMany(EmployeeLog::class);
+    }
 
     public function getAuthIdentifierName()
     {
@@ -99,28 +132,5 @@ class Employee extends AbstractUser
     public function canDo($permissions)
     {
         return false;
-    }
-
-    /**
-     * Get full name from name components
-     * 
-     * @return string
-     */
-    public function getNameAttribute()
-    {
-        return sprintf('%s, %s',
-            $this->last_name,
-            $this->first_name
-        );
-    }
-
-    /**
-     * Get the associated department models
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
     }
 }

@@ -57,6 +57,14 @@ class User extends AbstractUser
     protected $hidden = [
         'password'
     ];
+
+    /**
+     * Get user group
+     */
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
     
     public function getAuthIdentifierName()
     {
@@ -95,14 +103,6 @@ class User extends AbstractUser
         return Acl::for($this)->can($permissions);
     }
 
-    /**
-     * Get user group
-     */
-    public function group()
-    {
-        return $this->belongsTo(Group::class);
-    }
-
     public function setAttribute($key, $value)
     {
         $isRememberTokenAttribute = $key == $this->getRememberTokenName();
@@ -110,19 +110,5 @@ class User extends AbstractUser
         if (!$isRememberTokenAttribute) {
             parent::setAttribute($key, $value);
         }
-    }
-
-    /**
-     * Check if the department headed by this user is a global department
-     * 
-     * @return bool
-     */
-    public function isInGlobalDepartment()
-    {
-        if ($this->department) {
-            return $this->department->is_global;
-        }
-
-        return false;
     }
 }
