@@ -16,7 +16,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type;
 use App\Models\Request;
 
-class VacationLeaveType extends AbstractType
+class OfficialBusinessType extends AbstractType
 {
     protected $timeChoices = [
         '9:00 AM'   => '9',
@@ -40,40 +40,22 @@ class VacationLeaveType extends AbstractType
 
     public static function getName()
     {
-        return 'Vacation Leave';
+        return 'Official Business';
     }
 
     public static function getMoniker()
     {
-        return 'vacation_leave';
+        return 'official_business';
     }
 
     public function getFormTemplate()
     {
-        return '/templates/leave_form.twig';
+        return '/templates/official_business.twig';
     }
 
     protected function onSubmitted(Form $form)
     {
         $data = $form->getData();
-        
-        $days = $this->computeDays(
-            $data['from_date'],
-            $data['from_time'],
-            $data['to_date'],
-            $data['to_time']
-        );
-
-        if ($days == 0) {
-            return null;
-        }
-
-        $data['from_date'] .= ' ' . array_flip($this->timeChoices)[$data['from_time']];
-        $data['to_date'] .= ' ' . array_flip($this->timeChoices)[$data['to_time']];
-
-        $data['from_date'] = (new DateTime($data['from_date']))->format('Y-m-d H:i:s');
-        $data['to_date'] = (new DateTime($data['to_date']))->format('Y-m-d H:i:s');
-
         $request = new Request();
         
         $request->fill($data);
@@ -83,7 +65,7 @@ class VacationLeaveType extends AbstractType
         }
 
         $request->type = $this->getMoniker();
-        $request->incurred_balance = $days;
+        $request->incurred_balance = 0;
 
         $this->requestor->requests()->save($request);
 

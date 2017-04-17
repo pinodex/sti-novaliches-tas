@@ -32,7 +32,7 @@
                         <th>Type</th>
                         <th>Approver</th>
                         <th>Reason</th>
-                        <th>Days</th>
+                        <th>Incurred Balance</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -42,7 +42,7 @@
                             <td>{{ request.type }}</td>
                             <td>{{ request.approver ? request.approver.name : 'N/A' }}</td>
                             <td>{{ request.reason[0:20] ~ '...' }}</td>
-                            <td>{{ request.days }}</td>
+                            <td>{{ request.incurred_balance }}</td>
                             <td>{{ request.status }}</td>
                         </tr>
                     {% else %}

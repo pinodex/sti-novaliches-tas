@@ -16,7 +16,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type;
 use App\Models\Request;
 
-class VacationLeaveType extends AbstractType
+class SickLeaveType extends AbstractType
 {
     protected $timeChoices = [
         '9:00 AM'   => '9',
@@ -40,12 +40,12 @@ class VacationLeaveType extends AbstractType
 
     public static function getName()
     {
-        return 'Vacation Leave';
+        return 'Sick Leave';
     }
 
     public static function getMoniker()
     {
-        return 'vacation_leave';
+        return 'sick_leave';
     }
 
     public function getFormTemplate()

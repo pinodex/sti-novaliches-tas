@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Request extends Model
 {
     protected $fillable = [
-        'requestor_id', 'approver_id', 'type_id', 'from_date', 'to_date', 'days', 'reason', 'is_approved'
+        'requestor_id', 'approver_id', 'type_id', 'from_date', 'to_date', 'incurred_balance', 'reason', 'is_approved'
     ];
 
     /**
