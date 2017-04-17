@@ -140,6 +140,13 @@ return [
                         'route'         => 'employee.requests.index',
                         'name'          => 'Requests',
                     ],
+
+                    [
+                        'icon'          => 'inbox',
+                        'identifier'    => 'inbox',
+                        'route'         => 'employee.requests.inbox.index',
+                        'name'          => 'Request Inbox',
+                    ],
                 ],
             ],
 

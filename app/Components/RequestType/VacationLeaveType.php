@@ -142,19 +142,7 @@ class VacationLeaveType extends AbstractType
 
         $this->form->add('reason', Type\TextareaType::class);
     }
-
-    /**
-     * Get approver for requestor
-     * 
-     * @return \App\Models\Employee
-     */
-    protected function getApprover()
-    {
-        if ($this->requestor->department && $this->requestor->department->head) {
-            return $this->requestor->department->head;
-        }   
-    }
-
+    
     /**
      * Compute days inccured
      * 

@@ -44,7 +44,7 @@ class SettingsController extends Controller
 
             $user->log($request, 'change_password');
 
-            return redirect()->route('dashboard.index')
+            return $user->getRedirectAction()
                 ->with('message', ['success', __('settings.password_updated')]);
         }
 

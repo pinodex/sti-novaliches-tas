@@ -8,15 +8,21 @@
                     <tr>
                         <th>Type</th>
                         <th>Approver</th>
-                        <th>Submission Date</th>
+                        <th>Reason</th>
+                        <th>Incurred Balance</th>
+                        <th>Date Filed</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for request in user.requests %}
                         <tr class="clickable" @click="location('{{ route('dashboard.requests.view', { model: request }, false) }}')">
-                            <td>{{ request.type ? request.type.name : 'N/A' }}</td>
+                            <td>{{ request.type }}</td>
                             <td>{{ request.approver ? request.approver.name : 'N/A' }}</td>
-                            <td>{{ request.created_at ? request.created_at|date('M d, Y h:i A') : 'N/A' }}</td>
+                            <td>{{ request.reason[0:20] ~ '...' }}</td>
+                            <td>{{ request.incurred_balance }}</td>
+                            <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                            <td>{{ request.status }}</td>
                         </tr>
                     {% else %}
                         <tr>

@@ -91,10 +91,6 @@ class DepartmentController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
-            if ($data['priority'] == null) {
-                $data['priority'] = 0;
-            }
-
             // Set other department with the same head to unassigned
             Department::where('head_id', $data['head_id'])->where('id', '!=', $model->id)->update([
                 'head_id' => null

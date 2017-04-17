@@ -1,0 +1,51 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Request Inbox' %}
+{% set active_menu = 'inbox' %}
+
+{% block subcontent %}
+    <div class="columns is-marginless">
+        <div class="column is-12">
+            <table class="table is-marginless">
+                <thead>
+                    <tr>
+                        <th>Requestor</th>
+                        <th>Type</th>
+                        <th>Reason</th>
+                        <th>Incurred Balance</th>
+                        <th>Date Filed</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                        <tr class="clickable" @click="location('{{ route('employee.requests.inbox.view', { model: request }, false) }}')">
+                            <td>{{ request.requestor ? request.requestor.name : 'N/A' }}</td>
+                            <td>{{ request.type }}</td>
+                            <td>{{ request.reason[0:20] ~ '...' }}</td>
+                            <td>{{ request.incurred_balance }}</td>
+                            <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                            <td>{{ request.status }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-3 is-offset-9">
+            <span class="select">
+                <select name="pages" @change="changePaginationPage" v-model="paginationPage">
+                    {% for i in 1..requests.lastPage %}
+                        <option value="{{ i }}">Page {{ i }}</option>
+                    {% endfor %}
+                </select>
+            </span>
+        </div>
+    </div>
+{% endblock %}

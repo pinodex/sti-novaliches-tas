@@ -16,7 +16,15 @@ use Illuminate\Database\Eloquent\Model;
 class Request extends Model
 {
     protected $fillable = [
-        'requestor_id', 'approver_id', 'type_id', 'from_date', 'to_date', 'incurred_balance', 'reason', 'is_approved'
+        'requestor_id',
+        'approver_id',
+        'type_id',
+        'from_date',
+        'to_date',
+        'incurred_balance',
+        'reason',
+        'disapproval_reason',
+        'is_approved'
     ];
 
     /**
@@ -37,12 +45,16 @@ class Request extends Model
 
     public function getStatusAttribute($value)
     {
-        if ($value === false) {
-            return 'Denied';
+        if ($this->attributes['is_approved'] === 0) {
+            return 'Disapproved';
         }
 
-        if ($value === true) {
+        if ($this->attributes['is_approved'] === 1) {
             return 'Approved';
+        }
+
+        if ($this->attributes['is_approved'] === 5) {
+            return 'Escalated';
         }
 
         return 'Waiting';

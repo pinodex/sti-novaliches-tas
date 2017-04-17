@@ -126,18 +126,6 @@ class OfficialBusinessType extends AbstractType
     }
 
     /**
-     * Get approver for requestor
-     * 
-     * @return \App\Models\Employee
-     */
-    protected function getApprover()
-    {
-        if ($this->requestor->department && $this->requestor->department->head) {
-            return $this->requestor->department->head;
-        }   
-    }
-
-    /**
      * Compute days inccured
      * 
      * @param string $fromDate Starting date in YYYY-MM-DD format

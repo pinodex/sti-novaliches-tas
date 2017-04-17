@@ -122,6 +122,16 @@ class Employee extends AbstractUser
     {
         return $this->hasMany(Request::class, 'requestor_id');
     }
+
+    /**
+     * Get the associated requests linked with approver
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function inbox()
+    {
+        return $this->hasMany(Request::class, 'approver_id');
+    }
     
     public function log(HttpRequest $request, $action)
     {

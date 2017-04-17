@@ -74,6 +74,11 @@
             end_date: null,
             end_time: null
         },
+
+        inbox: {
+            action: null,
+            disapproval_reason: null
+        },
         
         modals: {
             alert: true,
@@ -129,6 +134,10 @@
             params.page = this.paginationPage;
 
             location = location.pathname + '?' + stringifyUrlParams(params);
+        },
+
+        submitForm: function(id) {
+            document.getElementById(id).submit();
         },
 
         printDocument: function() {

@@ -67,6 +67,20 @@ abstract class AbstractType
     }
 
     /**
+     * Get approver for requestor
+     * 
+     * @return \App\Models\Employee
+     */
+    protected function getApprover()
+    {
+        if ($this->requestor->department && $this->requestor->department->head) {
+            if ($this->requestor->id != $this->requestor->department->head->id) {
+                return $this->requestor->department->head;
+            }
+        }   
+    }
+
+    /**
      * Get type name
      * 
      * @return string

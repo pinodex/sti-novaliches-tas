@@ -438,32 +438,23 @@ input[readonly] {
     font-weight: 400;
 }
 
-.info-set {
-    .title {
-        font-size: 14px;
-        margin-bottom: 0;
-        color: #666;
+.info {
+    p {
+        margin: 0;
     }
 
-    .title:not(:last-child) {
-        margin-bottom: 0;
+    .title {
+        font-size: 16px;
+        margin-bottom: 0 !important;
+        color: #777;
     }
 
     .value {
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 18px;
     }
 
-    .info + .info {
-        margin-top: 15px;
-    }
-}
-
-.info {
-    .title {
-        font-size: 14px;
-        margin-bottom: 0;
-        color: #666;
+    & + .info {
+        margin-top: 10px;
     }
 }
 

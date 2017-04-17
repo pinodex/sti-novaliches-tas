@@ -134,6 +134,14 @@ Route::group([
 
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
 
+        Route::group(['namespace' => 'Requests', 'prefix' => 'inbox', 'as' => 'inbox.'], function () {
+
+            Route::get('/', 'InboxController@index')->name('index');
+            Route::get('/{model}', 'InboxController@view')->name('view');
+            Route::post('/{model}/action', 'InboxController@action')->name('action');
+
+        });
+
         Route::get('/', 'RequestController@index')->name('index');
         Route::post('/create', 'RequestController@create')->name('create');
         Route::match(['get', 'post'], '/create/{type}', 'RequestController@createType')->name('create.type');
