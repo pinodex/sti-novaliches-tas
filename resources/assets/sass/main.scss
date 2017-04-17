@@ -481,25 +481,29 @@ input[readonly] {
 .modal-container {
     background: #fff;
     margin: 0px auto;
-    padding: 20px;
     max-width: 480px;
     transition: all .3s ease;
-    border-radius: 5px;
+    border-radius: 3px;
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
 }
 
 .modal-header > * {
     color: #3273dc;
-    margin: 0;
-    margin-bottom: 5px;
     font-size: 20px;
+    margin: 0;
 }
 
 .modal-body {
-    margin-bottom: 30px;
+    padding: 15px;
 }
 
-.modal-footer {
+.modal-footer:not(:empty) {
     text-align: right;
+    padding: 15px;
 
     button, .button {
         margin-bottom: 0;
