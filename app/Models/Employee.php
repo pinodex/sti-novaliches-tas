@@ -11,7 +11,7 @@
 
 namespace App\Models;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Components\MultiAuth\AbstractUser;
 use App\Traits\PasswordHashable;
@@ -41,6 +41,7 @@ class Employee extends AbstractUser
      */
     protected $fillable = [
         'department_id',
+        'profile_id',
         'username',
         'password',
         'first_name',
@@ -63,6 +64,10 @@ class Employee extends AbstractUser
         'created_at',
         'updated_at',
         'deleted_at'
+    ];
+
+    protected $appends = [
+        'name'
     ];
 
     /**
@@ -89,6 +94,16 @@ class Employee extends AbstractUser
     }
 
     /**
+     * Get the associated profile model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
+     */
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class);
+    }
+
+    /**
      * Get the associated employee logs
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -97,8 +112,18 @@ class Employee extends AbstractUser
     {
         return $this->hasMany(EmployeeLog::class);
     }
+
+    /**
+     * Get the associated requests
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function requests()
+    {
+        return $this->hasMany(Request::class, 'requestor_id');
+    }
     
-    public function log(Request $request, $action)
+    public function log(HttpRequest $request, $action)
     {
         $log = new EmployeeLog();
 
@@ -108,6 +133,12 @@ class Employee extends AbstractUser
         $log->user_agent = $request->header('User-Agent');
 
         $this->logs()->save($log);
+    }
+
+    public function getLeavesBalanceAttribute()
+    {
+        // TODO: computation
+        return $this->profile->allocated_days;
     }
 
     public function getAuthIdentifierName()
@@ -144,6 +175,6 @@ class Employee extends AbstractUser
 
     public function canDo($permissions)
     {
-        return false;
+        return $permissions == ['*'] || $permissions == '*';
     }
 }

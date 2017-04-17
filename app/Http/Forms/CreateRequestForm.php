@@ -12,50 +12,28 @@
 namespace App\Http\Forms;
 
 use Symfony\Component\Form\Extension\Core\Type;
-use App\Models\LeaveBalance;
 use App\Models\Department;
 use App\Models\Request;
-use App\Models\User;
+use App\Models\Employee;
 
 class CreateRequestForm extends Form
 {
     protected $requestor;
 
-    protected $approvers = [];
+    protected $approver;
 
     protected $types = [];
 
-    public function __construct(User $requestor, Request $model = null)
+    public function __construct(Employee $requestor, Request $model = null)
     {
         $this->requestor = $requestor;
-
-        $requestor->departments->each(function (Department $department) {
-            if ($department->head) {
-                $this->approvers[$department->head->id] = $department->head->name;
-            }
-        });
-
-        Department::where('is_global', 1)->orderBy('priority')->each(function (Department $department) {
-            if ($department->head) {
-                $this->approvers[$department->head->id] = $department->head->name;
-            }    
-        });
-
-        $requestor->leaveBalances->each(function (LeaveBalance $balance) {
-            if ($balance->leaveType) {
-                $this->types[$balance->leaveType->id] = $balance->leaveType->name;
-            }
-        });
+        $this->approver = $requestor->department->head;
 
         parent::__construct($model);
     }
 
     public function create()
     {
-        $this->add('requestor_id', Type\HiddenType::class, [
-            'data' => $this->requestor->id
-        ]);
-
         $this->add('requestor', Type\TextType::class, [
             'data'      => $this->requestor->name,
 
@@ -64,9 +42,12 @@ class CreateRequestForm extends Form
             ]
         ]);
 
-        $this->add('approver_id', Type\ChoiceType::class, [
-            'label'     => 'Approver',
-            'choices'   => array_flip($this->approvers)
+        $this->add('approver', Type\TextType::class, [
+            'data'      => $this->approver->name,
+
+            'attr' => [
+                'readonly'  => true
+            ]
         ]);
 
         $this->add('type_id', Type\ChoiceType::class, [

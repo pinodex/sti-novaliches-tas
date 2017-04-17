@@ -69,10 +69,10 @@
         groupDeleteAction: 'move',
 
         request: {
-            type: 0,
-            days: 0,
-            balance: 0,
-            balances: window.balances ? balances : {}
+            start_date: null,
+            start_time: null,
+            end_date: null,
+            end_time: null
         },
         
         modals: {
@@ -81,6 +81,37 @@
             confirm2: false,
             helpBox: false,
             loading: false
+        }
+    };
+
+    var appComputed = {
+        requestBalance: function () {
+            if (!this.request.start_date ||
+                !this.request.start_time ||
+                !this.request.end_date   ||
+                !this.request.end_time    ) {
+
+                return 0;
+            }
+
+            var startDate = new Date(this.request.start_date);
+            var endDate = new Date(this.request.end_date);
+
+            var days = endDate.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                return 0;
+            }
+
+            if (this.request.end_time - this.request.start_time < 4) {
+                days += 0.5;
+            }
+
+            if (this.request.end_time - this.request.start_time >= 4) {
+                days += 1;
+            }
+
+            return days;
         }
     };
 
@@ -136,7 +167,8 @@
     var app = new Vue({
         el: '#app',
         data: appData,
-        methods: appMethods
+        methods: appMethods,
+        computed: appComputed
     });
 
     var currentPage = getQueryVar('page');

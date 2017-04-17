@@ -21,15 +21,17 @@ class AppServiceProvider extends ServiceProvider
         $twig = app('twig');
         $executed = false;
 
-        $twig->addGlobal('nav', config('menu.top'));
-        $twig->addGlobal('menu', config('menu.side'));
-
         view()->composer('*', function ($view) use ($twig, &$executed) {
             if ($executed) {
                 return;
             }
 
             if (Auth::check()) {
+                $provider = explode(':', Auth::id());
+
+                $twig->addGlobal('nav', config('menu.' . $provider[0] . '.top'));
+                $twig->addGlobal('menu', config('menu.' . $provider[0] . '.side'));
+                
                 $twig->addGlobal('bulletins', Bulletin::orderBy('created_at', 'DESC')->with('author')->get());
                 $executed = true;
             }

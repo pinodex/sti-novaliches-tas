@@ -1,0 +1,93 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% form_theme form '/layouts/bulma.twig' %}
+
+{% set page_title = 'Requests' %}
+{% set active_menu = 'requests' %}
+
+{% block subcontent %}
+    <div class="columns is-marginless">
+        <div class="column is-12">
+            <div class="level is-small">
+                <div class="level-left">
+
+                </div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <div class="field has-addons is-small">
+                            <p class="control">
+                                <button class="button is-primary is-small" @click.prevent="modals.confirm = true">
+                                    <i class="fa fa-plus"></i> Create New Request
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table is-marginless">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Approver</th>
+                        <th>Reason</th>
+                        <th>Days</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                        <tr class="clickable" @click="location('{{ route('employee.requests.view', { model: request }, false) }}')">
+                            <td>{{ request.type }}</td>
+                            <td>{{ request.approver ? request.approver.name : 'N/A' }}</td>
+                            <td>{{ request.reason[0:20] ~ '...' }}</td>
+                            <td>{{ request.days }}</td>
+                            <td>{{ request.status }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No records found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="columns">
+      	<div class="column is-3 is-offset-9">
+        	<span class="select">
+          		<select name="pages" @change="changePaginationPage" v-model="paginationPage">
+              		{% for i in 1..requests.lastPage %}
+						<option value="{{ i }}">Page {{ i }}</option>
+					{% endfor %}
+				</select>
+			</span>
+		</div>
+	</div>
+
+    <modal :show.sync="modals.confirm">
+        <h3 slot="header">Create New Request</h3>
+        
+        <div slot="body">
+            <form action="{{ route('employee.requests.create', {}, false) }}" method="post" class="is-clearfix">
+                {{ form_widget(form) }}
+                                
+                <div class="field is-grouped is-pulled-right">
+                    <p class="control">
+                        <button class="button is-light" @click="modals.confirm = false">
+                            Cancel
+                        </button>
+                    </p>
+
+                    <p class="control">
+                        <button class="button is-primary">
+                            <i class="fa fa-chevron-right"></i> Next
+                        </button>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </modal>
+{% endblock %}

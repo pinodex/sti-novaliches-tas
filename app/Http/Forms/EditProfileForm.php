@@ -9,13 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Models;
+namespace App\Http\Forms;
 
-use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Form\Extension\Core\Type;
 
-class RequestType extends Model
+class EditProfileForm extends Form
 {
-	protected $fillable = [
-        'name', 'incur_days', 'property_type', 'property_label'
-    ];
+    public function create()
+    {
+        $this->add('name', Type\TextType::class);
+
+        $this->add('allocated_days', Type\NumberType::class);
+    }
 }

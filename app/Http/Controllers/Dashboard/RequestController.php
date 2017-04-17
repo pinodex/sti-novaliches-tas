@@ -15,7 +15,6 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\CreateRequestForm;
-use App\Models\LeaveBalance;
 use App\Models\Request as RequestModel;
 
 class RequestController extends Controller

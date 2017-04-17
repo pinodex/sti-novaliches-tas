@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the TAS System for STI College Novaliches
+ *
+ * (c) Raphael Marco <raphaelmarco@outlook.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -26,14 +35,6 @@ class Request extends Model
         return $this->belongsTo(Employee::class, 'approver_id');
     }
 
-    /**
-     * Get request type
-     */
-    public function type()
-    {
-        return $this->belongsTo(RequestType::class, 'type_id');
-    }
-
     public function getStatusAttribute($value)
     {
         if ($value === false) {
@@ -47,18 +48,14 @@ class Request extends Model
         return 'Waiting';
     }
 
-    /**
-     * Get requests for specified approver
-     *
-     * @param \App\Models\User $user Approver
-     * @return \Illuminate\Pagination\LengthAwarePaginator Paginated result
-     */
-    public static function getForApprover(User $user)
+    public function getTypeAttribute($value)
     {
-        if ($user->isInGlobalDepartment()) {
-            return self::paginate(50);
+        $types = config('request.types');
+
+        if (array_key_exists($value, $types)) {
+            return $types[$value]::getName();
         }
 
-        return self::where('approver_id', $user->id)->paginate(50);
+        return 'Unknown';
     }
 }

@@ -16,12 +16,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Constraints as CustomAssert;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Profile;
 
 class EditEmployeeForm extends Form
 {
     public function create()
     {
         $departments = Department::all();
+        $profiles = Profile::all();
 
         $this->add('picture', Type\FileType::class, [
             'label'         => 'Picture (leave if not changing)',
@@ -95,8 +97,13 @@ class EditEmployeeForm extends Form
         ]);
 
         $this->add('department_id', Type\ChoiceType::class, [
-            'label'     => 'Department ',
+            'label'     => 'Department',
             'choices'   => $this->toChoices($departments, true)
+        ]);
+
+        $this->add('profile_id', Type\ChoiceType::class, [
+            'label'     => 'Profile',
+            'choices'   => $this->toChoices($profiles)
         ]);
     }
 }

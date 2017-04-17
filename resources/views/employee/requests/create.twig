@@ -1,0 +1,33 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% form_theme form '/layouts/bulma.twig' %}
+
+{% set page_title = 'Create request' %}
+{% set active_menu = 'requests.create' %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-12">
+            <div class="panel">
+                <div class="panel-heading">Create new request</div>
+                <div class="box">
+                    <div class="columns">
+                        <div class="column is-offset-3 is-6">
+                            <h2 class="subtitle">{{ request_form.getType().getName() }}</h2>
+
+                            <form action="{{ app.request.getRequestUri() }}" method="post">
+                                {% include request_form.getType().getFormTemplate() %}
+                                
+                                <div class="field">
+                                    <button class="button is-primary is-pulled-right">
+                                        <i class="fa fa-send"></i> Send
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -90,6 +90,14 @@ return [
                         'route'         => 'dashboard.employees.index',
                         'name'          => 'Employees',
                         'visibility'    => [ Acl::MANAGE_EMPLOYEES ],
+                    ],
+
+                    [
+                        'icon'          => 'address-card',
+                        'identifier'    => 'profiles',
+                        'route'         => 'dashboard.profiles.index',
+                        'name'          => 'Profiles',
+                        'visibility'    => [ Acl::MANAGE_PROFILES ],
                     ]
                 ]  
             ],
@@ -129,7 +137,7 @@ return [
                     [
                         'icon'          => 'envelope',
                         'identifier'    => 'requests',
-                        'route'         => 'dashboard.requests.index',
+                        'route'         => 'employee.requests.index',
                         'name'          => 'Requests',
                     ],
                 ],

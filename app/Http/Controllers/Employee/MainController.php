@@ -23,6 +23,6 @@ class MainController extends Controller
      */
     public function index()
     {
-        return 'employee';
+        return view('employee.index');
     }
 }

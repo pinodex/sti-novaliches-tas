@@ -110,6 +110,17 @@ Route::group([
 
     });
 
+    // ProfileController
+    Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
+
+        Route::get('/', 'ProfileController@index')->name('index');
+        Route::match(['get', 'post'], '/add', 'ProfileController@edit')->name('add');
+        Route::match(['get', 'post'], '/{model}/edit', 'ProfileController@edit')->name('edit');
+        Route::post('/{model}/delete', 'ProfileController@delete')->name('delete');
+        Route::get('/{model}', 'ProfileController@view')->name('view');
+
+    });
+
 });
 
 Route::group([
@@ -120,6 +131,15 @@ Route::group([
 ], function () {
 
     Route::get('/', 'MainController@index')->name('index');
+
+    Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
+
+        Route::get('/', 'RequestController@index')->name('index');
+        Route::post('/create', 'RequestController@create')->name('create');
+        Route::match(['get', 'post'], '/create/{type}', 'RequestController@createType')->name('create.type');
+        Route::get('/{model}', 'RequestController@view')->name('view');
+
+    });
 
 });
 

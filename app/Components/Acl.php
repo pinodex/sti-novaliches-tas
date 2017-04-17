@@ -23,7 +23,7 @@ class Acl
     const MANAGE_USERS = 'manage_users';
     const MANAGE_DEPARTMENTS = 'manage_departments';
     const MANAGE_EMPLOYEES = 'manage_employees';
-    const MANAGE_LEAVE = 'manage_leave';
+    const MANAGE_PROFILES = 'manage_profiles';
 
     /**
      * @var array Allowed permissions

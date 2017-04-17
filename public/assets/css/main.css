@@ -183,6 +183,10 @@ button .fa,
   margin-right: 10px;
 }
 
+.date-time-field .control {
+  width: 100%;
+}
+
 .notification.is-small {
   font-size: 12px;
   padding: 10px;
