@@ -89,27 +89,36 @@
                             <h2 class="subtitle">Reason</h2>
 
                             <p>{{ model.reason|nl2br }}</p>
+
+                            {% if model.is_approved == '0' %}
+                                <hr />
+                                <h2 class="subtitle">Disapproval Reason</h2>
+
+                                <p>{{ model.disapproval_reason|nl2br }}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
 
-                <form id="actionForm" action="{{ route('employee.requests.inbox.action', { model: model }, false) }}" method="post" @submit.prevent="modals.confirm = true">
-                    {{ form_row(form._token) }}
+                {% if model.is_approved is null or model.is_approved == 5 %}
+                    <form id="actionForm" action="{{ route('employee.requests.inbox.action', { model: model }, false) }}" method="post" @submit.prevent="modals.confirm = true">
+                        {{ form_row(form._token) }}
 
-                    <input type="hidden" name="disapproval_reason" v-model="inbox.disapproval_reason" />
+                        <input type="hidden" name="disapproval_reason" v-model="inbox.disapproval_reason" />
 
-                    <div class="field has-addons">
-                        <div class="field-label">
-                            <label class="label">Action</label>
+                        <div class="field has-addons">
+                            <div class="field-label">
+                                <label class="label">Action</label>
+                            </div>
+
+                            {{ form_widget(form.action, { attr: { 'v-model' : 'inbox.action' }}) }}
+
+                            <p class="control">
+                                <button type="submit" class="button is-primary">Submit</button>
+                            </p>
                         </div>
-
-                        {{ form_widget(form.action, { attr: { 'v-model' : 'inbox.action' }}) }}
-
-                        <p class="control">
-                            <button type="submit" class="button is-primary">Submit</button>
-                        </p>
-                    </div>
-                </form>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>

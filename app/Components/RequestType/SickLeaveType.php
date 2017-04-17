@@ -68,6 +68,11 @@ class SickLeaveType extends AbstractType
             return null;
         }
 
+        if ($days > $this->requestor->leaves_balance) {
+            return redirect()->route('employee.requests.index')
+                ->with('message', ['danger', __('request.insufficient')]);
+        }
+
         $data['from_date'] .= ' ' . array_flip($this->timeChoices)[$data['from_time']];
         $data['to_date'] .= ' ' . array_flip($this->timeChoices)[$data['to_time']];
 

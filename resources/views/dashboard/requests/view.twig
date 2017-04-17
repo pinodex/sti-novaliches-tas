@@ -1,59 +1,107 @@
 {% extends '/layouts/dashboard.twig' %}
 
 {% set page_title = 'View request' %}
-{% set active_menu = 'requests' %}
+{% set active_menu = 'inbox' %}
 
 {% block subcontent %}
     <div class="columns">
-    	<div class="column is-12">
-    		<div class="panel">
-    			<div class="panel-heading">View request</div>
-    			<div class="box">
-    				<div class="columns">
-    					<div class="column is-offset-3 is-6">
-                            <div class="field">
-                                <p>Requestor</p>
-                                <h2 class="subtitle">{{ model.requestor ? model.requestor.name : 'N/A' }}</h2>
-                            </div>
+        <div class="column is-3">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image">
+                        {% if model.requestor and model.requestor.picture_path %}
+                            <img src="{{ '/storage/' ~ model.requestor.picture_path }}" alt="User Avatar" />
+                        {% else %}
+                            <img src="/assets/img/default-image.jpg" alt="User Avatar" />
+                        {% endif %}
+                    </figure>
+                </div>
+                            
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">{{ model.requestor.name }}</p>
+                            <p class="subtitle is-6">Requestor</p>
+                        </div>
+                    </div>
 
-                            <div class="field">
-                                <p>Approver</p>
-                                <h2 class="subtitle">{{ model.approver ? model.approver.name : 'N/A' }}</h2>
-                            </div>
+                    <div class="content">
+                        <div class="info">
+                            <p class="title">Department</p>
+                            <p class="value">{{ model.requestor.department ? model.requestor.department.name : 'N/A' }}</p>
+                        </div>
 
-                            <div class="field">
-                                <p>Type</p>
-                                <h2 class="subtitle">{{ model.type ? model.type.name : 'N/A' }}</h2>
-                            </div>
+                        <div class="info">
+                            <p class="title">Leaves Balance</p>
+                            <p class="value">{{ model.requestor.leaves_balance }}</p>
+                        </div>
 
-                            <div class="field">
-                                <p>Submission Date</p>
-                                <h2 class="subtitle">{{ model.created_at ? model.created_at|date('M d, Y h:i A') : 'N/A' }}</h2>
-                            </div>
+                        <div class="info">
+                            <p class="title">Incurs Balance</p>
+                            <p class="value">{{ model.incurred_balance }}</p>
+                        </div>
 
-                            <div class="field">
-                                <p>Inclusive Days</p>
-                                <h2 class="subtitle">{{ model.from_date|date('m/d/Y h:i A') ~ ' - ' ~ model.to_date|date('m/d/Y h:i A') }}</h2>
-                            </div>
+                        <div class="info">
+                            <p class="title">Type</p>
+                            <p class="value">{{ model.type }}</p>
+                        </div>
 
-                            <div class="field">
-                                <p>Day(s)</p>
-                                <h2 class="subtitle">{{ model.days }}</h2>
-                            </div>
+                        <div class="info">
+                            <p class="title">Status</p>
+                            <p class="value">{{ model.status }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                            <div class="field">
-                                <p>Reason</p>
-                                <p>{{ model.reason }}</p>
+        <div class="column">
+            <div class="panel">
+                <div class="panel-heading is-small">{{ model.type }} Request</div>
+                <div class="box">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="info">
+                                <p class="title">Filing Date</p>
+                                <p class="value">{{ model.created_at ? model.created_at|date('m/d/Y h:i A') : 'N/A' }}</p>
                             </div>
+                        </div>
 
-                            <div class="field">
-                                <p>Status</p>
-                                <h2 class="subtitle">{{ model.status }}</h2>
+                        <div class="column">
+                            <div class="info">
+                                <p class="title">Start Date</p>
+                                <p class="value">{{ model.from_date|date('m/d/Y h:i A') }}</p>
                             </div>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-    	</div>
+                        </div>
+
+                        <div class="column">
+                            <div class="info">
+                                <p class="title">End Date</p>
+                                <p class="value">{{ model.to_date|date('m/d/Y h:i A') }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="columns">
+                        <div class="column">
+                            <h2 class="subtitle">Reason</h2>
+
+                            <p>{{ model.reason|nl2br }}</p>
+
+                            {% if model.is_approved == '0' %}
+                                <hr />
+                                <h2 class="subtitle">Disapproval Reason</h2>
+
+                                <p>{{ model.disapproval_reason|nl2br }}</p>
+                            {% endif %}
+
+                            <hr />
+
+                            <a href="{{ route('dashboard.requests.edit', { model: model }, false) }}" class="button is-primary">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}

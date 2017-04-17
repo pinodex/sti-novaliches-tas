@@ -147,8 +147,14 @@ class Employee extends AbstractUser
 
     public function getLeavesBalanceAttribute()
     {
-        // TODO: computation
-        return $this->profile->allocated_days;
+        $approvedDays = $this->requests()->where('is_approved', 1)->sum('incurred_balance');
+        $balance = $this->profile->allocated_days - $approvedDays;
+
+        if ($balance < 0) {
+            $balance = 0;
+        }
+
+        return $balance;
     }
 
     public function getAuthIdentifierName()

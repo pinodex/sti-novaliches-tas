@@ -13,43 +13,44 @@ namespace App\Http\Controllers\Dashboard;
 
 use Auth;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Forms\CreateRequestForm;
 use App\Models\Request as RequestModel;
+use App\Http\Forms\EditRequestForm;
+use App\Http\Controllers\Controller;
 
 class RequestController extends Controller
 {
     /**
-     * Requests index page
+     * Request inbox index page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
      * 
      * @return mixed
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
-         
-        if (!Acl::for($user)->can(Acl::MANAGE_REQUESTS)) {
-            return redirect()->route('dashboard.requests.me');
+        $requests = RequestModel::with('requestor', 'approver');
+        $isAll = true;
+
+        if ($show = $request->query->get('show')) {
+            $isAll = false;
+
+            if ($show == 'approved') {
+                $requests->where('is_approved', 1);
+            }
+
+            if ($show == 'escalated') {
+                $requests->where('is_approved', 5);
+            }
+
+            if ($show == 'disapproved') {
+                $requests->where('is_approved', 0);
+            }
         }
 
-        $requests = RequestModel::getForApprover($user);
-
         return view('dashboard.requests.index', [
-            'requests'  => $requests
-        ]);
-    }
-
-    /**
-     * Current user submitted requests page
-     * 
-     * @return mixed
-     */
-    public function me()
-    {
-        $requests = Auth::user()->requests;
-
-        return view('dashboard.requests.me', [
-            'requests'  => $requests
+            'requests'  => $requests->paginate(50),
+            'is_all'    => $isAll,
+            'show'      => $show
         ]);
     }
 
@@ -63,7 +64,7 @@ class RequestController extends Controller
      */
     public function view(Request $request, RequestModel $model)
     {
-        $model->load('requestor', 'approver', 'type');
+        $model->load('requestor', 'requestor.department', 'approver', 'approver.department');
 
         return view('dashboard.requests.view', [
             'model' => $model
@@ -71,31 +72,36 @@ class RequestController extends Controller
     }
 
     /**
-     * Create request page
+     * Request action
      * 
      * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Request $model Request model object
      * 
      * @return mixed
      */
-    public function create(Request $request)
+    public function edit(Request $request, RequestModel $model)
     {
-        $user = Auth::user();
-
-        $form = with(new CreateRequestForm($user))
+        $form = with(new EditRequestForm($model))
             ->getForm()
             ->handleRequest($request);
 
         if ($form->isValid()) {
             $data = $form->getData();
 
-            RequestModel::create($data);
+            if ($data['is_approved'] == 'null') {
+                $data['is_approved'] = null;
+            }
+
+            $model->fill($data);
+            $model->save();
 
             return redirect()->route('dashboard.requests.index')
-                ->with('message', ['success', __('request.created')]);
+                ->with('message', ['success', __('request.saved')]);
         }
 
-        return view('dashboard.requests.create', [
-            'form'              => $form->createView()
+        return view('dashboard.requests.edit', [
+            'model' => $model,
+            'form'  => $form->createView()
         ]);
     }
 }

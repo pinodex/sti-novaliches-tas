@@ -28,10 +28,29 @@ class InboxController extends Controller
      */
     public function index(Request $request)
     {
-        $requests = Auth::user()->inbox()->with('requestor')->paginate(50);
+        $requests = Auth::user()->inbox()->with('requestor');
+        $isAll = true;
+
+        if ($show = $request->query->get('show')) {
+            $isAll = false;
+
+            if ($show == 'approved') {
+                $requests->where('is_approved', 1);
+            }
+
+            if ($show == 'escalated') {
+                $requests->where('is_approved', 5);
+            }
+
+            if ($show == 'disapproved') {
+                $requests->where('is_approved', 0);
+            }
+        }
 
         return view('employee.requests.inbox.index', [
-            'requests'  => $requests,
+            'requests'  => $requests->paginate(50),
+            'is_all'    => $isAll,
+            'show'      => $show
         ]);
     }
 
@@ -45,6 +64,8 @@ class InboxController extends Controller
      */
     public function view(Request $request, RequestModel $model)
     {
+        $model->load('requestor', 'requestor.department', 'approver', 'approver.department');
+
         $form = with(new RequestInboxForm($model))->getForm();
 
         return view('employee.requests.inbox.view', [

@@ -38,9 +38,8 @@ Route::group([
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
 
         Route::get('/', 'RequestController@index')->name('index');
-        Route::get('/me', 'RequestController@me')->name('me');
-        Route::match(['get', 'post'], '/create', 'RequestController@create')->name('create');
         Route::get('/{model}', 'RequestController@view')->name('view');
+        Route::match(['get', 'post'], '/{model}/edit', 'RequestController@edit')->name('edit');
 
     });
 

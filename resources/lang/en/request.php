@@ -4,5 +4,7 @@ return [
 	'created'	    => 'Request has been successfully created',
     'disapproved'   => 'Request has been disapproved',
     'escalated'     => 'Request has been forwarded to :name',
-    'approved'      => 'Request has been approved'
+    'approved'      => 'Request has been approved',
+    'saved'         => 'Changes to request has been saved',
+    'insufficient'  => 'Your leave balance is insufficient'
 ];
