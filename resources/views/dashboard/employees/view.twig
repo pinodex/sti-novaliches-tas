@@ -36,6 +36,13 @@
                                 <h2 class="subtitle">@{{ user.username }}</h2>
                             </div>
 
+                            <div class="column with-divider">
+                                <div class="info">
+                                    <p class="title">Type</p>
+                                    <p class="value">{{ trans('employee.type.' ~ user.type) }}</p>
+                                </div>
+                            </div>
+
                             {% if user.department %}
                                 <div class="column with-divider">
                                     <div class="info">
