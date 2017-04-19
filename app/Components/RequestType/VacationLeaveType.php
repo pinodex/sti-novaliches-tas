@@ -50,7 +50,7 @@ class VacationLeaveType extends AbstractType
 
     public function getFormTemplate()
     {
-        return '/templates/leave_form.twig';
+        return '/templates/leave.twig';
     }
 
     protected function onSubmitted(Form $form)

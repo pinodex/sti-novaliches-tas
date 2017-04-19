@@ -1,0 +1,48 @@
+{{ form_row(form._token) }}
+{{ form_row(form._requestor) }}
+{{ form_row(form._approver) }}
+
+<label style="display: block; margin-bottom: 10px;">Starting date and time</label>
+
+<div class="field has-addons date-time-field">
+    {{ form_widget(form.from_date, { attr: { 'v-model': 'request.start_date' }}) }}
+    {{ form_widget(form.from_time, { attr: { 'v-model': 'request.start_time' }}) }}
+</div>
+
+<label style="display: block; margin-bottom: 10px;">Ending date and time</label>
+
+<div class="field has-addons date-time-field">
+    {{ form_widget(form.to_date, { attr: { 'v-model': 'request.end_date' }}) }}
+
+    {{ form_widget(form.to_time, { attr: { 'v-model': 'request.end_time' }}) }}
+</div>
+
+<div class="columns">
+    <div class="column is-paddingless">
+        <div class="field">
+            <label class="label">Incurred Balance</label>
+            <p class="control">
+                <input type="text" class="input" value="0 days" :value="requestBalance + ' ' + (requestBalance == 1 ? 'day' : 'days')" readonly />
+            </p>
+        </div>
+    </div>
+
+    <div class="column is-paddingless">
+        <div class="field">
+            <label class="label">Leaves Balance</label>
+            <p class="control">
+                <input type="text" class="input" value="{{ auth_user().leaves_balance }} days" readonly />
+            </p>
+        </div>
+    </div>
+</div>
+
+{{ form_row(form.reason, { attr: { 'v-model': 'request.form.sick_leave.reason' }}) }}
+
+{{ form_row(form._custom_reason, {
+    label: ' ',
+    attr: {
+        'v-show': "request.form.sick_leave.reason == 'other'",
+        'v-bind:required': "request.form.sick_leave.reason == 'other'"
+    },
+}) }}

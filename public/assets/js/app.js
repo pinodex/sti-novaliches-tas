@@ -72,7 +72,13 @@
             start_date: null,
             start_time: null,
             end_date: null,
-            end_time: null
+            end_time: null,
+
+            form: {
+                sick_leave: {
+                    reason: null
+                }
+            }
         },
 
         inbox: {
