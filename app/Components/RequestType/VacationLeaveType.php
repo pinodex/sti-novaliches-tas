@@ -58,10 +58,8 @@ class VacationLeaveType extends AbstractType
         $data = $form->getData();
         
         $days = $this->computeDays(
-            $data['from_date'],
-            $data['from_time'],
-            $data['to_date'],
-            $data['to_time']
+            $this->getFormatted($data['from_date'], $data['from_time']),
+            $this->getFormatted($data['to_date'], $data['to_time'])
         );
 
         if ($days == 0) {
@@ -73,11 +71,8 @@ class VacationLeaveType extends AbstractType
                 ->with('message', ['danger', __('request.insufficient')]);
         }
 
-        $data['from_date'] .= ' ' . array_flip($this->timeChoices)[$data['from_time']];
-        $data['to_date'] .= ' ' . array_flip($this->timeChoices)[$data['to_time']];
-
-        $data['from_date'] = (new DateTime($data['from_date']))->format('Y-m-d H:i:s');
-        $data['to_date'] = (new DateTime($data['to_date']))->format('Y-m-d H:i:s');
+        $data['from_date'] = $this->getFormatted($data['from_date'], $data['from_time']);
+        $data['to_date'] = $this->getFormatted($data['to_date'], $data['to_time']);
 
         $request = new Request();
         
@@ -92,7 +87,8 @@ class VacationLeaveType extends AbstractType
 
         $this->requestor->requests()->save($request);
 
-        return redirect()->route('employee.requests.index');
+        return redirect()->route('employee.requests.index')
+            ->with('message', ['success', __('request.submitted')]);
     }
 
     protected function buildForm()
@@ -127,7 +123,7 @@ class VacationLeaveType extends AbstractType
         ]);
 
         $this->form->add('from_time', Type\ChoiceType::class, [
-            'choices'       => $this->timeChoices
+            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
         ]);
 
         $this->form->add('to_date', Type\DateType::class, [
@@ -142,40 +138,9 @@ class VacationLeaveType extends AbstractType
         ]);
 
         $this->form->add('to_time', Type\ChoiceType::class, [
-            'choices'       => $this->timeChoices
+            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
         ]);
 
         $this->form->add('reason', Type\TextareaType::class);
-    }
-    
-    /**
-     * Compute days inccured
-     * 
-     * @param string $fromDate Starting date in YYYY-MM-DD format
-     * @param string $fromTime Starting time in 24H format
-     * @param string $toDate Ending date in YYYY-MM-DD format
-     * @param string $toTime Ending time in 24H format
-     * 
-     * @return int
-     */
-    protected function computeDays($fromDate, $fromTime, $toDate, $toTime)
-    {
-        $from = new DateTime($fromDate);
-        $to = new DateTime($toDate);
-
-        $fromTime = doubleval($fromTime);
-        $toTime = doubleval($toTime);
-
-        $days = intval($to->format('d')) - intval($from->format('d'));
-
-        if ($toTime - $fromTime < 4) {
-            $days += 0.5;
-        }
-
-        if ($toTime - $fromTime >= 4) {
-            $days += 1;
-        }
-
-        return $days;
     }
 }

@@ -99,20 +99,22 @@
                 return 0;
             }
 
-            var startDate = new Date(this.request.start_date);
-            var endDate = new Date(this.request.end_date);
+            var startDate = new Date(this.request.start_date + ' ' + this.request.start_time);
+            var endDate = new Date(this.request.end_date + ' ' + this.request.end_time);
 
             var days = endDate.getDate() - startDate.getDate();
+            var startHour = startDate.getHours() + (startDate.getMinutes() / 6 / 10);
+            var endHour = endDate.getHours() + (endDate.getMinutes() / 6 / 10);
 
             if (days < 0) {
                 return 0;
             }
 
-            if (this.request.end_time - this.request.start_time < 4) {
+            if (endHour - startHour < 4) {
                 days += 0.5;
             }
 
-            if (this.request.end_time - this.request.start_time >= 4) {
+            if (endHour - startHour >= 4) {
                 days += 1;
             }
 
