@@ -154,8 +154,12 @@ Route::group(['namespace' => 'Account', 'prefix' => 'account', 'as' => 'account.
 
     Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
 
-        Route::match(['get', 'post'], '/', 'SettingsController@index')->name('index');
+        Route::match(['get', 'post'], '/', 'SettingsController')->name('index');
 
     });
+
+    Route::resource('notifications', 'NotificationController', [
+        'only' => ['index', 'show', 'update']
+    ]);
 
 });

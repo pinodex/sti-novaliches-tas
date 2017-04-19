@@ -14,6 +14,7 @@ namespace App\Components\RequestType;
 use DateTime;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type;
+use App\Notifications\RequestReceived;
 use App\Models\Request;
 
 class OfficialBusinessType extends AbstractType
@@ -52,6 +53,10 @@ class OfficialBusinessType extends AbstractType
         $request->incurred_balance = 0;
 
         $this->requestor->requests()->save($request);
+
+        if ($this->getApprover()) {
+            $this->getApprover()->notify(new RequestReceived($request));
+        }
 
         return redirect()->route('employee.requests.index')
             ->with('message', ['success', __('request.submitted')]);

@@ -18,26 +18,6 @@ use App\Models\Request;
 
 class VacationLeaveType extends AbstractType
 {
-    protected $timeChoices = [
-        '9:00 AM'   => '9',
-        '9:30 AM'   => '9.5',
-        '10:00 AM'  => '10',
-        '10:30 AM'  => '10.5',
-        '11:00 AM'  => '11',
-        '11:30 AM'  => '11.5',
-        '12:00 NN'  => '12',
-        '12:30 PM'  => '12.5',
-        '1:00 PM'   => '13',
-        '1:30 PM'   => '13.5',
-        '2:00 PM'   => '14',
-        '2:30 PM'   => '14.5',
-        '3:00 PM'   => '15',
-        '3:30 PM'   => '15.5',
-        '4:00 PM'   => '16',
-        '4:30 PM'   => '16.5',
-        '5:00 PM'   => '17'
-    ];
-
     public static function getName()
     {
         return 'Vacation Leave';
@@ -86,6 +66,10 @@ class VacationLeaveType extends AbstractType
         $request->incurred_balance = $days;
 
         $this->requestor->requests()->save($request);
+
+        if ($this->getApprover()) {
+            $this->getApprover()->notify(new RequestReceived($request));
+        }
 
         return redirect()->route('employee.requests.index')
             ->with('message', ['success', __('request.submitted')]);

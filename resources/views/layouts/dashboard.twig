@@ -8,7 +8,7 @@
     <nav class="nav has-shadow is-fixed-top">
         <div class="container is-fluid top-nav-container">
             <div class="nav-left">
-                <button class="nav-item toggle-menu-button" @click="sidebarActive = !sidebarActive">
+                <button class="nav-item toggle-menu-button" @click="sidebarActive = !sidebarActive; notificationActive = false">
                     <transition name="fade">
                         <i class="fa fa-bars" v-show="!sidebarActive"></i>
                     </transition>
@@ -38,22 +38,28 @@
             </span>
                 
             <div class="nav-right nav-menu">
-                <a href="{{ route('account.settings.index', {}, false) }}" class="nav-item is-tab">
+                <div class="nav-item is-tab">
                     {% if auth_user().thumbnail_path %}
-                        <img class="avatar" src="{{ '/storage/' ~ auth_user().thumbnail_path }}" alt="User Avatar" />
+                        <img class="avatar" src="{{ '/storage/' ~ auth_user().thumbnail_path }}" />
                     {% else %}
                         <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                     {% endif %}
+                </div>
 
-                    <span>{{ auth_user().name }}</span>
+                <a href="#" class="nav-item is-tab" title="Notifications" @click.prevent="toggleNotifications(); sidebarActive = false" :class="{ 'is-active' : notificationActive }">
+                    <span class="icon">
+                        <i class="fa fa-bell is-marginless" aria-hidden="true"></i>
+                    </span>
+
+                    <span class="tag is-danger" v-show="unreadNotificationCount > 0">{{ '{{ unreadNotificationCount }}' }}</span>
                 </a>
 
-                <a href="{{ route('auth.logout', {}, false) }}" class="nav-item is-tab">
-                    <span class="icon is-small">
+                <a href="{{ route('auth.logout', {}, false) }}" class="nav-item is-tab" title="Logout">
+                    <span class="icon">
                         <i class="fa fa-sign-out" aria-hidden="true"></i>
                     </span>
 
-                    Logout
+                    <span>Log out</span>
                 </a>
             </div>
         </div>
@@ -90,7 +96,7 @@
             {% endfor %}
         </aside>
 
-        <div class="main-container" @click="sidebarActive = false">
+        <div class="main-container" @click="sidebarActive = false; notificationActive = false">
             {% if session_get('message') %}
                 <div class="notification is-{{ session_get('message')[0] }} is-main">
                     {{ session_get('message')[1] }}
@@ -127,6 +133,23 @@
                     </div>
                 {% endif %}
             </div>
+        </div>
+    </div>
+
+    <div class="notification-container" :class="{ 'is-active' : notificationActive }">
+        <div class="level heading-container">
+            <h2>Notifications</h2>
+        </div>
+
+        <div class="empty-message" v-show="notifications.length == 0">No notifications yet.</div>
+
+        <div class="notification-entry" v-for="(notification, index) in notifications">
+            <div class="header">
+                <span class="time">{{ '{{ formatTime(notification.created_at) }}' }}</span>
+                <i class="fa fa-exclamation-circle"></i> {{ '{{ notification.title }}' }}
+            </div>
+
+            <div class="content">{{ '{{ notification.content }}' }}</div>
         </div>
     </div>
 {% endblock %}

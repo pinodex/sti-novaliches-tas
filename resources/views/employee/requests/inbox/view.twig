@@ -104,7 +104,7 @@
                     <form id="actionForm" action="{{ route('employee.requests.inbox.action', { model: model }, false) }}" method="post" @submit.prevent="modals.confirm = true">
                         {{ form_row(form._token) }}
 
-                        <input type="hidden" name="disapproval_reason" v-model="inbox.disapproval_reason" />
+                        <input type="hidden" name="disapproval_reason" v-model="inbox.disapprovalReason" />
 
                         <div class="field has-addons">
                             <div class="field-label">
@@ -132,7 +132,7 @@
                     <label class="label">Disapproval Reason</label>
 
                     <p class="control">
-                        <textarea class="textarea" v-model="inbox.disapproval_reason" style="height: 100px;" :required="inbox.action == 'disapprove'"></textarea>
+                        <textarea class="textarea" v-model="inbox.disapprovalReason" style="height: 100px;" :required="inbox.action == 'disapprove'"></textarea>
                     </p>
                 </div>
 

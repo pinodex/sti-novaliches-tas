@@ -12,6 +12,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\RequestApproved;
+use App\Notifications\RequestDisapproved;
+use App\Notifications\RequestEscalated;
+use App\Notifications\RequestReceivedFromEscalation;
 
 class Request extends Model
 {
@@ -42,6 +46,8 @@ class Request extends Model
         
         $this->save();
 
+        $this->requestor->notify(new RequestDisapproved($this));
+
         return true;
     }
 
@@ -61,6 +67,9 @@ class Request extends Model
 
             $this->save();
 
+            $this->requestor->notify(new RequestEscalated($this));
+            $employee->notify(new RequestReceivedFromEscalation($this));
+
             return $employee;
         }
 
@@ -70,6 +79,9 @@ class Request extends Model
             $this->responded_at = date('Y-m-d H:i:s');
 
             $this->save();
+
+            $this->requestor->notify(new RequestEscalated($this));
+            $this->approver->department->head->notify(new RequestReceivedFromEscalation($this));
 
             return $this->approver->department->head;
         }
@@ -85,6 +97,8 @@ class Request extends Model
         if ($this->approver && !$this->approver->department) {
             $this->is_approved = true;
             $this->save();
+
+            $this->requestor->notify(new RequestApproved($this));
 
             return true;
         }

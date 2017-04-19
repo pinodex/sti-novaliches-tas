@@ -25,7 +25,7 @@ class SettingsController extends Controller
      * 
      * @return mixed
      */
-    public function index(Request $request)
+    public function __invoke(Request $request)
     {
         $user = Auth::user();
 

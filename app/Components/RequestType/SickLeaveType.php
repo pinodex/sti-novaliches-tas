@@ -76,6 +76,10 @@ class SickLeaveType extends AbstractType
 
         $this->requestor->requests()->save($request);
 
+        if ($this->getApprover()) {
+            $this->getApprover()->notify(new RequestReceived($request));
+        }
+
         return redirect()->route('employee.requests.index')
             ->with('message', ['success', __('request.submitted')]);
     }

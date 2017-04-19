@@ -162,6 +162,83 @@ nav.nav {
     }
 }
 
+.notification-container {
+    position: fixed;
+    top: 52px;
+    right: -350px;
+    bottom: 0;
+
+    overflow-y: auto;
+
+    background: rgba(54, 54, 54, 0.95);
+    width: 350px;
+
+    transition: right 200ms ease;
+
+    &.is-active {
+        right: 0;
+    }
+
+    .heading-container {
+        border-bottom: 1px solid #555;
+        margin-bottom: 0;
+        padding: 15px;
+
+        h2 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 100;
+            margin: 0;
+        }
+
+        a {
+            color: #00d1b2;
+
+            &:hover {
+                color: #00d1b2;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .empty-message {
+        padding: 15px;
+        color: #fff;
+        text-align: center;
+    }
+
+    .notification-entry {
+        display: block;
+
+        padding: 15px;
+        color: #eee;
+
+        .header {
+            font-size: 14px;
+            margin-bottom: 5px;
+
+            .fa {
+                margin-right: 5px;
+            }
+
+            .time {
+                margin-top: 3px;
+                font-size: 11px;
+                float: right;
+            }
+        }
+
+        .content {
+            font-size: 12px;
+            color: #eee;
+        }
+
+        &:hover {
+            background: rgb(54, 54, 54);
+        }
+    }
+}
+
 .container.is-fluid {
     width: 100%;
 }

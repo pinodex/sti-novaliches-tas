@@ -61,11 +61,14 @@
 
     var appData = {
         sidebarActive: false,
+        notificationActive: false,
         disableAction: false,
         userExtraInfo: false,
         paginationPage: 1,
         modelId: 0,
 
+        notifications: [],
+        unreadNotificationCount: 0,
         groupDeleteAction: 'move',
 
         request: {
@@ -83,7 +86,7 @@
 
         inbox: {
             action: null,
-            disapproval_reason: null
+            disapprovalReason: null
         },
         
         modals: {
@@ -148,6 +151,45 @@
             document.getElementById(id).submit();
         },
 
+        getNotifications: function () {
+            this.$http.get('/account/notifications').then(function (response) {
+                for (var i = response.body.length - 1; i >= 0; i--) {
+                    var existingEntries = this.notifications.filter(function (item) {
+                        return item.id == response.body[i].id;
+                    });
+
+                    if (existingEntries.length > 0) {
+                        continue;
+                    }
+
+                    this.notifications.unshift(response.body[i]);
+
+                    if (!this.notificationActive) {
+                        this.unreadNotificationCount++;
+                    }
+                }
+            });
+        },
+
+        toggleNotifications: function () {
+            this.notificationActive = !this.notificationActive;
+
+            if (this.notificationActive) {
+                for (var i = this.notifications.length - 1; i >= 0; i--) {
+                    this.$http.patch('/account/notifications/' + this.notifications[i].id);
+                    this.unreadNotificationCount--;
+                }
+            }
+        },
+
+        dismissNotification: function (index) {
+            this.notifications.splice(index, 1);
+        },
+
+        formatTime: function(time) {
+            return timeago().format(time);
+        },
+
         printDocument: function() {
             window.print();
         },
@@ -193,4 +235,8 @@
     if (isNumeric(currentPage)) {
         app.$set(appData, 'paginationPage', currentPage);
     }
+
+    app.getNotifications();
+
+    setInterval(app.getNotifications, 30000);
 }());

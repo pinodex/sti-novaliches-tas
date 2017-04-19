@@ -13,6 +13,7 @@ namespace App\Models;
 
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 use App\Components\MultiAuth\AbstractUser;
 use App\Traits\PasswordHashable;
 use App\Traits\SearchableName;
@@ -23,7 +24,8 @@ class Employee extends AbstractUser
     use SoftDeletes,
         PasswordHashable,
         SearchableName,
-        WithPicture;
+        WithPicture,
+        Notifiable;
 
     const TYPE_FULL_TIME = 'full_time';
 

@@ -30,7 +30,7 @@ class RequestController extends Controller
      */
     public function index(Request $request)
     {
-        $requests = Auth::user()->requests()->with('approver')->paginate(50);
+        $requests = Auth::user()->requests()->orderBy('id', 'DESC')->with('approver')->paginate(50);
 
         $form = with(new RequestTypeForm)->getForm();
 
