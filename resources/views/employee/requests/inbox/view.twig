@@ -132,7 +132,7 @@
                     <label class="label">Disapproval Reason</label>
 
                     <p class="control">
-                        <textarea class="textarea" v-model="inbox.disapproval_reason" style="height: 100px;" v-bind:required="inbox.action == 'disapprove'"></textarea>
+                        <textarea class="textarea" v-model="inbox.disapproval_reason" style="height: 100px;" :required="inbox.action == 'disapprove'"></textarea>
                     </p>
                 </div>
 
