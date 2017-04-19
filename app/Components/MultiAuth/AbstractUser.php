@@ -36,8 +36,10 @@ abstract class AbstractUser extends Model implements Authenticatable
     /**
      * Log action for employee
      * 
-     * @param \Illuminate\Http\Request $request Request object
      * @param string $action Action code
+     * @param array $params Action parameters
+     * @param \Illuminate\Http\Request $request Request object
+     * 
      */
-    abstract public function log(Request $request, $action);
+    abstract public function log($action, array $params = [], Request $request = null);
 }

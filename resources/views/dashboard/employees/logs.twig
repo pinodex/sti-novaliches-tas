@@ -16,7 +16,7 @@
                     {% for log in logs %}
                         <tr>
                             <td>{{ log.timestamp }}</td>
-                            <td>{{ trans('action.' ~ log.action) }}</td>
+                            <td>{{ trans('action.' ~ log.action, log.params) }}</td>
                             <td>{{ log.getUserAgentFriendlyName() }}</td>
                             <td>{{ log.ip_address }}</td>
                         </tr>

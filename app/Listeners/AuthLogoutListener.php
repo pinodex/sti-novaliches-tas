@@ -26,6 +26,6 @@ class AuthLogoutListener
      */
     public function handle(Logout $event)
     {
-        $event->user->log(request(), 'logout');
+        $event->user->log('logout');
     }
 }

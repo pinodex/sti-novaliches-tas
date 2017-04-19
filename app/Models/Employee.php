@@ -133,11 +133,16 @@ class Employee extends AbstractUser
         return $this->hasMany(Request::class, 'approver_id');
     }
     
-    public function log(HttpRequest $request, $action)
+    public function log($action, array $params = [], HttpRequest $request = null)
     {
+        if ($request == null) {
+            $request = request();
+        }
+        
         $log = new EmployeeLog();
 
         $log->action = $action;
+        $log->params = $params;
         $log->timestamp = date('Y-m-d H:i:s');
         $log->ip_address = $request->ip();
         $log->user_agent = $request->header('User-Agent');

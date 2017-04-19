@@ -94,9 +94,12 @@ class InboxController extends Controller
 
             switch ($action) {
                 case 'disapprove':
-                    $model->is_approved = false;
-                    $model->disapproval_reason = $disapprovalReason;
-                    $model->save();
+                    $model->disapprove($disapprovalReason);
+
+                    Auth::user()->log('disapprove_request', [
+                        'id' => $model->id,
+                        'requestor' => $model->requestor->name
+                    ]);
 
                     return redirect()->route('employee.requests.inbox.index')
                         ->with('message', ['success', __('request.disapproved')]);
@@ -104,31 +107,41 @@ class InboxController extends Controller
                 break;
 
                 case 'escalate':
-                    if ($model->approver && $model->approver->department) {
-                        if ($model->approver->department->head) {
-                            $model->approver_id = $model->approver->department->head->id;
-                            $model->is_approved = 5;
+                    $approver = $model->escalate();
 
-                            $model->save();
+                    if ($approver) {
+                        Auth::user()->log('escalate_request', [
+                            'id' => $model->id,
+                            'requestor' => $model->requestor->name,
+                            'approver' => $approver->name
+                        ]);
 
-                            return redirect()->route('employee.requests.inbox.index')
-                                ->with('message', ['success', __('request.escalated', 
-                                    ['name' => $model->approver->department->head->name]
-                                )]);
-                        }
+                        return redirect()->route('employee.requests.inbox.index')
+                            ->with('message', ['success', __('request.escalated', 
+                                ['name' => $approver->name]
+                            )]);
                     }
+
+                    return redirect()->route('employee.requests.inbox.index')
+                        ->with('message', ['success', __('request.escalate_fail')]);
 
                 break;
 
                 case 'approve':
-                    if ($model->approver && !$model->approver->department) {
-                        $model->is_approved = true;
+                    $status = $model->approve();
 
-                        $model->save();
+                    if ($status) {
+                        Auth::user()->log('approve_request', [
+                            'id' => $model->id,
+                            'requestor' => $model->requestor->name
+                        ]);
 
                         return redirect()->route('employee.requests.inbox.index')
                             ->with('message', ['success', __('request.approved')]);
                     }
+
+                    return redirect()->route('employee.requests.inbox.index')
+                        ->with('message', ['success', __('request.approve_fail')]);
 
                 break;
             }

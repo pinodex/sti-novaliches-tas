@@ -40,10 +40,29 @@ class EmployeeLog extends Model
         return $this->agent;
     }
 
+    /**
+     * Get user agent friendly name
+     * 
+     * @return string
+     */
     public function getUserAgentFriendlyName()
     {
         $agent = $this->getAgent();
 
         return sprintf('%s (%s)', $agent->browser(), $agent->platform());
+    }
+
+    public function getParamsAttribute($value)
+    {
+        if ($value == null) {
+            return [];
+        }
+
+        return json_decode($value, true);
+    }
+
+    public function setParamsAttribute(array $value)
+    {
+        $this->attributes['params'] = json_encode($value);
     }
 }

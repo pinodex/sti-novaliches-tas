@@ -42,7 +42,7 @@ class SettingsController extends Controller
             
             $user->save();
 
-            $user->log($request, 'change_password');
+            $user->log('change_password');
 
             return $user->getRedirectAction()
                 ->with('message', ['success', __('settings.password_updated')]);

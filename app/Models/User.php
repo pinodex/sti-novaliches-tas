@@ -67,7 +67,7 @@ class User extends AbstractUser
         return $this->belongsTo(Group::class);
     }
 
-    public function log(Request $request, $action)
+    public function log($action, array $params = [], Request $request = null)
     {
         
     }

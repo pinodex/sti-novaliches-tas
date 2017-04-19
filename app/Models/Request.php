@@ -28,6 +28,71 @@ class Request extends Model
     ];
 
     /**
+     * Disapproves the request
+     * 
+     * @param string $reason Disapproval reason
+     * 
+     * @return boolean
+     */
+    public function disapprove($reason)
+    {
+        $this->is_approved = 0;
+        $this->disapproval_reason = $reason;
+        $this->responded_at = date('Y-m-d H:i:s');
+        
+        $this->save();
+
+        return true;
+    }
+
+    /**
+     * Escalate the request to the superior
+     * 
+     * @param \App\Models\Employee $employee Employee model to pass approval to
+     * 
+     * @return \App\Models\Employee Passed employee
+     */
+    public function escalate(Employee $employee = null)
+    {
+        if ($employee) {
+            $this->approver_id = $employee->id;
+            $this->is_approved = 5;
+            $this->responded_at = date('Y-m-d H:i:s');
+
+            $this->save();
+
+            return $employee;
+        }
+
+        if ($this->approver && $this->approver->department && $this->approver->department->head) {
+            $this->approver_id = $this->approver->department->head->id;
+            $this->is_approved = 5;
+            $this->responded_at = date('Y-m-d H:i:s');
+
+            $this->save();
+
+            return $this->approver->department->head;
+        }
+    }
+
+    /**
+     * Approve request
+     * 
+     * @return boolean
+     */
+    public function approve()
+    {
+        if ($this->approver && !$this->approver->department) {
+            $this->is_approved = true;
+            $this->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get request creator
      */
     public function requestor()
@@ -45,19 +110,31 @@ class Request extends Model
 
     public function getStatusAttribute($value)
     {
+        $status = 'Waiting';
+
+        if ($this->attributes['is_approved'] === null) {
+            return $status;
+        }
+
         if ($this->attributes['is_approved'] === 0) {
-            return 'Disapproved';
+            $status = 'Dispproved';
         }
 
         if ($this->attributes['is_approved'] === 1) {
-            return 'Approved';
+            $status = 'Approved';
         }
 
         if ($this->attributes['is_approved'] === 5) {
-            return 'Escalated';
+            $status = 'Escalated';
         }
 
-        return 'Waiting';
+        if ($this->attributes['responded_at'] == null) {
+            return $status;
+        }
+
+        return sprintf('%s (%s)', 
+            $status, date('M d, Y h:i A', strtotime($this->attributes['responded_at']))
+        );
     }
 
     public function getTypeAttribute($value)
