@@ -26,23 +26,6 @@ return [
                         'route'         => 'dashboard.requests.index',
                         'name'          => 'Requests',
                         'visibility'    => [ Acl::MANAGE_REQUESTS, Acl::SUBMIT_REQUESTS ],
-
-                        'list' => [
-                            [
-                                'icon'          => 'plus',
-                                'identifier'    => 'create',
-                                'route'         => 'dashboard.requests.create',
-                                'name'          => 'Create Request',
-                                'visibility'    => [ Acl::SUBMIT_REQUESTS ]
-                            ],
-
-                            [
-                                'icon'          => 'user-circle-o',
-                                'identifier'    => 'me',
-                                'route'         => 'dashboard.requests.me',
-                                'name'          => 'My Requests'
-                            ]
-                        ]
                     ],
 
                     [

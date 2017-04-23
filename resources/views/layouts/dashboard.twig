@@ -2,7 +2,9 @@
 
 {% set active_tab = 'dashboard' %}
 
-{% set enable_bulletin = bulletins|length > 0 %}
+{% if not enable_bulletin is defined %}
+    {% set enable_bulletin = bulletins|length > 0 %}
+{% endif %}
 
 {% block content %}
     <nav class="nav has-shadow is-fixed-top">
