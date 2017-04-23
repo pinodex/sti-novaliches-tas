@@ -152,10 +152,6 @@
         },
 
         getNotifications: function () {
-            if (!isLoggedIn) {
-                return;
-            }
-
             this.$http.get('/account/notifications').then(function (response) {
                 for (var i = response.body.length - 1; i >= 0; i--) {
                     var existingEntries = this.notifications.filter(function (item) {
@@ -240,7 +236,7 @@
         app.$set(appData, 'paginationPage', currentPage);
     }
 
-    if (isLoggedIn != null) {
+    if (authId != null && authId.indexOf('employee') === 0) {
         app.getNotifications();
         setInterval(app.getNotifications, 30000);
     }

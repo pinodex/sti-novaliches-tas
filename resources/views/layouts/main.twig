@@ -48,7 +48,7 @@
     <meta name="msapplication-config" content="/assets/icon/browserconfig.xml" />
     <meta name="theme-color" content="#006db7" />
     <title>{{ page_title }} - STI College Novaliches TAS</title>
-    <script>var isLoggedIn = {{ auth_check() ? 'true' : 'false' }};</script>
+    <script>var authId = {{ auth_check() ? ("'" ~ auth_user().getAuthIdentifier() ~ "'")|raw : 'null' }};</script>
 </head>
 <body class="{{ body_class | default('') }}">
     <div id="app">
