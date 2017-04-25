@@ -51,6 +51,8 @@
                         <th>Date Filed</th>
                         {% if is_all %}
                             <th>Status</th>
+                        {% else %}
+                            <th>Responded At</th>
                         {% endif %}
                     </tr>
                 </thead>
@@ -63,7 +65,9 @@
                             <td>{{ request.incurred_balance }}</td>
                             <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
                             {% if is_all %}
-                                <td>{{ request.status }}</td>
+                                <td>{{ request.status_label }}</td>
+                            {% else %}
+                                <td>{{ request.responded_at ? request.responded_at|date('M d Y, h:i a') : 'N/A' }}</td>
                             {% endif %}
                         </tr>
                     {% else %}

@@ -14,6 +14,7 @@ namespace App\Http\Forms;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Models\Employee;
+use App\Models\Request;
 
 class EditRequestForm extends Form
 {
@@ -21,22 +22,15 @@ class EditRequestForm extends Form
     {
         $employees = Employee::all();
 
-        $choices = [
-            'null' => 'Waiting',
-            '0'    => 'Disapproved',
-            '1'    => 'Approved',
-            '5'    => 'Escalated'
-        ];
-
         $this->add('approver_id', Type\ChoiceType::class, [
             'label'     => 'Approver',
             'choices'   => $this->toChoices($employees),
             'required'  => false
         ]);
 
-        $this->add('is_approved', Type\ChoiceType::class, [
+        $this->add('status', Type\ChoiceType::class, [
             'label'     => 'Status',
-            'choices'   => array_flip($choices)
+            'choices'   => array_flip(Request::$statusLabels)
         ]);
 
         $this->add('disapproval_reason', Type\TextareaType::class, [

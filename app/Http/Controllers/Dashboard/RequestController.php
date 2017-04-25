@@ -13,7 +13,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use Auth;
 use Illuminate\Http\Request;
+use App\Models\Employee;
 use App\Models\Request as RequestModel;
+use App\Http\Forms\FilterRequestsForm;
 use App\Http\Forms\EditRequestForm;
 use App\Http\Controllers\Controller;
 
@@ -28,29 +30,18 @@ class RequestController extends Controller
      */
     public function index(Request $request)
     {
-        $requests = RequestModel::with('requestor', 'approver');
-        $isAll = true;
+        $isFiltered = false;
+        $requests = RequestModel::filter($request->query, $isFiltered)->with('requestor', 'approver');
 
-        if ($show = $request->query->get('show')) {
-            $isAll = false;
-
-            if ($show == 'approved') {
-                $requests->where('is_approved', 1);
-            }
-
-            if ($show == 'escalated') {
-                $requests->where('is_approved', 5);
-            }
-
-            if ($show == 'disapproved') {
-                $requests->where('is_approved', 0);
-            }
-        }
+        $form = with(new FilterRequestsForm)
+            ->setData($request->query->all())
+            ->getForm();
 
         return view('dashboard.requests.index', [
             'requests'  => $requests->paginate(50),
-            'is_all'    => $isAll,
-            'show'      => $show
+            'status'    => $request->query->get('status'),
+            'form'      => $form->createView(),
+            'is_all'    => $isFiltered == false
         ]);
     }
 

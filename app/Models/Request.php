@@ -16,9 +16,25 @@ use App\Notifications\RequestApproved;
 use App\Notifications\RequestDisapproved;
 use App\Notifications\RequestEscalated;
 use App\Notifications\RequestReceivedFromEscalation;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Request extends Model
 {
+    const STATUS_WAITING = -1;
+
+    const STATUS_DISAPPROVED = 0;
+
+    const STATUS_APPROVED = 1;
+
+    const STATUS_ESCALATED = 5;
+
+    public static $statusLabels = [
+        self::STATUS_WAITING        => 'Waiting',
+        self::STATUS_APPROVED       => 'Approved',
+        self::STATUS_DISAPPROVED    => 'Disapproved',
+        self::STATUS_ESCALATED      => 'Escalated'
+    ];
+
     protected $fillable = [
         'requestor_id',
         'approver_id',
@@ -28,8 +44,75 @@ class Request extends Model
         'incurred_balance',
         'reason',
         'disapproval_reason',
-        'is_approved'
+        'status'
     ];
+
+    /**
+     * Filter results
+     * 
+     * @param \Symfony\Component\HttpFoundation\ParameterBag $query Query set
+     * @param boolean &$isFiltered Is the result filtered
+     * 
+     * @return Builder
+     */
+    public static function filter(ParameterBag $query, &$isFiltered = null)
+    {
+        $requests = self::query();
+        
+        $requests->when($query->has('status'), function ($builder) use ($query, &$isFiltered) {
+            if ($query->get('status') === null) {
+                return;
+            }
+
+            $builder->where('status', $query->get('status'));
+
+            $isFiltered = true;
+        });
+        
+        $requests->when($query->get('type'), function ($builder) use ($query, &$isFiltered) {
+            $builder->where('type', $query->get('type'));
+
+            $isFiltered = true;
+        });
+
+        $requests->when($query->get('requestor'), function ($builder) use ($query, &$isFiltered) {
+            $ids = Employee::searchName(null, $query->get('requestor'))->pluck('id');
+
+            $builder->whereIn('requestor_id', $ids);
+
+            $isFiltered = true;
+        });
+
+        $requests->when($query->get('approver'), function ($builder) use ($query, &$isFiltered) {
+            $ids = Employee::searchName(null, $query->get('approver'))->pluck('id');
+
+            $builder->whereIn('approver_id', $ids);
+
+            $isFiltered = true;
+        });
+
+        $requests->when($query->get('date_filed_from') && $query->get('date_filed_to'),
+            function ($builder) use ($query, &$isFiltered) {    
+                $builder->whereBetween('created_at', [$query->get('date_filed_from'), $query->get('date_filed_to')]);
+
+                $isFiltered = true;
+            }
+        );
+
+        $requests->when($query->get('date_requested_from'), function ($builder) use ($query, &$isFiltered) {
+            $builder->whereDate('from_date', '>=', $query->get('date_requested_from'));
+
+            $isFiltered = true;
+        });
+
+        $requests->when($query->get('date_requested_to'), function ($builder) use ($query, &$isFiltered) {
+            $builder->whereDate('to_date', '<=', $query->get('date_requested_to'));
+
+            $isFiltered = true;
+        });
+
+        return $requests;
+    }
 
     /**
      * Disapproves the request
@@ -40,7 +123,7 @@ class Request extends Model
      */
     public function disapprove($reason)
     {
-        $this->is_approved = 0;
+        $this->status = self::STATUS_DISAPPROVED;
         $this->disapproval_reason = $reason;
         $this->responded_at = date('Y-m-d H:i:s');
         
@@ -62,7 +145,7 @@ class Request extends Model
     {
         if ($employee) {
             $this->approver_id = $employee->id;
-            $this->is_approved = 5;
+            $this->status = self::STATUS_ESCALATED;
             $this->responded_at = date('Y-m-d H:i:s');
 
             $this->save();
@@ -75,7 +158,7 @@ class Request extends Model
 
         if ($this->approver && $this->approver->department && $this->approver->department->head) {
             $this->approver_id = $this->approver->department->head->id;
-            $this->is_approved = 5;
+            $this->status = self::STATUS_ESCALATED;
             $this->responded_at = date('Y-m-d H:i:s');
 
             $this->save();
@@ -95,7 +178,7 @@ class Request extends Model
     public function approve()
     {
         if ($this->approver && !$this->approver->department) {
-            $this->is_approved = true;
+            $this->status = self::STATUS_APPROVED;
             $this->save();
 
             $this->requestor->notify(new RequestApproved($this));
@@ -122,24 +205,13 @@ class Request extends Model
         return $this->belongsTo(Employee::class, 'approver_id');
     }
 
-    public function getStatusAttribute($value)
+    public function getStatusLabelAttribute()
     {
-        $status = 'Waiting';
+        $status = 'Unknown';
+        $value = $this->attributes['status'];
 
-        if ($this->attributes['is_approved'] === null) {
-            return $status;
-        }
-
-        if ($this->attributes['is_approved'] === 0) {
-            $status = 'Dispproved';
-        }
-
-        if ($this->attributes['is_approved'] === 1) {
-            $status = 'Approved';
-        }
-
-        if ($this->attributes['is_approved'] === 5) {
-            $status = 'Escalated';
+        if (array_key_exists($value, self::$statusLabels)) {
+            $status = self::$statusLabels[$value];
         }
 
         if ($this->attributes['responded_at'] == null) {

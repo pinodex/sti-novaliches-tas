@@ -35,15 +35,15 @@ class InboxController extends Controller
             $isAll = false;
 
             if ($show == 'approved') {
-                $requests->where('is_approved', 1);
+                $requests->where('status', RequestModel::STATUS_APPROVED);
             }
 
             if ($show == 'escalated') {
-                $requests->where('is_approved', 5);
+                $requests->where('status', RequestModel::STATUS_ESCALATED);
             }
 
             if ($show == 'disapproved') {
-                $requests->where('is_approved', 0);
+                $requests->where('status', RequestModel::STATUS_DISAPPROVED);
             }
         }
 

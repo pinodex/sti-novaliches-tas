@@ -45,7 +45,7 @@
                             <td>{{ request.reason[0:20] ~ '...' }}</td>
                             <td>{{ request.incurred_balance }}</td>
                             <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
-                            <td>{{ request.status }}</td>
+                            <td>{{ request.status_label }}</td>
                         </tr>
                     {% else %}
                         <tr>

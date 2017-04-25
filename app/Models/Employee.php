@@ -154,7 +154,7 @@ class Employee extends AbstractUser
 
     public function getLeavesBalanceAttribute()
     {
-        $approvedDays = $this->requests()->where('is_approved', 1)->sum('incurred_balance');
+        $approvedDays = $this->requests()->where('status', Request::STATUS_APPROVED)->sum('incurred_balance');
         $balance = $this->profile->allocated_days - $approvedDays;
 
         if ($balance < 0) {

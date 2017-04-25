@@ -1,5 +1,7 @@
 {% extends '/layouts/dashboard.twig' %}
 
+{% form_theme form '/layouts/bulma.twig' %}
+
 {% set page_title = 'Requests' %}
 {% set active_menu = 'requests' %}
 {% set enable_bulletin = false %}
@@ -18,26 +20,34 @@
                                         <span>All</span>
                                     </a>
                                 </li>
-                                <li class="{{ show == 'approved' ? 'is-active' : '' }}">
-                                    <a href="{{ route('dashboard.requests.index', { show: 'approved' }, false) }}">
+                                <li class="{{ status == '1' ? 'is-active' : '' }}">
+                                    <a href="{{ route('dashboard.requests.index', { status: '1' }, false) }}">
                                         <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
                                         <span>Approved</span>
                                     </a>
                                 </li>
-                                <li class="{{ show == 'escaalted' ? 'is-active' : '' }}">
-                                    <a href="{{ route('dashboard.requests.index', { show: 'escaalted' }, false) }}">
+                                <li class="{{ status == '5' ? 'is-active' : '' }}">
+                                    <a href="{{ route('dashboard.requests.index', { status: '5' }, false) }}">
                                         <span class="icon is-small"><i class="fa fa-level-up"></i></span>
                                         <span>Escalated</span>
                                     </a>
                                 </li>
-                                <li class="{{ show == 'disapproved' ? 'is-active' : '' }}">
-                                    <a href="{{ route('dashboard.requests.index', { show: 'disapproved' }, false) }}">
+                                <li class="{{ status == '0' ? 'is-active' : '' }}">
+                                    <a href="{{ route('dashboard.requests.index', { status: '0' }, false) }}">
                                         <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>
                                         <span>Disapproved</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <div class="level-item">
+                        <button type="button" class="button is-small {{ not is_all ? 'is-active' : '' }}" @click="modals.confirm = true">
+                            <i class="fa fa-search"></i> Filter Results
+                        </button>
                     </div>
                 </div>
             </div>
@@ -53,6 +63,8 @@
                         <th>Date Filed</th>
                         {% if is_all %}
                             <th>Status</th>
+                        {% else %}
+                            <th>Responded At</th>
                         {% endif %}
                     </tr>
                 </thead>
@@ -66,7 +78,9 @@
                             <td>{{ request.incurred_balance }}</td>
                             <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
                             {% if is_all %}
-                                <td>{{ request.status }}</td>
+                                <td>{{ request.status_label }}</td>
+                            {% else %}
+                                <td>{{ request.responded_at ? request.responded_at|date('M d Y, h:i a') : 'N/A' }}</td>
                             {% endif %}
                         </tr>
                     {% else %}
@@ -90,4 +104,46 @@
             </span>
         </div>
     </div>
+
+    <modal :show.sync="modals.confirm">
+        <h3 slot="header">Filter Results</h3>
+        
+        <div slot="body">
+            <form action="{{ route('dashboard.requests.index', {}, false) }}" class="is-clearfix">
+                <div class="field is-grouped">
+                    {{ form_widget(form.status, { additional_class: 'is-expanded', include_label: true }) }}
+                    {{ form_widget(form.type, { additional_class: 'is-expanded', include_label: true }) }}
+                </div>
+
+                <div class="field is-grouped">
+                    {{ form_widget(form.requestor, { additional_class: 'is-expanded', include_label: true }) }}
+                    {{ form_widget(form.approver, { additional_class: 'is-expanded', include_label: true }) }}
+                </div>
+
+                <div class="field is-grouped">
+                    {{ form_widget(form.date_filed_from, { additional_class: 'is-expanded', include_label: true }) }}
+                    {{ form_widget(form.date_filed_to, { additional_class: 'is-expanded', include_label: true }) }}
+                </div>
+
+                <div class="field is-grouped">
+                    {{ form_widget(form.date_requested_from, { additional_class: 'is-expanded', include_label: true }) }}
+                    {{ form_widget(form.date_requested_to, { additional_class: 'is-expanded', include_label: true }) }}
+                </div>
+
+                <div class="field is-grouped is-pulled-right">
+                    <p class="control">
+                        <button type="button" class="button is-light" @click="modals.confirm = false">
+                            Cancel
+                        </button>
+                    </p>
+
+                    <p class="control">
+                        <button type="submit" class="button is-primary">
+                            <i class="fa fa-search"></i> Search
+                        </button>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </modal>
 {% endblock %}

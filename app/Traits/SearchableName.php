@@ -32,17 +32,19 @@ trait SearchableName
     /**
      * Search
      * 
-     * @param string $column Search queries
-     * @param array $relations Relations to include to search
+     * @param \Illuminate\Database\Eloquent\Model $model Model instance
+     * @param string $keyword Search keyword
      */
-    public static function searchName($model, $keyword)
+    public static function searchName($model = null, $keyword)
     {
-        $model->where(function (Builder $builder) use ($keyword) {
+        if ($model == null) {
+            $model = new self;
+        }
+
+        return $model->where(function (Builder $builder) use ($keyword) {
             foreach (self::$nameConcats as $concat) {
                 $builder->orWhere(DB::raw($concat), 'LIKE', '%' . $keyword . '%');
             }
         });
-
-        return $model;
     }
 }
