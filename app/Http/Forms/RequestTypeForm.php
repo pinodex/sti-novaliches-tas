@@ -24,9 +24,7 @@ class RequestTypeForm extends Form
         }
 
         $this->add('type', Type\ChoiceType::class, [
-            'choices'   => $types,
-            'expanded'  => true,
-            'label'     => ' '
+            'choices'   => $types
         ]);
     }
 }
