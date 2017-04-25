@@ -14,6 +14,7 @@ namespace App\Components\RequestType;
 use DateTime;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type;
+use App\Notifications\RequestReceived;
 use App\Models\Request;
 
 class VacationLeaveType extends AbstractType

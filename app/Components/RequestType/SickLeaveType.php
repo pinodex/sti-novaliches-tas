@@ -13,6 +13,7 @@ namespace App\Components\RequestType;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type;
+use App\Notifications\RequestReceived;
 use App\Models\Request;
 
 class SickLeaveType extends AbstractType
