@@ -60,12 +60,12 @@ class BulletinController extends Controller
 
             if (!$model->id) {
                 // The model is fresh
-                $data['author_id'] = Auth::id();
+                $data['author_id'] = Auth::user()->id;
             }
 
             if ($model->id) {
                 // The model is edited
-                $data['last_author_id'] = Auth::id();
+                $data['last_author_id'] = Auth::user()->id;
             }
 
             $model->fill($data);
