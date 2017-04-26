@@ -92,10 +92,6 @@ class EditEmployeeForm extends Form
             'required'          => false
         ]);
 
-        $this->add('type', Type\ChoiceType::class, [
-            'choices'   => Employee::$types
-        ]);
-
         $this->add('department_id', Type\ChoiceType::class, [
             'label'     => 'Department',
             'choices'   => $this->toChoices($departments, true)

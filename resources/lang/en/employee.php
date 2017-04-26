@@ -9,7 +9,4 @@ return [
     'purged'            => 'Employee :name has been permanently deleted',
     'not_found'         => 'Cannot find requested employee',
 
-    'type.part_time'    => 'Part Time',
-    'type.full_time'    => 'Full Time'
-
 ];

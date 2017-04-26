@@ -27,15 +27,6 @@ class Employee extends AbstractUser
         WithPicture,
         Notifiable;
 
-    const TYPE_FULL_TIME = 'full_time';
-
-    const TYPE_PART_TIME = 'part_time';
-
-    public static $types = [
-        'Full Time' => self::TYPE_FULL_TIME,
-        'Part Time' => self::TYPE_PART_TIME
-    ];
-
     /**
      * The attributes that are mass assignable.
      *
@@ -50,7 +41,6 @@ class Employee extends AbstractUser
         'middle_name',
         'last_name',
         'email_address',
-        'type',
         'picture_path',
         'thumbnail_path'
     ];
