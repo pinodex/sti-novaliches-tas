@@ -1,10 +1,10 @@
 {% extends '/layouts/dashboard.twig' %}
 
-{% set page_title = 'Employees' %}
-{% set active_menu = 'employees' %}
+{% set page_title = 'Users' %}
+{% set active_menu = 'users' %}
 
 {% if trash %}
-    {% set page_title = 'Deleted Employees' %}
+    {% set page_title = 'Deleted Users' %}
 {% endif %}
 
 {% block subcontent %}
@@ -16,13 +16,13 @@
                         <div class="tabs is-small">
                             <ul>
                                 <li class="{{ is_all ? 'is-active' : '' }}">
-                                    <a href="{{ route('dashboard.employees.index', {}, false) }}">
+                                    <a href="{{ route('dashboard.users.index', {}, false) }}">
                                         <span class="icon is-small"><i class="fa fa-user"></i></span>
                                         <span>All</span>
                                     </a>
                                 </li>
                                 <li class="{{ trash ? 'is-active' : '' }}">
-                                    <a href="{{ route('dashboard.employees.deleted', {}, false) }}">
+                                    <a href="{{ route('dashboard.users.deleted', {}, false) }}">
                                         <span class="icon is-small"><i class="fa fa-trash"></i></span>
                                         <span>Deleted</span>
                                     </a>
@@ -31,7 +31,7 @@
                                     <li class="is-active">
                                         <a href="#" @click.prevent>
                                             <span class="icon is-small"><i class="fa fa-search"></i></span>
-                                            <span>Search Result</span>
+                                            <span>Search Results</span>
                                         </a>
                                     </li>
                                 {% endif %}
@@ -44,8 +44,8 @@
                     <form action="{{ app.request.getRequestUri() }}" class="level-item">
                         <div class="field has-addons is-small">
                             <p class="control">
-                                <a href="{{ route('dashboard.employees.add', {}, false) }}" class="button is-primary is-small">
-                                    <i class="fa fa-plus"></i> Add Employee
+                                <a href="{{ route('dashboard.users.add', {}, false) }}" class="button is-primary is-small">
+                                    <i class="fa fa-plus"></i> Add User
                                 </a>
                             </p>
 
@@ -59,14 +59,14 @@
 
                             <p class="control">
                                 <span class="select is-small">
-                                    <select name="department">
-                                        <option value="all" {{ input_get('department') == 'all' ? 'selected' : '' }}>All Departments</option>
-                                        <option value="unassigned" {{ input_get('department') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
-                                        {% for department in departments %}
-                                            {% if input_get('department') == department.id %}
-                                                <option value="{{ department.id }}" selected>{{ department.name }}</option>
+                                    <select name="group">
+                                        <option value="all" {{ input_get('group') == 'all' ? 'selected' : '' }}>All Groups</option>
+                                        <option value="unassigned" {{ input_get('group') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
+                                        {% for group in groups %}
+                                            {% if input_get('group') == group.id %}
+                                                <option value="{{ group.id }}" selected>{{ group.name }}</option>
                                             {% else %}
-                                                <option value="{{ department.id }}">{{ department.name }}</option>
+                                                <option value="{{ group.id }}">{{ group.name }}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
@@ -92,7 +92,7 @@
                     <tr>
                         <th class="avatar-column">&nbsp;</th>
                         <th>Name</th>
-                        <th>Department</th>
+                        <th>Group</th>
                         <th>Last Login</th>
                         {% if trash %}
                             <th class="is-fit">Actions</th>
@@ -105,17 +105,17 @@
                             <tr>
                                 <td>
                                     {% if item.thumbnail_path %}
-                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="Employee Avatar" />
+                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
                                     {% else %}
-                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="Employee Avatar" />
+                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                                     {% endif %}
                                 </td>
                                 <td>
                                     <h1 class="title">{{ item.name }}</h1>
                                     <h2 class="subtitle">@{{ item.username }}</h2>
                                 </td>
-                                {% if item.department %}
-                                    <td>{{ item.department.name }}</td>
+                                {% if item.group %}
+                                    <td>{{ item.group.name }}</td>
                                 {% else %}
                                     <td><em>Unassigned</em></td>
                                 {% endif %}
@@ -135,22 +135,22 @@
                                 </td>
                             </tr>
                         {% else %}
-                            <tr class="clickable" @click="location('{{ route('dashboard.employees.view', { model: item }, false) }}')">
+                            <tr class="clickable" @click="location('{{ route('dashboard.users.view', { model: item }, false) }}')">
                                 <td>
                                     {% if item.thumbnail_path %}
-                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="Employee Avatar" />
+                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
                                     {% else %}
-                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="Employee Avatar" />
+                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{{ route('dashboard.employees.view', { model: item }, false) }}">
+                                    <a href="{{ route('dashboard.users.view', { model: item }, false) }}">
                                         <h1 class="title">{{ item.name }}</h1>
                                         <h2 class="subtitle">@{{ item.username }}</h2>
                                     </a>
                                 </td>
-                                {% if item.department %}
-                                    <td>{{ item.department.name }}</td>
+                                {% if item.group %}
+                                    <td>{{ item.group.name }}</td>
                                 {% else %}
                                     <td><em>Unassigned</em></td>
                                 {% endif %}
@@ -187,7 +187,7 @@
         </div>
 
         <div slot="footer">
-            <form method="post" action="{{ route('dashboard.employees.purge', {}, false) }}">
+            <form method="post" action="{{ route('dashboard.users.purge', {}, false) }}">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" v-model="modelId" />
                     
@@ -205,12 +205,12 @@
         </div>
 
         <div slot="footer">
-            <form method="post" action="{{ route('dashboard.employees.restore', {}, false) }}">
+            <form method="post" action="{{ route('dashboard.users.restore', {}, false) }}">
                 {{ csrf_field() }}
                 <input type="hidden" name="id" v-model="modelId" />
                     
                 <button type="button" class="button is-light" @click="modals.confirm2 = false">Cancel</button>
-                <button type="submit" class="button is-info">Restore Employee</button>
+                <button type="submit" class="button is-info">Restore User</button>
             </form>
         </div>
     </modal>

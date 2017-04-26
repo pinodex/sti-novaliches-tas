@@ -88,7 +88,7 @@
                             {% if not trash %}
                                 {% if item.head %}
                                     <td>
-                                        <a href="{{ route('dashboard.employees.view', { model: item.head }, false) }}">{{ item.head.name }}</a>
+                                        <a href="{{ route('dashboard.users.view', { model: item.head }, false) }}">{{ item.head.name }}</a>
                                     </td>
                                 {% else %}
                                     <td><em>Unassigned</em></td>
@@ -110,7 +110,7 @@
                                 {% else %}
                                     <div class="field is-grouped">
                                         <p class="control">
-                                            <a href="{{ route('dashboard.employees.index', { department: item }, false) }}" class="button is-small" title="View department employees">
+                                            <a href="{{ route('dashboard.users.index', { department: item }, false) }}" class="button is-small" title="View department users">
                                                 <i class="fa fa-address-book is-marginless"></i>
                                             </a>
                                         </p>

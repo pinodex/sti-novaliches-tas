@@ -13,14 +13,14 @@ namespace App\Http\Forms;
 
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Models\Employee;
 use App\Models\Request;
+use App\Models\User;
 
 class EditRequestForm extends Form
 {
     public function create()
     {
-        $employees = Employee::all();
+        $employees = User::all();
 
         $this->add('approver_id', Type\ChoiceType::class, [
             'label'     => 'Approver',

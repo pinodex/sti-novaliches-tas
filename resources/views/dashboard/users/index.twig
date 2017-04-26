@@ -31,7 +31,7 @@
                                     <li class="is-active">
                                         <a href="#" @click.prevent>
                                             <span class="icon is-small"><i class="fa fa-search"></i></span>
-                                            <span>Search Results</span>
+                                            <span>Search Result</span>
                                         </a>
                                     </li>
                                 {% endif %}
@@ -59,9 +59,25 @@
 
                             <p class="control">
                                 <span class="select is-small">
+                                    <select name="department">
+                                        <option value="all" {{ input_get('department') == 'all' ? 'selected' : '' }}>All Departments</option>
+                                        <option value="unassigned" {{ input_get('department') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
+                                        {% for department in departments %}
+                                            {% if input_get('department') == department.id %}
+                                                <option value="{{ department.id }}" selected>{{ department.name }}</option>
+                                            {% else %}
+                                                <option value="{{ department.id }}">{{ department.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </p>
+
+                            <p class="control">
+                                <span class="select is-small">
                                     <select name="group">
                                         <option value="all" {{ input_get('group') == 'all' ? 'selected' : '' }}>All Groups</option>
-                                        <option value="unassigned" {{ input_get('group') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
+                                        <option value="unassigned" {{ input_get('group') == 'unassigned' ? 'selected' : '' }}>Unassigned</option> 
                                         {% for group in groups %}
                                             {% if input_get('group') == group.id %}
                                                 <option value="{{ group.id }}" selected>{{ group.name }}</option>
@@ -93,6 +109,7 @@
                         <th class="avatar-column">&nbsp;</th>
                         <th>Name</th>
                         <th>Group</th>
+                        <th>Department</th>
                         <th>Last Login</th>
                         {% if trash %}
                             <th class="is-fit">Actions</th>
@@ -116,6 +133,11 @@
                                 </td>
                                 {% if item.group %}
                                     <td>{{ item.group.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                {% if item.department %}
+                                    <td>{{ item.department.name }}</td>
                                 {% else %}
                                     <td><em>Unassigned</em></td>
                                 {% endif %}
@@ -151,6 +173,11 @@
                                 </td>
                                 {% if item.group %}
                                     <td>{{ item.group.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                {% if item.department %}
+                                    <td>{{ item.department.name }}</td>
                                 {% else %}
                                     <td><em>Unassigned</em></td>
                                 {% endif %}

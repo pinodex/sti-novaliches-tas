@@ -66,7 +66,8 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'multiauth',
+            'driver' => 'eloquent',
+            'model' => \App\Models\User::class
         ],
 
         // 'users' => [

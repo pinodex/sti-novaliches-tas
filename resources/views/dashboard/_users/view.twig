@@ -1,18 +1,11 @@
 {% extends '/layouts/dashboard.twig' %}
 
-{% set page_title = 'Employees' %}
-{% set active_menu = 'employees' %}
+{% set page_title = 'Users' %}
+{% set active_menu = 'users' %}
 
 {% if trash is defined and trash %}
-    {% set page_title = 'Deleted Employees' %}
+    {% set page_title = 'Deleted Users' %}
 {% endif %}
-
-{%
-    set user_tabs = [
-        { label: 'Request History', route: 'dashboard.employees.view' },
-        { label: 'Action Logs', route: 'dashboard.employees.logs' },
-    ]
-%}
 
 {% block subcontent %}
     <div class="columns is-marginless">
@@ -22,9 +15,9 @@
                     <div class="column is-1">
                         <div class="picture">
                             {% if user.thumbnail_path %}
-                                <img src="{{ '/storage/' ~ user.thumbnail_path }}" alt="Employee Avatar" />
+                                <img src="{{ '/storage/' ~ user.thumbnail_path }}" alt="User Avatar" />
                             {% else %}
-                                <img src="/assets/img/default-thumb.jpg" alt="Employee Avatar" />
+                                <img src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                             {% endif %}
                         </div>
                     </div>
@@ -36,26 +29,41 @@
                                 <h2 class="subtitle">@{{ user.username }}</h2>
                             </div>
 
-                            <div class="column with-divider">
-                                <div class="info">
-                                    <p class="title">E-mail</p>
-                                    <p class="value">{{ user.email_address }}</p>
-                                </div>
-                            </div>
-
                             {% if user.department %}
                                 <div class="column with-divider">
                                     <div class="info">
-                                        <p class="title">Department</p>
+                                        <p class="title">Head</p>
                                         <p class="value">{{ user.department.name }}</p>
                                     </div>
                                 </div>
                             {% endif %}
 
+                            <div class="column with-divider">
+                                <div class="info">
+                                    <p class="title">Group</p>
+                                    <p class="value">{{ user.group ? user.group.name : 'Unassigned' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="column with-divider">
+                                <div class="info">
+                                    <p class="title">Departments</p>
+                                    <p class="value">
+                                        {% if user.departments|length > 0 %}
+                                            {% for department in user.departments %}
+                                                {{ department.name }}<br />
+                                            {% endfor %}
+                                        {% else %}
+                                            <em>None</em>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
                             <div class="column is-2">
                                 <div class="field has-addons has-addons-right">
                                     <p class="control">
-                                        <a href="{{ route('dashboard.employees.edit', { model: user }, false) }}" class="button is-small is-pulled-right" title="Edit Employee">
+                                        <a href="{{ route('dashboard.users.edit', { model: user }, false) }}" class="button is-small is-pulled-right" title="Edit User">
                                             <i class="fa fa-pencil is-marginless"></i>
                                         </a>
                                     </p>
@@ -98,19 +106,35 @@
         </div>
     </div>
 
-    <div class="columns is-marginless">
-        <div class="column">
-            <div class="tabs">
-                <ul>
-                    {% for tab in user_tabs %}
-                        <li class="{{ current_route == tab.route ? 'is-active' : '' }}">
-                            <a href="{{ route(tab.route, { model: user }, false) }}">{{ tab.label }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
+    <div class="columns">
+        <div class="column is-12">
+            <div class="panel">
+                <div class="panel-heading is-small">Request History</div>
+                <div class="box is-paddingless">
+                    <table class="table is-marginless">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Approver</th>
+                                <th>Submission Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in user.requests %}
+                                <tr class="clickable" @click="location('{{ route('dashboard.requests.view', { model: request }, false) }}')">
+                                    <td>{{ request.type ? request.type.name : 'N/A' }}</td>
+                                    <td>{{ request.approver ? request.approver.name : 'N/A' }}</td>
+                                    <td>{{ request.created_at ? request.created_at|date('M d, Y h:i A') : 'N/A' }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">No records found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    
-    {% block viewcontent %}{% endblock %}
 {% endblock %}

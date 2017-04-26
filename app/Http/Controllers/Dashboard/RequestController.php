@@ -13,7 +13,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use Auth;
 use Illuminate\Http\Request;
-use App\Models\Employee;
 use App\Models\Request as RequestModel;
 use App\Http\Forms\FilterRequestsForm;
 use App\Http\Forms\EditRequestForm;

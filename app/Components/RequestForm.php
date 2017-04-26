@@ -14,7 +14,7 @@ namespace App\Components;
 use Illuminate\Http\Request;
 use App\Components\RequestType\AbstractType;
 use App\Exceptions\RequestTypeNotFoundException;
-use App\Models\Employee;
+use App\Models\User;
 
 class RequestForm
 {
@@ -24,11 +24,11 @@ class RequestForm
     protected $type;
 
     /**
-     * @var \App\Models\Employee
+     * @var \App\Models\User
      */
     protected $requestor;
 
-    public function __construct(AbstractType $type, Employee $requestor)
+    public function __construct(AbstractType $type, User $requestor)
     {
         $this->type = $type;
         $this->requestor = $requestor;
@@ -38,11 +38,11 @@ class RequestForm
      * Create instance with type from type name
      * 
      * @param string $typeName Type name
-     * @param \App\Models\Employee $requestor Requestor employee model instance
+     * @param \App\Models\User $requestor Requestor employee model instance
      * 
      * @return \App\Components\RequestForm
      */
-    public static function create($typeName, Employee $requestor)
+    public static function create($typeName, User $requestor)
     {
         $types = config('request.types');
 

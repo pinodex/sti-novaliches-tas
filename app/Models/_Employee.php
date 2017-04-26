@@ -51,7 +51,6 @@ class Employee extends AbstractUser
      * @var array
      */
     protected $dates = [
-        'last_password_change_at',
         'last_login_at',
         'created_at',
         'updated_at',

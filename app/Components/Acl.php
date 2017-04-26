@@ -28,7 +28,7 @@ class Acl
     /**
      * @var array Allowed permissions
      */
-    private $permissions;
+    protected $permissions = [];
 
     /**
      * Constructs Acl
@@ -37,7 +37,9 @@ class Acl
      */
     public function __construct(User $user)
     {
-        $this->permissions = $user->group->permissions;
+        if ($user->group) {
+            $this->permissions = $user->group->permissions;
+        }
     }
 
     /**

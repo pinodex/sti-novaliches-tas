@@ -27,7 +27,7 @@ class Department extends Model
      */
     public function head()
     {
-        return $this->belongsTo(Employee::class, 'head_id');
+        return $this->belongsTo(User::class, 'head_id');
     }
 
     /**
@@ -35,6 +35,6 @@ class Department extends Model
      */
     public function employees()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(User::class);
     }
 }

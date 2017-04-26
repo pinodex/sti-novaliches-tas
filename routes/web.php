@@ -30,7 +30,7 @@ Route::group([
     'namespace'     => 'Dashboard',
     'prefix'        => 'dashboard',
     'as'            => 'dashboard.',
-    'middleware'    => ['auth', 'require_password_change', 'provider:user']
+    'middleware'    => ['auth', 'require_password_change']
 ], function () {
 
     Route::get('/', 'MainController@index')->name('index');
@@ -52,7 +52,7 @@ Route::group([
 
     });
 
-    // UserController
+    // EmployeesController
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
 
         Route::get('/', 'UserController@index')->name('index');
@@ -63,6 +63,7 @@ Route::group([
         Route::post('/restore', 'UserController@restore')->name('restore');
         Route::post('/purge', 'UserController@purge')->name('purge');
         Route::get('/{model}', 'UserController@view')->name('view');
+        Route::get('/{model}/logs', 'UserController@logs')->name('logs');
 
     });
 
@@ -94,21 +95,6 @@ Route::group([
 
     });
 
-    // EmployeesController
-    Route::group(['prefix' => 'employees', 'as' => 'employees.'], function () {
-
-        Route::get('/', 'EmployeeController@index')->name('index');
-        Route::get('/deleted', 'EmployeeController@deleted')->name('deleted');
-        Route::match(['get', 'post'], '/add', 'EmployeeController@edit')->name('add');
-        Route::match(['get', 'post'], '/{model}/edit', 'EmployeeController@edit')->name('edit');
-        Route::post('/{model}/delete', 'EmployeeController@delete')->name('delete');
-        Route::post('/restore', 'EmployeeController@restore')->name('restore');
-        Route::post('/purge', 'EmployeeController@purge')->name('purge');
-        Route::get('/{model}', 'EmployeeController@view')->name('view');
-        Route::get('/{model}/logs', 'EmployeeController@logs')->name('logs');
-
-    });
-
     // ProfileController
     Route::group(['prefix' => 'profiles', 'as' => 'profiles.'], function () {
 
@@ -126,7 +112,7 @@ Route::group([
     'namespace'     => 'Employee',
     'prefix'        => 'employee',
     'as'            => 'employee.',
-    'middleware'    => ['auth', 'require_password_change', 'provider:employee']
+    'middleware'    => ['auth', 'require_password_change']
 ], function () {
 
     Route::get('/', 'MainController@index')->name('index');

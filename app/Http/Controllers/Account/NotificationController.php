@@ -19,11 +19,6 @@ use Illuminate\Notifications\DatabaseNotification;
 
 class NotificationController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('provider:employee');
-    }
-
     public function index()
     {
         $notifications = [];

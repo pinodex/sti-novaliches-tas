@@ -25,8 +25,7 @@ class ViewServiceProvider extends ServiceProvider
             }
 
             if (Auth::check()) {
-                $provider = explode(':', Auth::id());
-                $menu = Menu::process(config('menu.' . $provider[0]));
+                $menu = Menu::process(config('menu'));
 
                 $twig->addGlobal('menu', $menu);
                 $twig->addGlobal('bulletins', Bulletin::orderBy('created_at', 'DESC')->with('author')->get());

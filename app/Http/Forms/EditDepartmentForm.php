@@ -14,13 +14,13 @@ namespace App\Http\Forms;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Constraints as CustomAssert;
-use App\Models\Employee;
+use App\Models\User;
 
 class EditDepartmentForm extends Form
 {
     public function create()
     {
-        $employees = Employee::all();
+        $employees = User::all();
 
         $this->add('name', Type\TextType::class, [
             'attr' => [

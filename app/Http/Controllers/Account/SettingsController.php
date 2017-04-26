@@ -38,7 +38,7 @@ class SettingsController extends Controller
 
             $user->fill($data);
             
-            $user->last_password_change_at = date('Y-m-d H:i:s');
+            $user->require_password_change = false;
             
             $user->save();
 
@@ -50,7 +50,7 @@ class SettingsController extends Controller
 
         return view('account.settings.index', [
             'form' => $form->createView(),
-            'password_change_required' => $user->last_password_change_at == null
+            'password_change_required' => $user->require_password_change
         ]);
     }
 }

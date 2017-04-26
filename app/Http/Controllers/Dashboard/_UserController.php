@@ -15,14 +15,21 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditUserForm;
-use App\Models\Department;
-use App\Models\Group;
 use App\Models\User;
+use App\Models\Group;
+use App\Models\LeaveType;
+use App\Models\UserPicture;
+use App\Components\Acl;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::MANAGE_USERS);
+    }
+
     /**
-     * User index page
+     * Users index page
      * 
      * @param \Illuminate\Http\Request $request Request object
      * 
@@ -30,71 +37,41 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $result = User::with('department', 'group');
-        $departments = Department::all();
+        $users = User::with('group');
         $groups = Group::all();
 
         $showTrashed = $request->query->get('show') == 'deleted';
         $isAll = true;
 
         if ($showTrashed) {
-            $result->onlyTrashed();
+            $users->onlyTrashed();
             $isAll = false;
         }
 
-        if ($name = $request->query->get('name')) {
-            User::searchName($result, $name);
+        if ($searchName = $request->query->get('name')) {
+            $users->where('name', 'LIKE', '%' . $searchName . '%');
             $isAll = false;
         }
 
-        $result->when($request->query->get('department'), function ($builder) use ($request, &$isAll) {
-            $isAll = false;
-            $department = $request->query->get('department');
-
-            $builder->where(function (Builder $query) use ($department) {
-                if ($department == 'unassigned') {
-                    $query->whereIn('department_id', [null, 0]);
+        if ($searchGroup = $request->query->get('group')) {
+            $users->where(function (Builder $query) use ($searchGroup, &$isAll) {
+                if ($searchGroup == 'unassigned') {
                     $isAll = false;
-
-                    return;
+                    return $query->whereIn('group_id', [null, 0]);
                 }
 
-                if ($department != 'all') {
-                    $query->where('department_id', $department);
+                if ($searchGroup != 'all') {
                     $isAll = false;
-
-                    return;
+                    return $query->where('group_id', $searchGroup);
                 }
             });
-        });
-
-        $result->when($request->query->get('group'), function ($builder) use ($request, &$isAll) {
-            $isAll = false;
-            $group = $request->query->get('group');
-
-            $builder->where(function (Builder $query) use ($group) {
-                if ($group == 'unassigned') {
-                    $query->whereIn('group_id', [null, 0]);
-                    $isAll = false;
-
-                    return;
-                }
-
-                if ($group != 'all') {
-                    $query->where('group_id', $group);
-                    $isAll = false;
-
-                    return;
-                }
-            });
-        });
+        }
 
         return view('dashboard.users.index', [
-            'result'        => $result->paginate(50),
-            'departments'   => $departments,
-            'groups'        => $groups,
-            'trash'         => $showTrashed,
-            'is_all'        => $isAll
+            'result' => $users->paginate(50),
+            'groups' => $groups,
+            'trash'  => $showTrashed,
+            'is_all' => $isAll
         ]);
     }
 
@@ -122,26 +99,8 @@ class UserController extends Controller
      */
     public function view(Request $request, User $model)
     {
-        return view('dashboard.users.history', [
+        return view('dashboard.users.view', [
             'user'  => $model
-        ]);
-    }
-
-    /**
-     * User logs page
-     * 
-     * @param \Illuminate\Http\Request $request Request object
-     * @param \App\Models\User $model User model object
-     * 
-     * @return mixed
-     */
-    public function logs(Request $request, User $model)
-    {
-        $logs = $model->logs()->orderBy('id', 'DESC')->paginate(50);
-
-        return view('dashboard.users.logs', [
-            'user'  => $model,
-            'logs'  => $logs
         ]);
     }
 
@@ -168,15 +127,14 @@ class UserController extends Controller
                 unset($data['password']);
             }
 
-            unset($data['name']);
             $model->fill($data);
-            
+
             if ($data['picture']) {
                 try {
                     $model->picture = $data['picture'];
                 } catch (\Exception $e) {}
             }
-
+            
             $model->save();
 
             return redirect()->route('dashboard.users.index')
@@ -248,7 +206,6 @@ class UserController extends Controller
                 ->with('message', ['warning', __('user.not_found')]);
         }
 
-        $model->deletePicture();
         $model->forceDelete();
 
         return redirect()->route('dashboard.users.deleted')

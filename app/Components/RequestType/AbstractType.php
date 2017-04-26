@@ -15,7 +15,7 @@ use DateTime;
 use Symfony\Component\Form\Form as SymfonyForm;
 use Illuminate\Http\Request;
 use App\Http\Forms\Form;
-use App\Models\Employee;
+use App\Models\User;
 
 abstract class AbstractType
 {
@@ -25,7 +25,7 @@ abstract class AbstractType
     protected $form;
 
     /**
-     * @var \App\Models\Employee
+     * @var \App\Models\User
      */
     protected $requestor;
 
@@ -50,9 +50,9 @@ abstract class AbstractType
     ];
 
     /**
-     * @param \App\Models\Employee $requestor Requestor employee model instance
+     * @param \App\Models\User $requestor Requestor employee model instance
      */
-    public function __construct(Employee $requestor)
+    public function __construct(User $requestor)
     {
         $this->form = new Form();
         $this->requestor = $requestor;
@@ -90,7 +90,7 @@ abstract class AbstractType
     /**
      * Get approver for requestor
      * 
-     * @return \App\Models\Employee
+     * @return \App\Models\User
      */
     protected function getApprover()
     {

@@ -25,7 +25,7 @@ class RequirePasswordChange
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->last_password_change_at == null) {
+        if (Auth::user()->require_password_change) {
             return redirect()->route('account.settings.index');
         }
 

@@ -76,7 +76,7 @@ class Request extends Model
         });
 
         $requests->when($query->get('requestor'), function ($builder) use ($query, &$isFiltered) {
-            $ids = Employee::searchName(null, $query->get('requestor'))->pluck('id');
+            $ids = User::searchName(null, $query->get('requestor'))->pluck('id');
 
             $builder->whereIn('requestor_id', $ids);
 
@@ -84,7 +84,7 @@ class Request extends Model
         });
 
         $requests->when($query->get('approver'), function ($builder) use ($query, &$isFiltered) {
-            $ids = Employee::searchName(null, $query->get('approver'))->pluck('id');
+            $ids = User::searchName(null, $query->get('approver'))->pluck('id');
 
             $builder->whereIn('approver_id', $ids);
 
@@ -137,23 +137,23 @@ class Request extends Model
     /**
      * Escalate the request to the superior
      * 
-     * @param \App\Models\Employee $employee Employee model to pass approval to
+     * @param \App\Models\User $user User model to pass approval to
      * 
-     * @return \App\Models\Employee Passed employee
+     * @return \App\Models\User Passed user
      */
-    public function escalate(Employee $employee = null)
+    public function escalate(User $user = null)
     {
-        if ($employee) {
-            $this->approver_id = $employee->id;
+        if ($user) {
+            $this->approver_id = $user->id;
             $this->status = self::STATUS_ESCALATED;
             $this->responded_at = date('Y-m-d H:i:s');
 
             $this->save();
 
             $this->requestor->notify(new RequestEscalated($this));
-            $employee->notify(new RequestReceivedFromEscalation($this));
+            $user->notify(new RequestReceivedFromEscalation($this));
 
-            return $employee;
+            return $user;
         }
 
         if ($this->approver && $this->approver->department && $this->approver->department->head) {
@@ -194,7 +194,7 @@ class Request extends Model
      */
     public function requestor()
     {
-        return $this->belongsTo(Employee::class, 'requestor_id');
+        return $this->belongsTo(User::class, 'requestor_id');
     }
 
     /**
@@ -202,7 +202,7 @@ class Request extends Model
      */
     public function approver()
     {
-        return $this->belongsTo(Employee::class, 'approver_id');
+        return $this->belongsTo(User::class, 'approver_id');
     }
 
     public function getStatusLabelAttribute()

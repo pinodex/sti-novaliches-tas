@@ -15,15 +15,14 @@ use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Constraints as CustomAssert;
 use App\Models\Department;
-use App\Models\Employee;
-use App\Models\Profile;
+use App\Models\Group;
+use App\Models\User;
 
-class EditEmployeeForm extends Form
+class EditUserForm extends Form
 {
     public function create()
     {
-        $departments = Department::all();
-        $profiles = Profile::all();
+        $groups = Group::all();
 
         $this->add('picture', Type\FileType::class, [
             'label'         => 'Picture (leave if not changing)',
@@ -34,18 +33,16 @@ class EditEmployeeForm extends Form
             'required'      => false
         ]);
 
-        $this->add('first_name', Type\TextType::class);
-
-        $this->add('middle_name', Type\TextType::class, [
-            'required'  => false
+        $this->add('name', Type\TextType::class, [
+            'attr' => [
+                'autofocus' => true
+            ]
         ]);
-
-        $this->add('last_name', Type\TextType::class);
         
         $this->add('username', Type\TextType::class, [
             'constraints' => [
                 new CustomAssert\UniqueRecord([
-                    'model'     => Employee::class,
+                    'model'     => User::class,
                     'exclude'   => $this->model ? $this->model->username : null,
                     'row'       => 'username',
                     'message'   => 'Username already in use.'
@@ -68,10 +65,10 @@ class EditEmployeeForm extends Form
         
         $this->add('email_address', Type\EmailType::class, [
             'constraints' => new CustomAssert\UniqueRecord([
-                'model'     => Employee::class,
+                'model'     => User::class,
                 'exclude'   => $this->model ? $this->model->email_address : null,
                 'row'       => 'email_address',
-                'message'   => 'Email address already in use.'
+                'message'   => 'Email already in use.'
             ])
         ]);
         
@@ -92,14 +89,9 @@ class EditEmployeeForm extends Form
             'required'          => false
         ]);
 
-        $this->add('department_id', Type\ChoiceType::class, [
-            'label'     => 'Department',
-            'choices'   => $this->toChoices($departments, true)
-        ]);
-
-        $this->add('profile_id', Type\ChoiceType::class, [
-            'label'     => 'Profile',
-            'choices'   => $this->toChoices($profiles)
+        $this->add('group_id', Type\ChoiceType::class, [
+            'label'     => 'Group',
+            'choices'   => $this->toChoices($groups, true)
         ]);
     }
 }

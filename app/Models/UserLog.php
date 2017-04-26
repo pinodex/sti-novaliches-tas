@@ -14,7 +14,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Agent\Agent;
 
-class EmployeeLog extends Model
+class UserLog extends Model
 {
     public $timestamps = false;
 

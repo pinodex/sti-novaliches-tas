@@ -2,16 +2,16 @@
 
 {% form_theme form '/layouts/bulma.twig' %}
 
-{% set page_title = 'Edit Employee' %}
-{% set active_menu = 'employees' %}
+{% set page_title = 'Edit User' %}
+{% set active_menu = 'users' %}
 
 {% if not model.id %}
-    {% set page_title = 'Add Employee' %}
+    {% set page_title = 'Add User' %}
 {% endif %}
 
 {% block subcontent %}
     <div class="columns">
-        <div class="column">
+        <div class="column is-12">
             <div class="panel">
                 <p class="panel-heading is-small">{{ page_title }}</p>
 
@@ -24,7 +24,7 @@
                                 <img src="/assets/img/default-image.jpg" alt="User Avatar" />
                             {% endif %}
                         </div>
-                        
+
                         <div class="column">
                             <form action="{{ app.request.getRequestUri() }}" method="POST" enctype="multipart/form-data">
                                 {{ form_widget(form) }}
@@ -58,11 +58,11 @@
         </div>
 
         <div slot="footer">
-            <form method="post" action="{{ route('dashboard.employees.delete', { model: model }, false) }}">
+            <form method="post" action="{{ route('dashboard.users.delete', { model: model }, false) }}">
                 {{ csrf_field() }}
                     
                 <button type="button" class="button is-light" @click="modals.confirm = false">Cancel</button>
-                <button type="submit" class="button is-danger"><i class="fa fa-trash-o"></i> Delete Employee</button>
+                <button type="submit" class="button is-danger"><i class="fa fa-trash-o"></i> Delete User</button>
             </form>
         </div>
     </modal>

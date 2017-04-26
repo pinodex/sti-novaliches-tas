@@ -38,6 +38,8 @@
                     {% else %}
                         <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
                     {% endif %}
+
+                    <span>{{ auth_user().first_name }}</span>
                 </div>
 
                 <a href="#" class="nav-item is-tab" title="Notifications" @click.prevent="toggleNotifications(); sidebarActive = false" :class="{ 'is-active' : notificationActive }">

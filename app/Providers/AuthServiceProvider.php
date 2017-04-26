@@ -5,7 +5,6 @@ namespace App\Providers;
 use Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Components\MultiAuth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,11 +25,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        Auth::provider('multiauth', function () {
-            return new MultiAuth\BaseProvider(
-                config('multiauth.providers')
-            );
-        });
     }
 }
