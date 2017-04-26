@@ -86,13 +86,23 @@ class Employee extends AbstractUser
     }
 
     /**
-     * Get the associated department models
+     * Get the associated department model
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    /**
+     * Get the employee headed department model
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function headedDepartment()
+    {
+        return $this->hasOne(Department::class, 'head_id');
     }
 
     /**
