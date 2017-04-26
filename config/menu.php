@@ -11,7 +11,7 @@ return [
             [
                 'icon'          => 'home',
                 'identifier'    => 'home',
-                'route'         => 'admin.index',
+                'route'         => 'index',
                 'name'          => 'Home'
             ]
         ]

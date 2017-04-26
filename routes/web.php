@@ -33,8 +33,6 @@ Route::group([
     'middleware'    => ['auth', 'require_password_change']
 ], function () {
 
-    Route::get('/', 'MainController@index')->name('index');
-
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
 
         Route::get('/', 'RequestController@index')->name('index');

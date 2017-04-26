@@ -15,6 +15,11 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Index page
      * 
@@ -22,6 +27,6 @@ class MainController extends Controller
      */
     public function index()
     {
-        return redirect()->route('auth.login');
+        return view('index');
     }
 }
