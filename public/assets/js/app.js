@@ -2,6 +2,12 @@
  * (c) 2016, Raphael Marco
  */
 
+Object.defineProperty(Array.prototype, 'pluck', {
+    value: function(key) {
+        return this.map(function(object) { return object[key]; });
+    }
+});
+
 (function () {
     'use strict';
 
@@ -153,32 +159,32 @@
 
         getNotifications: function () {
             this.$http.get('/account/notifications').then(function (response) {
-                for (var i = response.body.length - 1; i >= 0; i--) {
+                if (!this.notificationActive) {
+                    this.unreadNotificationCount = response.body.unread_count;
+                }
+
+                for (var i = response.body.entries.length - 1; i >= 0; i--) {
                     var existingEntries = this.notifications.filter(function (item) {
-                        return item.id == response.body[i].id;
+                        return item.id == response.body.entries[i].id;
                     });
 
                     if (existingEntries.length > 0) {
                         continue;
                     }
 
-                    this.notifications.unshift(response.body[i]);
-
-                    if (!this.notificationActive) {
-                        this.unreadNotificationCount++;
-                    }
+                    this.notifications.unshift(response.body.entries[i]);
                 }
             });
         },
 
         toggleNotifications: function () {
             this.notificationActive = !this.notificationActive;
+            this.unreadNotificationCount = 0;
 
             if (this.notificationActive) {
-                for (var i = this.notifications.length - 1; i >= 0; i--) {
-                    this.$http.patch('/account/notifications/' + this.notifications[i].id);
-                    this.unreadNotificationCount--;
-                }
+                this.$http.post('/account/notifications/read', {
+                    ids: this.notifications.pluck('id')
+                });
             }
         },
 

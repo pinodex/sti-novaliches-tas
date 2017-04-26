@@ -122,7 +122,17 @@
 
     <div class="notification-container" :class="{ 'is-active' : notificationActive }">
         <div class="level heading-container">
-            <h2>Notifications</h2>
+            <div class="level-left">
+                <div class="level-item">
+                    <h2>Notifications</h2>
+                </div>
+            </div>
+
+            <div class="level-right">
+                <div class="level-item">
+                    <a href="{{ route('notifications', {}, false) }}">View all</a>
+                </div>
+            </div>
         </div>
 
         <div class="empty-message" v-show="notifications.length == 0">No notifications yet.</div>

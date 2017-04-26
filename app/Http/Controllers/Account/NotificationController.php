@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Account;
 
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Notifications\NotificationReader;
@@ -21,33 +22,44 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        $notifications = [];
+        $notifications = [
+            'unread_count'  => 0,
+            'entries'       => []
+        ];
+
+        $notifications['unread_count'] = Auth::user()->unreadNotifications()->count();
 
         Auth::user()
             ->unreadNotifications()
             ->orderBy('created_at', 'DESC')
             ->each(function (DatabaseNotification $notification) use (&$notifications) {
-                $notifications[] = $this->show($notification);
+                $notifications['entries'][] = $this->view($notification);
             });
 
         return $notifications;
     }
 
-    public function show(DatabaseNotification $notification)
+    public function view(DatabaseNotification $model)
     {
-        $nr = new NotificationReader($notification);
+        $nr = new NotificationReader($model);
 
         return [
-            'id' => $notification->id,
+            'id' => $model->id,
             'title' => $nr->getTitle(),
             'content' => $nr->getContent(),
-            'read_at' => $notification->read_at ? $notification->read_at->toDateTimeString() : null,
-            'created_at' => $notification->created_at ? $notification->created_at->toDateTimeString() : null
+            'read_at' => $model->read_at ? $model->read_at->toDateTimeString() : null,
+            'created_at' => $model->created_at ? $model->created_at->toDateTimeString() : null
         ];
     }
 
-    public function update(DatabaseNotification $notification)
+    public function read(Request $request)
     {
-        $notification->markAsRead();
+        $ids = $request->input('ids');
+
+        Auth::user()->notifications()
+            ->whereIn('id', $ids)
+            ->update([
+                'read_at' => Carbon::now()
+            ]);
     }
 }

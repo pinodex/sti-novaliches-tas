@@ -1,0 +1,32 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Notifications' %}
+{% set active_menu = null %}
+
+{% block pageheader %}
+    <div class="columns page-heading">
+        <div class="column">
+            <h1 class="heading">Notifications</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column">
+            <table class="table notifications-table">
+                <tbody>
+                    {% for notification in notifications %}
+                        <tr class="{{ notification.read_at is null ? 'is-unread' : '' }}">
+                            <td>
+                                <h3 class="title is-6 is-marginless">{{ notification.title }}</h3>
+                                <p class="is-marginless">{{ notification.content }}</p>
+                            </td>
+                            <td>{{ notification.created_at | date('M d, h:i a') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

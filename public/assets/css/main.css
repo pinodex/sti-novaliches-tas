@@ -188,6 +188,23 @@ nav.nav .avatar {
 .notification-container .notification-entry:hover {
   background: #363636;
 }
+.notification-container::-webkit-scrollbar {
+  width: 10px;
+}
+.notification-container::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+.notification-container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #333;
+}
+
+.notifications-table tr {
+  border-left: 5px solid transparent;
+}
+.notifications-table .is-unread {
+  border-color: #ccc;
+}
 
 .container.is-fluid {
   width: 100%;

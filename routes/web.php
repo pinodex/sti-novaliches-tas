@@ -22,6 +22,8 @@
 
 Route::get('/', ['as' => 'index', 'uses' => 'MainController@index']);
 
+Route::get('/notifications', ['as' => 'notifications', 'uses' => 'MainController@notifications']);
+
 Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthController@login', 'middleware' => ['guest']]);
 
 Route::get('/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
@@ -140,8 +142,10 @@ Route::group(['namespace' => 'Account', 'prefix' => 'account', 'as' => 'account.
 
     });
 
-    Route::resource('notifications', 'NotificationController', [
-        'only' => ['index', 'show', 'update']
-    ]);
+    Route::group(['prefix' => 'notifications', 'as' => 'notifications.'], function () {
+        Route::get('/', 'NotificationController@index')->name('index');
+        Route::get('/{model}', 'NotificationController@view')->name('view');
+        Route::post('/read', 'NotificationController@read')->name('read');
+    });
 
 });
