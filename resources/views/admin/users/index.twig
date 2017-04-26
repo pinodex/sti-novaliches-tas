@@ -1,0 +1,244 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Users' %}
+{% set active_menu = 'users' %}
+
+{% if trash %}
+    {% set page_title = 'Deleted Users' %}
+{% endif %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-12">
+            <div class="level is-small">
+                <div class="level-left">
+                    <div class="level-item">
+                        <div class="tabs is-small">
+                            <ul>
+                                <li class="{{ is_all ? 'is-active' : '' }}">
+                                    <a href="{{ route('admin.users.index', {}, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-user"></i></span>
+                                        <span>All</span>
+                                    </a>
+                                </li>
+                                <li class="{{ trash ? 'is-active' : '' }}">
+                                    <a href="{{ route('admin.users.deleted', {}, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-trash"></i></span>
+                                        <span>Deleted</span>
+                                    </a>
+                                </li>
+                                {% if not is_all and not trash %}
+                                    <li class="is-active">
+                                        <a href="#" @click.prevent>
+                                            <span class="icon is-small"><i class="fa fa-search"></i></span>
+                                            <span>Search Result</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-right">
+                    <form action="{{ app.request.getRequestUri() }}" class="level-item">
+                        <div class="field has-addons is-small">
+                            <p class="control">
+                                <a href="{{ route('admin.users.add', {}, false) }}" class="button is-primary is-small">
+                                    <i class="fa fa-plus"></i> Add User
+                                </a>
+                            </p>
+
+                            <p class="control has-icon">
+                                <input class="input is-small" type="text" name="name" value="{{ input_get('name') }}" placeholder="Search by name&hellip;" />
+
+                                <span class="icon is-small">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </p>
+
+                            <p class="control">
+                                <span class="select is-small">
+                                    <select name="department">
+                                        <option value="all" {{ input_get('department') == 'all' ? 'selected' : '' }}>All Departments</option>
+                                        <option value="unassigned" {{ input_get('department') == 'unassigned' ? 'selected' : '' }}>Unassigned</option>
+                                        {% for department in departments %}
+                                            {% if input_get('department') == department.id %}
+                                                <option value="{{ department.id }}" selected>{{ department.name }}</option>
+                                            {% else %}
+                                                <option value="{{ department.id }}">{{ department.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </p>
+
+                            <p class="control">
+                                <span class="select is-small">
+                                    <select name="group">
+                                        <option value="all" {{ input_get('group') == 'all' ? 'selected' : '' }}>All Groups</option>
+                                        <option value="unassigned" {{ input_get('group') == 'unassigned' ? 'selected' : '' }}>Unassigned</option> 
+                                        {% for group in groups %}
+                                            {% if input_get('group') == group.id %}
+                                                <option value="{{ group.id }}" selected>{{ group.name }}</option>
+                                            {% else %}
+                                                <option value="{{ group.id }}">{{ group.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </span>
+                            </p>
+
+                            <p class="control">
+                                <button type="submit" class="button is-dark is-small">
+                                    <i class="fa fa-search is-marginless"></i>
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if trash %}
+                <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
+            {% endif %}
+
+            <table class="table user-list">
+                <thead>
+                    <tr>
+                        <th class="avatar-column">&nbsp;</th>
+                        <th>Name</th>
+                        <th>Group</th>
+                        <th>Department</th>
+                        <th>Last Login</th>
+                        {% if trash %}
+                            <th class="is-fit">Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in result %}
+                        {% if trash %}
+                            <tr>
+                                <td>
+                                    {% if item.thumbnail_path %}
+                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
+                                    {% else %}
+                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <h1 class="title">{{ item.name }}</h1>
+                                    <h2 class="subtitle">@{{ item.username }}</h2>
+                                </td>
+                                {% if item.group %}
+                                    <td>{{ item.group.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                {% if item.department %}
+                                    <td>{{ item.department.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
+                                <td @click.stop>
+                                    <div class="field is-grouped">
+                                        <p class="control">
+                                            <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true;setFormId({{ item.id }})">Restore</button>
+                                        </p>
+
+                                        <p class="control">
+                                            <button class="button is-small is-danger" @click="modals.confirm = true; setFormId({{ item.id }})" title="Delete Permanently">
+                                                <i class="fa fa-ban is-marginless"></i>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr class="clickable" @click="location('{{ route('admin.users.view', { model: item }, false) }}')">
+                                <td>
+                                    {% if item.thumbnail_path %}
+                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
+                                    {% else %}
+                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.users.view', { model: item }, false) }}">
+                                        <h1 class="title">{{ item.name }}</h1>
+                                        <h2 class="subtitle">@{{ item.username }}</h2>
+                                    </a>
+                                </td>
+                                {% if item.group %}
+                                    <td>{{ item.group.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                {% if item.department %}
+                                    <td>{{ item.department.name }}</td>
+                                {% else %}
+                                    <td><em>Unassigned</em></td>
+                                {% endif %}
+                                <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
+                            </tr>
+                        {% endif %}
+                    {% else %}
+                        <tr>
+                            <td colspan="3">No results found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="columns">
+                <div class="column is-3 is-offset-9 is-paddingless">
+                    <span class="select">
+                        <select name="pages" @change="changePaginationPage" v-model="paginationPage">
+                            {% for i in 1..result.lastPage %}
+                                <option value="{{ i }}">Page {{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <modal :show.sync="modals.confirm">
+        <h3 slot="header">Confirm action</h3>
+        
+        <div slot="body">
+            <p>Are you sure you want to permantly delete this user?</p>
+        </div>
+
+        <div slot="footer">
+            <form method="post" action="{{ route('admin.users.purge', {}, false) }}">
+                {{ csrf_field() }}
+                <input type="hidden" name="id" v-model="modelId" />
+                    
+                <button type="button" class="button is-light" @click="modals.confirm = false">Cancel</button>
+                <button type="submit" class="button is-danger">Delete Pemanently</button>
+            </form>
+        </div>
+    </modal>
+
+    <modal :show.sync="modals.confirm2">
+        <h3 slot="header">Confirm action</h3>
+        
+        <div slot="body">
+            <p>Are you sure you want to restore this user account?</p>
+        </div>
+
+        <div slot="footer">
+            <form method="post" action="{{ route('admin.users.restore', {}, false) }}">
+                {{ csrf_field() }}
+                <input type="hidden" name="id" v-model="modelId" />
+                    
+                <button type="button" class="button is-light" @click="modals.confirm2 = false">Cancel</button>
+                <button type="submit" class="button is-info">Restore User</button>
+            </form>
+        </div>
+    </modal>
+{% endblock %}

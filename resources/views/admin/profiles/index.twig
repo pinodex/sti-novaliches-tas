@@ -1,0 +1,55 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Profiles' %}
+{% set active_menu = 'profiles' %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-12">
+            <div class="level is-small">
+                <div class="level-left">
+                    
+                </div>
+
+                <div class="level-right">
+                    <form action="{{ app.request.getRequestUri() }}" class="level-item">
+                        <div class="field has-addons is-small">
+                            <p class="control">
+                                <a href="{{ route('admin.profiles.add', {}, false) }}" class="button is-primary is-small">
+                                    <i class="fa fa-plus"></i> Add Profile
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Allocated Days</th>
+                        <th class="is-fit">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in result %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.allocated_days }}</td>
+                            <td>
+                                <a href="{{ route('admin.profiles.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
+                                    <i class="fa fa-pencil-square-o is-marginless"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">No results found</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

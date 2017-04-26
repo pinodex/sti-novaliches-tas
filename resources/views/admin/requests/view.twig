@@ -1,7 +1,7 @@
 {% extends '/layouts/dashboard.twig' %}
 
 {% set page_title = 'View request' %}
-{% set active_menu = 'myrequests' %}
+{% set active_menu = 'inbox' %}
 
 {% block subcontent %}
     <div class="columns">
@@ -39,11 +39,6 @@
                         <div class="info">
                             <p class="title">Incurs Balance</p>
                             <p class="value">{{ model.incurred_balance }}</p>
-                        </div>
-
-                        <div class="info">
-                            <p class="title">Approver</p>
-                            <p class="value">{{ model.approver ? model.approver.name : 'N/A' }}</p>
                         </div>
 
                         <div class="info">
@@ -93,13 +88,16 @@
 
                             <p>{{ model.reason|nl2br }}</p>
 
-
                             {% if model.is_approved == '0' %}
                                 <hr />
                                 <h2 class="subtitle">Disapproval Reason</h2>
 
                                 <p>{{ model.disapproval_reason|nl2br }}</p>
                             {% endif %}
+
+                            <hr />
+
+                            <a href="{{ route('admin.requests.edit', { model: model }, false) }}" class="button is-primary">Edit</a>
                         </div>
                     </div>
                 </div>

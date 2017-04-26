@@ -27,9 +27,9 @@ Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthCo
 Route::get('/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
 
 Route::group([
-    'namespace'     => 'Dashboard',
-    'prefix'        => 'dashboard',
-    'as'            => 'dashboard.',
+    'namespace'     => 'Admin',
+    'prefix'        => 'admin',
+    'as'            => 'admin.',
     'middleware'    => ['auth', 'require_password_change']
 ], function () {
 
@@ -114,8 +114,6 @@ Route::group([
     'as'            => 'employee.',
     'middleware'    => ['auth', 'require_password_change']
 ], function () {
-
-    Route::get('/', 'MainController@index')->name('index');
 
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
 

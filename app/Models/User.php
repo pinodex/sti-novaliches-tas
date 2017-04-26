@@ -14,6 +14,7 @@ namespace App\Models;
 use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use App\Traits\PasswordHashable;
 use App\Traits\WithPicture;
 use App\Components\Acl;
@@ -22,7 +23,8 @@ class User extends Authenticatable
 {
     use SoftDeletes,
         PasswordHashable,
-        WithPicture;
+        WithPicture,
+        Notifiable;
 
     /**
      * The attributes that are mass assignable.

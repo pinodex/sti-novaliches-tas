@@ -11,25 +11,9 @@ return [
             [
                 'icon'          => 'home',
                 'identifier'    => 'home',
-                'route'         => 'dashboard.index',
+                'route'         => 'admin.index',
                 'name'          => 'Home'
-            ],
-
-            [
-                'icon'          => 'envelope',
-                'identifier'    => 'requests',
-                'route'         => 'dashboard.requests.index',
-                'name'          => 'Requests',
-                'visibility'    => [ Acl::MANAGE_REQUESTS, Acl::SUBMIT_REQUESTS ],
-            ],
-
-            [
-                'icon'          => 'sticky-note-o',
-                'identifier'    => 'bulletin',
-                'route'         => 'dashboard.bulletins.index',
-                'name'          => 'Bulletin',
-                'visibility'    => [ Acl::MANAGE_BULLETIN ]
-            ],
+            ]
         ]
     ],
 
@@ -39,23 +23,16 @@ return [
         'list' => [
             [
                 'icon'          => 'envelope',
-                'identifier'    => 'requests',
+                'identifier'    => 'myrequests',
                 'route'         => 'employee.requests.index',
-                'name'          => 'Requests',
+                'name'          => 'My Requests',
             ],
 
             [
                 'icon'          => 'inbox',
                 'identifier'    => 'inbox',
                 'route'         => 'employee.requests.inbox.index',
-                'name'          => 'Request Inbox',
-                'visibility'    => function () {
-                    if (Auth::user() instanceof Employee) {
-                        return Auth::user()->headedDepartment !== null;
-                    }
-
-                    return false;
-                }
+                'name'          => 'Request Inbox'
             ],
         ],
     ],
@@ -66,9 +43,25 @@ return [
 
         'list' => [
             [
+                'icon'          => 'sticky-note-o',
+                'identifier'    => 'bulletin',
+                'route'         => 'admin.bulletins.index',
+                'name'          => 'Bulletin',
+                'visibility'    => [ Acl::MANAGE_BULLETIN ]
+            ],
+
+            [
+                'icon'          => 'envelope',
+                'identifier'    => 'requests',
+                'route'         => 'admin.requests.index',
+                'name'          => 'Requests',
+                'visibility'    => [ Acl::MANAGE_REQUESTS, Acl::SUBMIT_REQUESTS ],
+            ],
+
+            [
                 'icon'          => 'user',
                 'identifier'    => 'users',
-                'route'         => 'dashboard.users.index',
+                'route'         => 'admin.users.index',
                 'name'          => 'Users',
                 'visibility'    => [ Acl::MANAGE_USERS ]
             ],
@@ -76,7 +69,7 @@ return [
             [
                 'icon'          => 'users',
                 'identifier'    => 'groups',
-                'route'         => 'dashboard.groups.index',
+                'route'         => 'admin.groups.index',
                 'name'          => 'Groups',
                 'visibility'    => [ Acl::MANAGE_GROUPS ]
             ],
@@ -84,7 +77,7 @@ return [
             [
                 'icon'          => 'building',
                 'identifier'    => 'departments',
-                'route'         => 'dashboard.departments.index',
+                'route'         => 'admin.departments.index',
                 'name'          => 'Departments',
                 'visibility'    => [ Acl::MANAGE_DEPARTMENTS ]
             ],
@@ -92,7 +85,7 @@ return [
             [
                 'icon'          => 'address-card',
                 'identifier'    => 'profiles',
-                'route'         => 'dashboard.profiles.index',
+                'route'         => 'admin.profiles.index',
                 'name'          => 'Profiles',
                 'visibility'    => [ Acl::MANAGE_PROFILES ],
             ]

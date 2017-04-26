@@ -44,7 +44,7 @@ class AuthController extends Controller
                 return redirect($request->getSchemeAndHttpHost() . '/' . ltrim(urldecode($next), '/'));
             }
 
-            return redirect()->route('dashboard.index');
+            return redirect()->route('admin.index');
         }
 
         return view('auth.login', [

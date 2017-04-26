@@ -236,7 +236,7 @@
         app.$set(appData, 'paginationPage', currentPage);
     }
 
-    if (authId != null && authId.indexOf('employee') === 0) {
+    if (isLoggedIn) {
         app.getNotifications();
         setInterval(app.getNotifications, 30000);
     }
