@@ -16,9 +16,15 @@ use Illuminate\Http\Request;
 use App\Models\Request as RequestModel;
 use App\Http\Forms\RequestInboxForm;
 use App\Http\Controllers\Controller;
+use App\Components\Acl;
 
 class InboxController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::APPROVE_DISAPPROVE_REQUESTS);
+    }
+
     /**
      * Request inbox index page
      * 

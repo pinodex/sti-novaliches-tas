@@ -21,13 +21,14 @@ use App\Models\User;
 class EditGroupForm extends Form
 {
     protected $permissions = [
-        'All'                       => '*',
-        'Can Manage Requests'       => Acl::MANAGE_REQUESTS,
-        'Can Submit Requests'       => Acl::SUBMIT_REQUESTS,
-        'Can Manage Bulletin'       => Acl::MANAGE_BULLETIN,
-        'Can Manage Groups'         => Acl::MANAGE_GROUPS,
-        'Can Manage Users'          => Acl::MANAGE_USERS,
-        'Can Manage Profiles'       => Acl::MANAGE_PROFILES
+        'All'                               => '*',
+        'Can Administer Requests'           => Acl::ADMIN_REQUESTS,
+        'Can Submit Requests'               => Acl::SUBMIT_REQUESTS,
+        'Can Approve/Disapprove Requests'   => Acl::APPROVE_DISAPPROVE_REQUESTS,
+        'Can Administer Bulletin'           => Acl::ADMIN_BULLETIN,
+        'Can Administer Groups'             => Acl::ADMIN_GROUPS,
+        'Can Administer Users'              => Acl::ADMIN_USERS,
+        'Can Administer Profiles'           => Acl::ADMIN_PROFILES
     ];
 
     public function create()

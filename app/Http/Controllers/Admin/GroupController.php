@@ -23,7 +23,7 @@ class GroupController extends Controller
 {
     public function __construct()
     {
-        $this->can(Acl::MANAGE_GROUPS);
+        $this->can(Acl::ADMIN_GROUPS);
     }
 
     /**

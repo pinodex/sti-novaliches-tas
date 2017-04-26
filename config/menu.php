@@ -26,20 +26,22 @@ return [
                 'identifier'    => 'myrequests',
                 'route'         => 'employee.requests.index',
                 'name'          => 'My Requests',
+                'visibility'    => [ Acl::SUBMIT_REQUESTS ]
             ],
 
             [
                 'icon'          => 'inbox',
                 'identifier'    => 'inbox',
                 'route'         => 'employee.requests.inbox.index',
-                'name'          => 'Request Inbox'
+                'name'          => 'Request Inbox',
+                'visibility'    => [ Acl::APPROVE_DISAPPROVE_REQUESTS ]
             ],
         ],
     ],
 
     [
         'header'        => 'Administrator',
-        'visibility'    => [ Acl::MANAGE_USERS, Acl::MANAGE_GROUPS, Acl::MANAGE_DEPARTMENTS ],
+        'visibility'    => [ Acl::ADMIN_USERS, Acl::ADMIN_GROUPS, Acl::ADMIN_DEPARTMENTS ],
 
         'list' => [
             [
@@ -47,7 +49,7 @@ return [
                 'identifier'    => 'bulletin',
                 'route'         => 'admin.bulletins.index',
                 'name'          => 'Bulletin',
-                'visibility'    => [ Acl::MANAGE_BULLETIN ]
+                'visibility'    => [ Acl::ADMIN_BULLETIN ]
             ],
 
             [
@@ -55,7 +57,7 @@ return [
                 'identifier'    => 'requests',
                 'route'         => 'admin.requests.index',
                 'name'          => 'Requests',
-                'visibility'    => [ Acl::MANAGE_REQUESTS, Acl::SUBMIT_REQUESTS ],
+                'visibility'    => [ Acl::ADMIN_REQUESTS, Acl::SUBMIT_REQUESTS ],
             ],
 
             [
@@ -63,7 +65,7 @@ return [
                 'identifier'    => 'users',
                 'route'         => 'admin.users.index',
                 'name'          => 'Users',
-                'visibility'    => [ Acl::MANAGE_USERS ]
+                'visibility'    => [ Acl::ADMIN_USERS ]
             ],
 
             [
@@ -71,7 +73,7 @@ return [
                 'identifier'    => 'groups',
                 'route'         => 'admin.groups.index',
                 'name'          => 'Groups',
-                'visibility'    => [ Acl::MANAGE_GROUPS ]
+                'visibility'    => [ Acl::ADMIN_GROUPS ]
             ],
 
             [
@@ -79,7 +81,7 @@ return [
                 'identifier'    => 'departments',
                 'route'         => 'admin.departments.index',
                 'name'          => 'Departments',
-                'visibility'    => [ Acl::MANAGE_DEPARTMENTS ]
+                'visibility'    => [ Acl::ADMIN_DEPARTMENTS ]
             ],
 
             [
@@ -87,7 +89,7 @@ return [
                 'identifier'    => 'profiles',
                 'route'         => 'admin.profiles.index',
                 'name'          => 'Profiles',
-                'visibility'    => [ Acl::MANAGE_PROFILES ],
+                'visibility'    => [ Acl::ADMIN_PROFILES ],
             ]
         ]  
     ],

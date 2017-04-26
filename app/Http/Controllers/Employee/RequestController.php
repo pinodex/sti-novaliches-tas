@@ -18,9 +18,15 @@ use App\Models\Request as RequestModel;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\RequestTypeForm;
 use App\Exceptions\RequestTypeNotFoundException;
+use App\Components\Acl;
 
 class RequestController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::SUBMIT_REQUESTS);
+    }
+    
     /**
      * Requests index page
      * 

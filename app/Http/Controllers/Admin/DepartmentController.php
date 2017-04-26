@@ -23,7 +23,7 @@ class DepartmentController extends Controller
 {
     public function __construct()
     {
-        $this->can(Acl::MANAGE_DEPARTMENTS);
+        $this->can(Acl::ADMIN_DEPARTMENTS);
     }
 
     /**

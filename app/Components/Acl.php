@@ -16,14 +16,15 @@ use App\Models\User;
 class Acl
 {
     const ALL = '*';
-    const MANAGE_REQUESTS = 'manage_requests';
+    const ADMIN_REQUESTS = 'admin_requests';
     const SUBMIT_REQUESTS = 'submit_requests';
-    const MANAGE_BULLETIN = 'manage_bulletin';
-    const MANAGE_GROUPS = 'manage_groups';
-    const MANAGE_USERS = 'manage_users';
-    const MANAGE_DEPARTMENTS = 'manage_departments';
-    const MANAGE_EMPLOYEES = 'manage_employees';
-    const MANAGE_PROFILES = 'manage_profiles';
+    const ADMIN_BULLETIN = 'admin_bulletin';
+    const ADMIN_GROUPS = 'admin_groups';
+    const ADMIN_USERS = 'admin_users';
+    const ADMIN_DEPARTMENTS = 'admin_departments';
+    const ADMIN_EMPLOYEES = 'admin_employees';
+    const ADMIN_PROFILES = 'admin_profiles';
+    const APPROVE_DISAPPROVE_REQUESTS = 'approve_disapprove_requests';
 
     /**
      * @var array Allowed permissions

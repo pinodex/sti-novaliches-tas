@@ -18,9 +18,15 @@ use App\Http\Forms\EditUserForm;
 use App\Models\Department;
 use App\Models\Group;
 use App\Models\User;
+use App\Components\Acl;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::ADMIN_USERS);
+    }
+
     /**
      * User index page
      * 

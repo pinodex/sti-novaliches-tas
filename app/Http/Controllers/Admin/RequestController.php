@@ -17,9 +17,15 @@ use App\Models\Request as RequestModel;
 use App\Http\Forms\FilterRequestsForm;
 use App\Http\Forms\EditRequestForm;
 use App\Http\Controllers\Controller;
+use App\Components\Acl;
 
 class RequestController extends Controller
 {
+    public function __construct()
+    {
+        $this->can(Acl::ADMIN_REQUESTS);
+    }
+
     /**
      * Request inbox index page
      * 

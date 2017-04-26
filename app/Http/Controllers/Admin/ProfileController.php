@@ -22,7 +22,7 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-        $this->can(Acl::MANAGE_PROFILES);
+        $this->can(Acl::ADMIN_PROFILES);
     }
 
     /**
