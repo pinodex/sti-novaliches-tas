@@ -39,7 +39,9 @@ class UserProvider implements ProviderInterface
 
     public function retrieveByCredentials(array $credentials)
     {
-        return User::where('username', $credentials['username'])->first();
+        return User::where('username', $credentials['username'])
+            ->orWhere('email_address', $credentials['username'])
+            ->first();
     }
 
     public function validateCredentials(Authenticatable $user, array $credentials)

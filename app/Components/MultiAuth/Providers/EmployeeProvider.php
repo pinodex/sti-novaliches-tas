@@ -39,7 +39,9 @@ class EmployeeProvider implements ProviderInterface
 
     public function retrieveByCredentials(array $credentials)
     {
-        return Employee::where('username', $credentials['username'])->first();
+        return Employee::where('username', $credentials['username'])
+            ->orWhere('email_address', $credentials['username'])
+            ->first();
     }
 
     public function validateCredentials(Authenticatable $user, array $credentials)
