@@ -15,6 +15,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\Notifications\NotificationReader;
 use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MainController extends Controller
 {
@@ -40,22 +41,22 @@ class MainController extends Controller
      */
     public function notifications()
     {
-        $notifications = [];
+        $pagination = Auth::user()->notifications()->paginate(50);
+        $notifications = $pagination->map(function (DatabaseNotification $model) use (&$notifications) {
+                $nr = new NotificationReader($model);
 
-        Auth::user()->notifications->each(function (DatabaseNotification $model) use (&$notifications) {
-            $nr = new NotificationReader($model);
-
-            $notifications[] = [
-                'id' => $model->id,
-                'title' => $nr->getTitle(),
-                'content' => $nr->getContent(),
-                'read_at' => $model->read_at ? $model->read_at->toDateTimeString() : null,
-                'created_at' => $model->created_at ? $model->created_at->toDateTimeString() : null
-            ];
-        });
+                return [
+                    'id' => $model->id,
+                    'title' => $nr->getTitle(),
+                    'content' => $nr->getContent(),
+                    'read_at' => $model->read_at ? $model->read_at->toDateTimeString() : null,
+                    'created_at' => $model->created_at ? $model->created_at->toDateTimeString() : null
+                ];
+            });
 
         return view('notifications', [
-            'notifications' => $notifications
+            'notifications' => $notifications,
+            'pagination'    => $pagination
         ]);
     }
 }

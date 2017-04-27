@@ -167,7 +167,10 @@ nav.nav .avatar {
 .notification-container .notification-entry {
   display: block;
   padding: 15px;
-  color: #eee;
+  color: #80deea;
+  background: transparent;
+  transition: color 3s ease-out;
+  cursor: default;
 }
 .notification-container .notification-entry .header {
   font-size: 14px;
@@ -184,6 +187,9 @@ nav.nav .avatar {
 .notification-container .notification-entry .content {
   font-size: 12px;
   color: #eee;
+}
+.notification-container .notification-entry.is-unread {
+  color: #ffdd57;
 }
 .notification-container .notification-entry:hover {
   background: #363636;
@@ -203,7 +209,7 @@ nav.nav .avatar {
   border-left: 5px solid transparent;
 }
 .notifications-table .is-unread {
-  border-color: #ccc;
+  border-color: #ffdd57;
 }
 
 .container.is-fluid {

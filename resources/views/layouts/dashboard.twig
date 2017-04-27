@@ -137,7 +137,7 @@
 
         <div class="empty-message" v-show="notifications.length == 0">No notifications yet.</div>
 
-        <div class="notification-entry" v-for="(notification, index) in notifications">
+        <div class="notification-entry" :class="{ 'is-unread' : notifications[index].read_at == null }" v-for="(notification, index) in notifications">
             <div class="header">
                 <span class="time">{{ '{{ formatTime(notification.created_at) }}' }}</span>
                 <i class="fa fa-exclamation-circle"></i> {{ '{{ notification.title }}' }}

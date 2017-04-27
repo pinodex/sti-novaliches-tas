@@ -182,9 +182,22 @@ Object.defineProperty(Array.prototype, 'pluck', {
             this.unreadNotificationCount = 0;
 
             if (this.notificationActive) {
-                this.$http.post('/account/notifications/read', {
-                    ids: this.notifications.pluck('id')
-                });
+                var localUnreadCount = 0;
+
+                for (var i = 0; i < this.notifications.length; i++) {
+                    if (this.notifications[i].read_at == null) {
+                        this.notifications[i].read_at = new Date();
+                        
+                        localUnreadCount++;
+                    }
+
+                }
+
+                if (localUnreadCount > 0) {
+                    this.$http.post('/account/notifications/read', {
+                        ids: this.notifications.pluck('id')
+                    });
+                }
             }
         },
 
