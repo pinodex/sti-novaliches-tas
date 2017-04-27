@@ -128,8 +128,11 @@ class UserController extends Controller
      */
     public function view(Request $request, User $model)
     {
+        $requests = $model->requests()->orderBy('id', 'DESC')->limit(20)->get();
+
         return view('admin.users.history', [
-            'user'  => $model
+            'user'      => $model,
+            'requests'  => $requests
         ]);
     }
 
