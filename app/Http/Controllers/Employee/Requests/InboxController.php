@@ -12,6 +12,7 @@
 namespace App\Http\Controllers\Employee\Requests;
 
 use Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Request as RequestModel;
 use App\Http\Forms\RequestInboxForm;
@@ -72,87 +73,75 @@ class InboxController extends Controller
     {
         $model->load('requestor', 'requestor.department', 'approver', 'approver.department');
 
-        $form = with(new RequestInboxForm($model))->getForm();
-
         return view('employee.requests.inbox.view', [
-            'model' => $model,
-            'form'  => $form->createView()
+            'model' => $model
         ]);
     }
 
     /**
-     * Request action
+     * Approve action
      * 
      * @param \Illuminate\Http\Request $request Request object
      * @param \App\Models\Request $model Request model object
      * 
      * @return mixed
      */
-    public function action(Request $request, RequestModel $model)
+    public function approve(Request $request, RequestModel $model)
     {
-        $form = with(new RequestInboxForm($model))
-            ->getForm()
-            ->handleRequest($request);
+        $approver = $model->approve();
 
-        if ($form->isValid()) {
-            $action = $form['action']->getData();
-            $disapprovalReason = $form['disapproval_reason']->getData();
+        if ($approver instanceof User) {
+            Auth::user()->log('escalate_request', [
+                'id' => $model->id,
+                'requestor' => $model->requestor->name,
+                'approver' => $approver->name
+            ]);
 
-            switch ($action) {
-                case 'disapprove':
-                    $model->disapprove($disapprovalReason);
-
-                    Auth::user()->log('disapprove_request', [
-                        'id' => $model->id,
-                        'requestor' => $model->requestor->name
-                    ]);
-
-                    return redirect()->route('employee.requests.inbox.index')
-                        ->with('message', ['success', __('request.disapproved')]);
-
-                break;
-
-                case 'escalate':
-                    $approver = $model->escalate();
-
-                    if ($approver) {
-                        Auth::user()->log('escalate_request', [
-                            'id' => $model->id,
-                            'requestor' => $model->requestor->name,
-                            'approver' => $approver->name
-                        ]);
-
-                        return redirect()->route('employee.requests.inbox.index')
-                            ->with('message', ['success', __('request.escalated', 
-                                ['name' => $approver->name]
-                            )]);
-                    }
-
-                    return redirect()->route('employee.requests.inbox.index')
-                        ->with('message', ['success', __('request.escalate_fail')]);
-
-                break;
-
-                case 'approve':
-                    $status = $model->approve();
-
-                    if ($status) {
-                        Auth::user()->log('approve_request', [
-                            'id' => $model->id,
-                            'requestor' => $model->requestor->name
-                        ]);
-
-                        return redirect()->route('employee.requests.inbox.index')
-                            ->with('message', ['success', __('request.approved')]);
-                    }
-
-                    return redirect()->route('employee.requests.inbox.index')
-                        ->with('message', ['success', __('request.approve_fail')]);
-
-                break;
-            }
+            return redirect()->route('employee.requests.inbox.index')
+                ->with('message', ['success', __('request.escalated', 
+                    ['name' => $approver->name]
+                )]);
         }
 
-        return redirect()->route('employee.requests.inbox.index');
+        if ($approver) {
+            Auth::user()->log('approve_request', [
+                'id' => $model->id,
+                'requestor' => $model->requestor->name
+            ]);
+
+            return redirect()->route('employee.requests.inbox.index')
+                ->with('message', ['success', __('request.approved')]);
+        }
+
+        return redirect()->route('employee.requests.inbox.index')
+            ->with('message', ['success', __('request.approve_fail')]);
+    }
+
+    /**
+     * Disapprove action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Request $model Request model object
+     * 
+     * @return mixed
+     */
+    public function disapprove(Request $request, RequestModel $model)
+    {
+        $reason = $request->input('disapproval_reason');
+
+        if (!$reason) {
+            return redirect()->route('employee.requests.inbox.view', ['model' => $model])
+                ->with('message', ['danger', __('request.disapprove_fail')]);
+        }
+
+        $model->disapprove($reason);
+
+        Auth::user()->log('disapprove_request', [
+            'id' => $model->id,
+            'requestor' => $model->requestor->name
+        ]);
+
+        return redirect()->route('employee.requests.inbox.index')
+            ->with('message', ['success', __('request.disapproved')]);
     }
 }

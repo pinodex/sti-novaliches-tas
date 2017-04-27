@@ -89,11 +89,6 @@ Object.defineProperty(Array.prototype, 'pluck', {
                 }
             }
         },
-
-        inbox: {
-            action: null,
-            disapprovalReason: null
-        },
         
         modals: {
             alert: true,

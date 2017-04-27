@@ -135,27 +135,13 @@ class Request extends Model
     }
 
     /**
-     * Escalate the request to the superior
+     * Approve request
      * 
-     * @param \App\Models\User $user User model to pass approval to
-     * 
-     * @return \App\Models\User Passed user
+     * @return boolean|\App\Models\Employee
      */
-    public function escalate(User $user = null)
+    public function approve()
     {
-        if ($user) {
-            $this->approver_id = $user->id;
-            $this->status = self::STATUS_ESCALATED;
-            $this->responded_at = date('Y-m-d H:i:s');
-
-            $this->save();
-
-            $this->requestor->notify(new RequestEscalated($this));
-            $user->notify(new RequestReceivedFromEscalation($this));
-
-            return $user;
-        }
-
+        // If the approver has department head, escalate the request to department head
         if ($this->approver && $this->approver->department && $this->approver->department->head) {
             $this->approver_id = $this->approver->department->head->id;
             $this->status = self::STATUS_ESCALATED;
@@ -168,15 +154,7 @@ class Request extends Model
 
             return $this->approver->department->head;
         }
-    }
 
-    /**
-     * Approve request
-     * 
-     * @return boolean
-     */
-    public function approve()
-    {
         if ($this->approver && !$this->approver->department) {
             $this->status = self::STATUS_APPROVED;
             $this->save();

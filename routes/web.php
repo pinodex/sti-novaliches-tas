@@ -121,7 +121,8 @@ Route::group([
 
             Route::get('/', 'InboxController@index')->name('index');
             Route::get('/{model}', 'InboxController@view')->name('view');
-            Route::post('/{model}/action', 'InboxController@action')->name('action');
+            Route::post('/{model}/approve', 'InboxController@approve')->name('approve');
+            Route::post('/{model}/disapprove', 'InboxController@disapprove')->name('disapprove');
 
         });
 
