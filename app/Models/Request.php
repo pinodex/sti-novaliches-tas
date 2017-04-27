@@ -29,7 +29,7 @@ class Request extends Model
     const STATUS_ESCALATED = 5;
 
     public static $statusLabels = [
-        self::STATUS_WAITING        => 'Waiting',
+        self::STATUS_WAITING        => 'Pending',
         self::STATUS_APPROVED       => 'Approved',
         self::STATUS_DISAPPROVED    => 'Disapproved',
         self::STATUS_ESCALATED      => 'Escalated'
