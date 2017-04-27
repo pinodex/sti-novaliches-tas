@@ -44,9 +44,23 @@ class UndertimeType extends AbstractType
     protected function onSubmitted(Form $form)
     {
         $data = $form->getData();
+        
+        $days = $this->computeDays(
+            $this->getFormatted($data['from_date'], $data['from_time']),
+            $this->getFormatted($data['to_date'], $data['to_time'])
+        );
 
-        $data['from_date'] = date('Y-m-d H:i:s');
-        $data['to_date'] = date('Y-m-d H:i:s');
+        if ($days == 0) {
+            return null;
+        }
+
+        if ($days > $this->requestor->leaves_balance) {
+            return redirect()->route('employee.requests.index')
+                ->with('message', ['danger', __('request.insufficient')]);
+        }
+
+        $data['from_date'] = $this->getFormatted($data['from_date'], $data['from_time']);
+        $data['to_date'] = $this->getFormatted($data['to_date'], $data['to_time']);
 
         $request = new Request();
         
@@ -57,7 +71,7 @@ class UndertimeType extends AbstractType
         }
 
         $request->type = $this->getMoniker();
-        $request->incurred_balance = 0;
+        $request->incurred_balance = $days;
 
         $this->requestor->requests()->save($request);
 
@@ -89,8 +103,34 @@ class UndertimeType extends AbstractType
             ]
         ]);
 
-        $this->form->add('hours', Type\ChoiceType::class, [
-            'choices'       => array_combine($this->hourChoices, $this->hourChoices)
+        $this->form->add('from_date', Type\DateType::class, [
+            'required'      => false,
+            'html5'         => true,
+            'input'         => 'string',
+            'widget'        => 'single_text',
+
+            'attr'          => [
+                'min'   => date('Y-m-d')
+            ]
+        ]);
+
+        $this->form->add('from_time', Type\ChoiceType::class, [
+            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
+        ]);
+
+        $this->form->add('to_date', Type\DateType::class, [
+            'required'      => false,
+            'html5'         => true,
+            'input'         => 'string',
+            'widget'        => 'single_text',
+
+            'attr'          => [
+                'min'   => date('Y-m-d')
+            ]
+        ]);
+
+        $this->form->add('to_time', Type\ChoiceType::class, [
+            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
         ]);
 
         $this->form->add('reason', Type\TextareaType::class);

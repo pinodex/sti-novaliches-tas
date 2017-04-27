@@ -112,11 +112,7 @@ class SickLeaveType extends AbstractType
             'required'      => false,
             'html5'         => true,
             'input'         => 'string',
-            'widget'        => 'single_text',
-
-            'attr'          => [
-                'min'   => date('Y-m-d')
-            ]
+            'widget'        => 'single_text'
         ]);
 
         $this->form->add('from_time', Type\ChoiceType::class, [
@@ -127,11 +123,7 @@ class SickLeaveType extends AbstractType
             'required'      => false,
             'html5'         => true,
             'input'         => 'string',
-            'widget'        => 'single_text',
-
-            'attr'          => [
-                'min'   => date('Y-m-d')
-            ]
+            'widget'        => 'single_text'
         ]);
 
         $this->form->add('to_time', Type\ChoiceType::class, [

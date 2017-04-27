@@ -2,5 +2,19 @@
 {{ form_row(form._requestor) }}
 {{ form_row(form._approver) }}
 
-{{ form_row(form.hours) }}
+<label style="display: block; margin-bottom: 10px;">Starting date and time</label>
+
+<div class="field has-addons date-time-field">
+    {{ form_widget(form.from_date) }}
+    {{ form_widget(form.from_time) }}
+</div>
+
+<label style="display: block; margin-bottom: 10px;">Ending date and time</label>
+
+<div class="field has-addons date-time-field">
+    {{ form_widget(form.to_date) }}
+
+    {{ form_widget(form.to_time) }}
+</div>
+
 {{ form_row(form.reason) }}

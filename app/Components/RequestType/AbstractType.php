@@ -30,6 +30,10 @@ abstract class AbstractType
     protected $requestor;
 
     protected $timeChoices = [
+        '7:00 AM',
+        '7:30 AM',
+        '8:00 AM',
+        '8:30 AM',
         '9:00 AM',
         '9:30 AM',
         '10:00 AM',
@@ -46,7 +50,11 @@ abstract class AbstractType
         '3:30 PM',
         '4:00 PM',
         '4:30 PM',
-        '5:00 PM'
+        '5:00 PM',
+        '5:30 PM',
+        '6:00 PM',
+        '6:30 PM',
+        '7:00 PM'
     ];
 
     /**

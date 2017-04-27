@@ -89,8 +89,34 @@ class OvertimeType extends AbstractType
             ]
         ]);
 
-        $this->form->add('hours', Type\ChoiceType::class, [
-            'choices'       => array_combine($this->hourChoices, $this->hourChoices)
+        $this->form->add('from_date', Type\DateType::class, [
+            'required'      => false,
+            'html5'         => true,
+            'input'         => 'string',
+            'widget'        => 'single_text',
+
+            'attr'          => [
+                'min'   => date('Y-m-d')
+            ]
+        ]);
+
+        $this->form->add('from_time', Type\ChoiceType::class, [
+            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
+        ]);
+
+        $this->form->add('to_date', Type\DateType::class, [
+            'required'      => false,
+            'html5'         => true,
+            'input'         => 'string',
+            'widget'        => 'single_text',
+
+            'attr'          => [
+                'min'   => date('Y-m-d')
+            ]
+        ]);
+
+        $this->form->add('to_time', Type\ChoiceType::class, [
+            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
         ]);
 
         $this->form->add('reason', Type\TextareaType::class);
