@@ -35,7 +35,7 @@ class InboxController extends Controller
      */
     public function index(Request $request)
     {
-        $requests = Auth::user()->inbox()->orderBy('id', 'DESC')->with('requestor');
+        $requests = Auth::user()->inbox()->with('requestor');
         $isAll = true;
 
         if ($show = $request->query->get('show')) {
