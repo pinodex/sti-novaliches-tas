@@ -18,7 +18,7 @@ class LoginForm extends Form
 {
     public function create()
     {
-        $this->add('username', Type\TextType::class, [
+        $this->add('id', Type\TextType::class, [
             'attr'  => [
                 'autofocus' => true
             ]
