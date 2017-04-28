@@ -60,7 +60,7 @@
                     {% for request in requests %}
                         <tr class="clickable" @click="location('{{ route('employee.requests.inbox.view', { model: request }, false) }}')">
                             <td>{{ request.requestor ? request.requestor.name : 'N/A' }}</td>
-                            <td>{{ request.type }}</td>
+                            <td>{{ request.type_name }}</td>
                             <td>{{ request.reason[0:20] ~ '...' }}</td>
                             <td>{{ request.incurred_balance }}</td>
                             <td>{{ request.created_at|date('M d Y, h:i a') }}</td>

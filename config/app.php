@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'STI College Novaliches TAS',
 
     /*
     |--------------------------------------------------------------------------
@@ -178,9 +178,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
 
+        Barryvdh\Queue\AsyncServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-
         Barryvdh\Form\ServiceProvider::class,
+        
         TwigBridge\ServiceProvider::class,
 
         Intervention\Image\ImageServiceProvider::class

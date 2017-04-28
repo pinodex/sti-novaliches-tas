@@ -19,8 +19,6 @@ use App\Models\Request;
 
 class RequestResponded extends Notification
 {
-    use Queueable;
-
     /**
      * @var \App\Models\Request Request object instance
      */
@@ -44,7 +42,7 @@ class RequestResponded extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -55,10 +53,32 @@ class RequestResponded extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        $mapping = config('notification.mapping');
+        $types = config('request.types');
+        
+        $notifClass = get_class($this);
+
+        $entry = $mapping[$notifClass];
+        $url = url(route('employee.requests.view', [
+            'model' => $this->request 
+        ]));
+
+        if ($notifClass == RequestReceived::class || $notifClass == RequestReceivedFromEscalation::class) {
+            $url = url(route('employee.requests.inbox.view', [
+                'model' => $this->request 
+            ]));
+        }
+
+        $message = (new MailMessage)
+            ->subject(sprintf('%s: %s', $entry['title'], $this->request->type_name))
+            ->markdown('emails.request_responded', [
+                'entry'     => $entry,
+                'recipient' => $notifiable,
+                'request'   => $this->request,
+                'url'       => $url
+            ]);
+
+        return $message;
     }
 
     /**
@@ -70,13 +90,7 @@ class RequestResponded extends Notification
     public function toArray($notifiable)
     {
         $types = config('request.types');
-        
-        $typeName = $this->request->type;
         $approverName = null;
-
-        if (array_key_exists($this->request->type, $types)) {
-            $typeName = $types[$this->request->type]::getName();
-        }
 
         if ($this->request->approver) {
             $approverName = $this->request->approver->name;
@@ -84,7 +98,7 @@ class RequestResponded extends Notification
 
         return [
             'request_id' => $this->request->id,
-            'type_name' => $typeName,
+            'type_name' => $this->request->type_name,
             'approver_name' => $approverName,
             'time' => $this->request->responded_at
         ];

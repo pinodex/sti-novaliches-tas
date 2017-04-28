@@ -17,12 +17,12 @@
                 <tbody>
                     {% for request in requests %}
                         <tr class="clickable" @click="location('{{ route('admin.requests.view', { model: request }, false) }}')">
-                            <td>{{ request.type }}</td>
+                            <td>{{ request.type_name }}</td>
                             <td>{{ request.approver ? request.approver.name : 'N/A' }}</td>
                             <td>{{ request.reason[0:20] ~ '...' }}</td>
                             <td>{{ request.incurred_balance }}</td>
                             <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
-                            <td>{{ request.status }}</td>
+                            <td>{{ request.status_label }}</td>
                         </tr>
                     {% else %}
                         <tr>

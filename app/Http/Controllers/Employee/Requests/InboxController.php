@@ -71,7 +71,9 @@ class InboxController extends Controller
      */
     public function view(Request $request, RequestModel $model)
     {
-        $model->load('requestor', 'requestor.department', 'approver', 'approver.department');
+        if (!$model->canBeViewedBy(Auth::user())) {
+            abort(403);
+        }
 
         return view('employee.requests.inbox.view', [
             'model' => $model
@@ -88,6 +90,10 @@ class InboxController extends Controller
      */
     public function approve(Request $request, RequestModel $model)
     {
+        if (!$model->canBeViewedBy(Auth::user())) {
+            abort(403);
+        }
+
         $approver = $model->approve();
 
         if ($approver instanceof User) {
@@ -114,7 +120,7 @@ class InboxController extends Controller
         }
 
         return redirect()->route('employee.requests.inbox.index')
-            ->with('message', ['success', __('request.approve_fail')]);
+            ->with('message', ['danger', __('request.approve_fail')]);
     }
 
     /**
@@ -127,6 +133,10 @@ class InboxController extends Controller
      */
     public function disapprove(Request $request, RequestModel $model)
     {
+        if (!$model->canBeViewedBy(Auth::user())) {
+            abort(403);
+        }
+
         $reason = $request->input('disapproval_reason');
 
         if (!$reason) {

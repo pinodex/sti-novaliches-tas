@@ -84,10 +84,6 @@ class RequestController extends Controller
         if ($form->isValid()) {
             $data = $form->getData();
 
-            if ($data['is_approved'] == 'null') {
-                $data['is_approved'] = null;
-            }
-
             $model->fill($data);
             $model->save();
 

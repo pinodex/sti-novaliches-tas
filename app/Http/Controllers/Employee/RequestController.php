@@ -60,6 +60,10 @@ class RequestController extends Controller
      */
     public function view(Request $request, RequestModel $model)
     {
+        if (!$model->canBeViewedBy(Auth::user())) {
+            abort(403);
+        }
+
         return view('employee.requests.view', [
             'model' => $model
         ]);

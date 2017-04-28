@@ -72,6 +72,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * Route notifications for the mail channel.
+     *
+     * @return string
+     */
+    public function routeNotificationForMail()
+    {
+        return $this->email_address;
+    }
+
+    /**
      * Get user group
      */
     public function group()

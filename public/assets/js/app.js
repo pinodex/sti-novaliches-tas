@@ -96,6 +96,11 @@ Object.defineProperty(Array.prototype, 'pluck', {
             confirm2: false,
             helpBox: false,
             loading: false
+        },
+
+        buttons: {
+            approveLoading: false,
+            disapproveLoading: false
         }
     };
 

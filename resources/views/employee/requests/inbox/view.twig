@@ -41,7 +41,7 @@
 
                         <div class="info">
                             <p class="title">Type</p>
-                            <p class="value">{{ model.type }}</p>
+                            <p class="value">{{ model.type_name }}</p>
                         </div>
 
                         <div class="info">
@@ -55,7 +55,7 @@
 
         <div class="column">
             <div class="panel">
-                <div class="panel-heading is-small">{{ model.type }} Request</div>
+                <div class="panel-heading is-small">{{ model.type_name }} Request</div>
                 <div class="box">
                     <div class="columns">
                         <div class="column">
@@ -86,7 +86,7 @@
 
                             <p>{{ model.reason|nl2br }}</p>
 
-                            {% if model.is_approved == '0' %}
+                            {% if model.status == 0 %}
                                 <hr />
                                 <h2 class="subtitle">Disapproval Reason</h2>
 
@@ -96,7 +96,7 @@
                     </div>
                 </div>
 
-                {% if model.is_approved is null or model.is_approved == 5 %}
+                {% if model.status is null or model.status == 5 %}
                     <div class="field has-addons is-pulled-right">
                         <p class="control">
                             <button class="button is-large is-danger" @click="modals.confirm = true; disableAction = true" :disabled="disableAction">
@@ -106,7 +106,7 @@
                         </p>
                       
                         <p class="control">
-                            <button class="button is-large is-success" @click="submitForm('approveForm'); disableAction = true" :disabled="disableAction">
+                            <button class="button is-large is-success" @click="submitForm('approveForm'); disableAction = true; buttons.approveLoading = true" :disabled="disableAction" :class="{ 'is-loading' : buttons.approveLoading }">
                                 <i class="fa fa-thumbs-up"></i>
                                 <span>Approve</span>
                             </button>
@@ -138,13 +138,13 @@
                                 
                 <div class="field is-grouped is-pulled-right">
                     <p class="control">
-                        <button type="button" class="button is-light" @click="modals.confirm = false; disableAction = false">
+                        <button type="button" class="button is-light" @click="modals.confirm = false; disableAction = false" :disabled="buttons.disapproveLoading">
                             Cancel
                         </button>
                     </p>
 
                     <p class="control">
-                        <button type="submit" class="button is-danger">
+                        <button type="submit" class="button is-danger" @click="buttons.disapproveLoading = true" :class="{ 'is-loading' : buttons.disapproveLoading }">
                             <i class="fa fa-chevron-right"></i> Disapprove Request
                         </button>
                     </p>

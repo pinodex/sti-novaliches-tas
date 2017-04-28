@@ -114,6 +114,11 @@ class Request extends Model
         return $requests;
     }
 
+    public function canBeViewedBy(User $user)
+    {
+        return $user->id == $this->approver_id || $user->id == $this->requestor_id;
+    }
+
     /**
      * Disapproves the request
      * 
@@ -201,12 +206,12 @@ class Request extends Model
         );
     }
 
-    public function getTypeAttribute($value)
+    public function getTypeNameAttribute()
     {
         $types = config('request.types');
 
-        if (array_key_exists($value, $types)) {
-            return $types[$value]::getName();
+        if (array_key_exists($this->type, $types)) {
+            return $types[$this->type]::getName();
         }
 
         return 'Unknown';

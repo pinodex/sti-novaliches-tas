@@ -43,7 +43,7 @@
 
                         <div class="info">
                             <p class="title">Type</p>
-                            <p class="value">{{ model.type }}</p>
+                            <p class="value">{{ model.type_name }}</p>
                         </div>
 
                         <div class="info">
@@ -57,7 +57,7 @@
 
         <div class="column">
             <div class="panel">
-                <div class="panel-heading is-small">{{ model.type }} Request</div>
+                <div class="panel-heading is-small">{{ model.type_name }} Request</div>
                 <div class="box">
                     <div class="columns">
                         <div class="column">
@@ -88,7 +88,7 @@
 
                             <p>{{ model.reason|nl2br }}</p>
 
-                            {% if model.is_approved == '0' %}
+                            {% if model.status == 0 %}
                                 <hr />
                                 <h2 class="subtitle">Disapproval Reason</h2>
 
