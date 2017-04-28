@@ -42,12 +42,17 @@
                     <span>{{ auth_user().first_name }}</span>
                 </div>
 
-                <a href="#" class="nav-item is-tab" title="Notifications" @click.prevent="toggleNotifications(); sidebarActive = false" :class="{ 'is-active' : notificationActive }">
+                <a href="#" class="nav-item is-tab notification-tab" title="Notifications"
+                    @click.prevent="toggleNotifications(); sidebarActive = false"
+                    :class="{ 'is-active' : notificationActive, 'has-notification' : unreadNotificationCount > 0 }">
+
                     <span class="icon">
                         <i class="fa fa-bell is-marginless" aria-hidden="true"></i>
                     </span>
 
-                    <span class="tag is-danger" v-show="unreadNotificationCount > 0">{{ '{{ unreadNotificationCount }}' }}</span>
+                    <transition name="notif-slide-fade">
+                        <span class="tag is-danger" v-show="unreadNotificationCount > 0">{{ '{{ unreadNotificationCount }}' }}</span>
+                    </transition>
                 </a>
 
                 <a href="{{ route('auth.logout', {}, false) }}" class="nav-item is-tab" title="Logout">

@@ -259,4 +259,6 @@ Object.defineProperty(Array.prototype, 'pluck', {
         app.getNotifications();
         setInterval(app.getNotifications, 30000);
     }
+
+    window.app = app;
 }());

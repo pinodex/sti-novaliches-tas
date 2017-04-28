@@ -31,7 +31,23 @@ class MainController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $model = Auth::user();
+        
+        $requests = $model->requests()
+            ->orderBy('created_at', 'DESC')
+            ->limit(5)
+            ->get();
+
+        $inbox = $model->inbox()
+            ->orderBy('created_at', 'DESC')
+            ->limit(5)
+            ->get();
+
+        return view('index', [
+            'model'                         => $model,
+            'requests'                      => $requests,
+            'inbox'                         => $inbox
+        ]);
     }
 
     /**

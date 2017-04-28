@@ -54,6 +54,7 @@ class NotificationController extends Controller
 
     public function read(Request $request)
     {
+        return;
         $ids = $request->input('ids');
 
         Auth::user()->notifications()

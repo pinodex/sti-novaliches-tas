@@ -1,16 +1,155 @@
 {% extends '/layouts/dashboard.twig' %}
 
-{% set page_title = 'Admin' %}
+{% set page_title = 'Home' %}
 {% set active_menu = 'home' %}
 
-{% block pageheader %}
-	<div class="columns page-heading">
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-4">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image">
+                        {% if model.picture_path %}
+                            <img src="{{ '/storage/' ~ model.picture_path }}" alt="User Avatar" />
+                        {% else %}
+                            <img src="/assets/img/default-image.jpg" alt="User Avatar" />
+                        {% endif %}
+                    </figure>
+                </div>
+                            
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-5">{{ model.name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        {% if model.group %}
+                            <div class="info">
+                                <p class="title">Group</p>
+                                <p class="value">{{ model.group.name }}</p>
+                            </div>
+                        {% endif %}
+
+                        {% if model.department %}
+                            <div class="info">
+                                <p class="title">Department</p>
+                                <p class="value">{{ model.department.name }}</p>
+                            </div>
+                        {% endif %}
+
+                        <div class="info">
+                            <p class="title">Leaves Balance</p>
+                            <p class="value">{{ model.leaves_balance }}</p>
+                        </div>
+
+                        <div class="info">
+                            <p class="title">Last login</p>
+                            <p class="value">{{ model.last_login_at|date('F d, Y h:i A') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="column">
-            <h1 class="heading">Home</h1>
+            <transition name="notif-slide-fade-up">
+                <div class="notification is-info" v-show="unreadNotificationCount > 0">
+                    You have <span class="tag is-danger">{{ '{{ unreadNotificationCount }}' }}</span> unread notifications.
+                    <button class="button is-small is-info is-inverted is-outlined is-pulled-right" @click.stop="toggleNotifications()">
+                        View notifications
+                    </button>
+                </div>
+            </transition>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="level">
+                        <div class="level-left">
+                            <div class="level-item">Recent Requests</div>
+                        </div>
+
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a href="{{ route('employee.requests.index', {}, false) }}" class="button is-small">
+                                    View all
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="panel-block is-paddingless">
+                    <table class="table is-marginless">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Reason</th>
+                                <th>Filing Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in requests %}
+                                <tr>
+                                    <td>{{ request.type_name }}</td>
+                                    <td>{{ request.reason[0:20] ~ '...' }}</td>
+                                    <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3">No records found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if inbox|length > 0 %}
+                <div class="panel">
+                    <div class="panel-heading">
+                    <div class="level">
+                        <div class="level-left">
+                            <div class="level-item">Latest Inbox Requests</div>
+                        </div>
+
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a href="{{ route('employee.requests.inbox.index', {}, false) }}" class="button is-small">
+                                    View all
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                    <div class="panel-block is-paddingless">
+                        <table class="table is-marginless">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Reason</th>
+                                    <th>Filing Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in inbox %}
+                                    <tr>
+                                        <td>{{ request.type_name }}</td>
+                                        <td>{{ request.reason[0:20] ~ '...' }}</td>
+                                        <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
-{% endblock %}
-
-{% block subcontent %}
-    
 {% endblock %}

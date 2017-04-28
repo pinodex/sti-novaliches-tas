@@ -46,6 +46,15 @@ nav.nav {
         margin-right: 0.5em;
     }
 
+    .notification-tab {
+        transition: width .3s ease;
+        width: 64px;
+
+        &.has-notification {
+            width: 106px;
+        }
+    }
+
     .toggle-menu-button {
             position: relative;
             background: #3273dc;
@@ -634,15 +643,35 @@ input[readonly] {
     opacity: 0
 }
 
-.slide-fade-enter-active {
+.slide-fade-enter-active, .slide-fade-leave-active {
     transition: all .3s ease;
-}
-
-.slide-fade-leave-active {
-    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
 }
 
 .slide-fade-enter, .slide-fade-leave-to {
     transform: translateX(10px);
+    opacity: 0;
+}
+
+.notif-slide-fade-enter-active {
+    transition: all .3s ease;
+}
+
+.notif-slide-fade-enter {
+    transform: translateX(10px);
+    opacity: 0;
+}
+
+.notif-slide-fade-up-enter-active,
+.notif-slide-fade-up-leave-active {
+    transition: all .3s ease;
+}
+
+.notif-slide-fade-up-enter {
+    transform: translateY(20px);
+    opacity: 0;
+}
+
+.notif-slide-fade-up-leave {
+    transform: translateY(-20px);
     opacity: 0;
 }
