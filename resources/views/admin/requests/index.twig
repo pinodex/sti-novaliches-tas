@@ -20,6 +20,12 @@
                                         <span>All</span>
                                     </a>
                                 </li>
+                                <li class="{{ status == '-1' ? 'is-active' : '' }}">
+                                    <a href="{{ route('admin.requests.index', { status: '-1' }, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-tasks"></i></span>
+                                        <span>Pending</span>
+                                    </a>
+                                </li>
                                 <li class="{{ status == '1' ? 'is-active' : '' }}">
                                     <a href="{{ route('admin.requests.index', { status: '1' }, false) }}">
                                         <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>

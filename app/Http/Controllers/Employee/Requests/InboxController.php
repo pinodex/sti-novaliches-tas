@@ -41,6 +41,10 @@ class InboxController extends Controller
         if ($show = $request->query->get('show')) {
             $isAll = false;
 
+            if ($show == 'pending') {
+                $requests->where('status', RequestModel::STATUS_WAITING);
+            }
+
             if ($show == 'approved') {
                 $requests->where('status', RequestModel::STATUS_APPROVED);
             }

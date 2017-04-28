@@ -96,7 +96,7 @@
                     </div>
                 </div>
 
-                {% if model.status is null or model.status == 5 %}
+                {% if model.status == -1 or model.status == 5 %}
                     <div class="field has-addons is-pulled-right">
                         <p class="control">
                             <button class="button is-large is-danger" @click="modals.confirm = true; disableAction = true" :disabled="disableAction">

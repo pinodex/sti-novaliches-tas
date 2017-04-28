@@ -17,6 +17,12 @@
                                         <span>All</span>
                                     </a>
                                 </li>
+                                <li class="{{ show == 'pending' ? 'is-active' : '' }}">
+                                    <a href="{{ route('employee.requests.inbox.index', { show: 'pending' }, false) }}">
+                                        <span class="icon is-small"><i class="fa fa-tasks"></i></span>
+                                        <span>Pending</span>
+                                    </a>
+                                </li>
                                 <li class="{{ show == 'approved' ? 'is-active' : '' }}">
                                     <a href="{{ route('employee.requests.inbox.index', { show: 'approved' }, false) }}">
                                         <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
