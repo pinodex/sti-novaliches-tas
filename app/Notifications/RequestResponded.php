@@ -17,8 +17,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\Request;
 
-class RequestResponded extends Notification
+class RequestResponded extends Notification implements ShouldQueue
 {
+    use Queueable;
+    
     /**
      * @var \App\Models\Request Request object instance
      */

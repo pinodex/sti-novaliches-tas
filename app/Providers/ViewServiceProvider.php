@@ -33,8 +33,10 @@ class ViewServiceProvider extends ServiceProvider
                 $executed = true;
             }
 
-            $twig->addGlobal('current_route', request()->route()->getName());
-        });
+            if (request()->route()) {
+                $twig->addGlobal('current_route', request()->route()->getName());
+            }
+        }); 
     }
 
     /**
