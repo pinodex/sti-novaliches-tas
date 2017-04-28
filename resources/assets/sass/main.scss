@@ -13,6 +13,11 @@ body {
         background: #fff;
         padding-top: 0;
     }
+
+    &.error-page {
+        background: #fff;
+        padding-top: 60px;
+    }
 }
 
 modal, [v-show] {

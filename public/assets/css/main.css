@@ -12,6 +12,10 @@ body.login-page {
   background: #fff;
   padding-top: 0;
 }
+body.error-page {
+  background: #fff;
+  padding-top: 60px;
+}
 
 modal, [v-show] {
   display: none;
