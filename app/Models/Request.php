@@ -29,10 +29,10 @@ class Request extends Model
     const STATUS_ESCALATED = 5;
 
     public static $statusLabels = [
-        self::STATUS_WAITING        => 'Pending',
-        self::STATUS_APPROVED       => 'Approved',
-        self::STATUS_DISAPPROVED    => 'Disapproved',
-        self::STATUS_ESCALATED      => 'Escalated'
+        static::STATUS_WAITING        => 'Pending',
+        static::STATUS_APPROVED       => 'Approved',
+        static::STATUS_DISAPPROVED    => 'Disapproved',
+        static::STATUS_ESCALATED      => 'Escalated'
     ];
 
     protected $fillable = [
@@ -57,7 +57,7 @@ class Request extends Model
      */
     public static function filter(ParameterBag $query, &$isFiltered = null)
     {
-        $requests = self::query();
+        $requests = static::query();
         
         $requests->when($query->has('status'), function ($builder) use ($query, &$isFiltered) {
             if ($query->get('status') === null) {
@@ -128,7 +128,7 @@ class Request extends Model
      */
     public function disapprove($reason)
     {
-        $this->status = self::STATUS_DISAPPROVED;
+        $this->status = static::STATUS_DISAPPROVED;
         $this->disapproval_reason = $reason;
         $this->responded_at = date('Y-m-d H:i:s');
         
@@ -149,7 +149,7 @@ class Request extends Model
         // If the approver has department head, escalate the request to department head
         if ($this->approver && $this->approver->department && $this->approver->department->head) {
             $this->approver_id = $this->approver->department->head->id;
-            $this->status = self::STATUS_ESCALATED;
+            $this->status = static::STATUS_ESCALATED;
             $this->responded_at = date('Y-m-d H:i:s');
 
             $this->save();
@@ -161,7 +161,7 @@ class Request extends Model
         }
 
         if ($this->approver && !$this->approver->department) {
-            $this->status = self::STATUS_APPROVED;
+            $this->status = static::STATUS_APPROVED;
             $this->save();
 
             $this->requestor->notify(new RequestApproved($this));
@@ -193,8 +193,8 @@ class Request extends Model
         $status = 'Unknown';
         $value = $this->attributes['status'];
 
-        if (array_key_exists($value, self::$statusLabels)) {
-            $status = self::$statusLabels[$value];
+        if (array_key_exists($value, static::$statusLabels)) {
+            $status = static::$statusLabels[$value];
         }
 
         if ($this->attributes['responded_at'] == null) {

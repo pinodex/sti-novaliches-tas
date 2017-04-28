@@ -38,11 +38,11 @@ trait SearchableName
     public static function searchName($model = null, $keyword)
     {
         if ($model == null) {
-            $model = new self;
+            $model = new static;
         }
 
         return $model->where(function (Builder $builder) use ($keyword) {
-            foreach (self::$nameConcats as $concat) {
+            foreach (static::$nameConcats as $concat) {
                 $builder->orWhere(DB::raw($concat), 'LIKE', '%' . $keyword . '%');
             }
         });

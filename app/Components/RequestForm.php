@@ -50,7 +50,7 @@ class RequestForm
             throw new RequestTypeNotFoundException(sprintf('Request type %s not found', $typeName));
         }
 
-        return new self(new $types[$typeName]($requestor), $requestor);
+        return new static(new $types[$typeName]($requestor), $requestor);
     }
 
     /**

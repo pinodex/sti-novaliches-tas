@@ -52,7 +52,7 @@ class Acl
      */
     public static function for(User $user)
     {
-        return new self($user);
+        return new static($user);
     }
 
     /**
