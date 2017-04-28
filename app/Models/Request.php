@@ -29,10 +29,10 @@ class Request extends Model
     const STATUS_ESCALATED = 5;
 
     public static $statusLabels = [
-        static::STATUS_WAITING        => 'Pending',
-        static::STATUS_APPROVED       => 'Approved',
-        static::STATUS_DISAPPROVED    => 'Disapproved',
-        static::STATUS_ESCALATED      => 'Escalated'
+        self::STATUS_WAITING        => 'Pending',
+        self::STATUS_APPROVED       => 'Approved',
+        self::STATUS_DISAPPROVED    => 'Disapproved',
+        self::STATUS_ESCALATED      => 'Escalated'
     ];
 
     protected $fillable = [
