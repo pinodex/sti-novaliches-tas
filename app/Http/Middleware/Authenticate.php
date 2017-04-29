@@ -23,7 +23,7 @@ class Authenticate
             
             return redirect()->route('auth.login', [
                 'next' => $request->getRequestUri()
-            ]);
+            ])->with('message', ['warning', 'You need to login to access this page']);
         }
 
         return $next($request);
