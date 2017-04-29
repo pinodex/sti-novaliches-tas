@@ -36,7 +36,9 @@ class RequestController extends Controller
     public function index(Request $request)
     {
         $isFiltered = false;
-        $requests = RequestModel::filter($request->query, $isFiltered)->with('requestor', 'approver');
+        $requests = RequestModel::filter($request->query, $isFiltered)
+            ->with('requestor', 'approver')
+            ->orderBy('created_at', 'DESC');
 
         $form = with(new FilterRequestsForm)
             ->setData($request->query->all())

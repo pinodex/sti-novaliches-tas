@@ -17,9 +17,12 @@ use App\Notifications\RequestDisapproved;
 use App\Notifications\RequestEscalated;
 use App\Notifications\RequestReceivedFromEscalation;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use App\Traits\UuidKey;
 
 class Request extends Model
 {
+    use UuidKey;
+
     const STATUS_WAITING = -1;
 
     const STATUS_DISAPPROVED = 0;
@@ -46,6 +49,8 @@ class Request extends Model
         'disapproval_reason',
         'status'
     ];
+
+    public $incrementing = false;
 
     /**
      * Filter results
