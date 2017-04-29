@@ -101,7 +101,7 @@ class InboxController extends Controller
         $approver = $model->approve();
 
         if ($approver instanceof User) {
-            Auth::user()->log('escalate_request', [
+            $this->logAction('escalate_request', [
                 'id' => $model->id,
                 'requestor' => $model->requestor->name,
                 'approver' => $approver->name
@@ -114,7 +114,7 @@ class InboxController extends Controller
         }
 
         if ($approver) {
-            Auth::user()->log('approve_request', [
+            $this->logAction('approve_request', [
                 'id' => $model->id,
                 'requestor' => $model->requestor->name
             ]);
@@ -150,7 +150,7 @@ class InboxController extends Controller
 
         $model->disapprove($reason);
 
-        Auth::user()->log('disapprove_request', [
+        $this->logAction('disapprove_request', [
             'id' => $model->id,
             'requestor' => $model->requestor->name
         ]);

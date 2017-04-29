@@ -191,6 +191,10 @@ class UserController extends Controller
 
             $model->save();
 
+            $this->logAction('user_saved', [
+                'name'  => $model->name
+            ]);
+
             return redirect()->route('admin.users.index')
                 ->with('message', ['success',
                     $editMode ? __('user.edited', ['name' => $model->name]) :
@@ -216,6 +220,10 @@ class UserController extends Controller
     {
         $model->delete();
 
+        $this->logAction('user_deleted', [
+            'name'  => $model->name
+        ]);
+
         return redirect()->route('admin.users.index')
             ->with('message', ['success', __('user.deleted', ['name' => $model->name])]);
     }
@@ -237,7 +245,7 @@ class UserController extends Controller
 
         $model->notify(new PasswordReset($token));
 
-        Auth::user()->log('request_password_reset', [
+        $this->logAction('request_password_reset', [
             'user'  => $model->name
         ]);
 
@@ -264,6 +272,10 @@ class UserController extends Controller
 
         $model->restore();
 
+        $this->logAction('user_restored', [
+            'name'  => $model->name
+        ]);
+
         return redirect()->route('admin.users.index')
             ->with('message', ['success', __('user.restored', ['name' => $model->name])]);
     }
@@ -287,6 +299,10 @@ class UserController extends Controller
 
         $model->deletePicture();
         $model->forceDelete();
+
+        $this->logAction('user_purged', [
+            'name'  => $model->name
+        ]);
 
         return redirect()->route('admin.users.deleted')
             ->with('message', ['success', __('user.purged', ['name' => $model->name])]);

@@ -99,6 +99,10 @@ class DepartmentController extends Controller
             $model->fill($data);
             $model->save();
 
+            $this->logAction('department_saved', [
+                'name'  => $model->name
+            ]);
+
             return redirect()->route('admin.departments.index')
                 ->with('message', ['success',
                     $editMode ? __('department.edited', ['name' => $model->name]) :
@@ -122,11 +126,15 @@ class DepartmentController extends Controller
      */
     public function delete(Request $request, Department $model)
     {
-        if ($model->users->count() > 0) {
+        if ($model->users()->count() > 0) {
             return redirect()->route('admin.departments.delete.confirm', ['model' => $model]);
         }
 
         $model->delete();
+
+        $this->logAction('department_deleted', [
+            'name'  => $model->name
+        ]);
 
         return redirect()->route('admin.departments.index')
             ->with('message', ['success', __('department.deleted', ['name' => $model->name])]);
@@ -149,18 +157,18 @@ class DepartmentController extends Controller
 
         if ($form->isValid()) {
             $targetDep = $form['department']->getData();
-            $affectedUsers = $model->users->pluck('id')->toArray();
+            $targetDepModel = Department::find($targetDep);
 
-            DB::transaction(function () use ($model, $targetDep, $affectedUsers) {
-                // Move users to another department
-                $model->users()->detach($affectedUsers);
+            $model->users()->update([
+                'department_id' => $targetDep
+            ]);
 
-                if ($targetDep) {
-                    Department::findOrFail($targetDep)->users()->attach($affectedUsers);
-                }
+            $model->delete();
 
-                $model->delete();
-            });
+            $this->logAction('department_users_moved', [
+                'from'  => $model->name,
+                'to'    => $targetDepModel ? $targetDepModel->name : 'Unassigned'
+            ]);
 
             return redirect()->route('admin.departments.index')
                 ->with('message', ['success', __('department.deleted', ['name' => $model->name])]);
@@ -191,6 +199,10 @@ class DepartmentController extends Controller
 
         $model->restore();
 
+        $this->logAction('department_restored', [
+            'name'  => $model->name
+        ]);
+
         return redirect()->route('admin.departments.index')
             ->with('message', ['success', __('department.restored', ['name' => $model->name])]);
     }
@@ -213,6 +225,10 @@ class DepartmentController extends Controller
         }
 
         $model->forceDelete();
+
+        $this->logAction('department_purged', [
+            'name'  => $model->name
+        ]);
 
         return redirect()->route('admin.departments.index')
             ->with('message', ['success', __('department.purged', ['name' => $model->name])]);

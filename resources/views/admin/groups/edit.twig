@@ -24,7 +24,7 @@
                                 <div class="field is-grouped is-grouped-right">
                                     {% if model.id %}
                                         <p class="control">
-                                            {% if model.users|length > 0 %}
+                                            {% if model.users().count() > 0 %}
                                                 <a class="button is-danger is-outlined" href="{{ route('admin.groups.delete.confirm', { model: model }, false) }}">
                                                     <i class="fa fa-trash"></i> Delete
                                                 </a>

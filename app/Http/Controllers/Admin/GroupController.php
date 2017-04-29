@@ -94,6 +94,10 @@ class GroupController extends Controller
             $model->fill($data);
             $model->save();
 
+            $this->logAction('group_saved', [
+                'name'  => $model->name
+            ]);
+
             return redirect()->route('admin.groups.index')
                 ->with('message', ['success',
                     $editMode ? __('group.edited', ['name' => $model->name]) :
@@ -122,6 +126,10 @@ class GroupController extends Controller
         }
 
         $model->delete();
+
+        $this->logAction('group_deleted', [
+            'name'  => $model->name
+        ]);
 
         return redirect()->route('admin.groups.index')
             ->with('message', ['success', __('group.deleted', ['name' => $model->name])]);
@@ -157,10 +165,21 @@ class GroupController extends Controller
                             'group_id' => $targetGroup
                         ]);
 
+                        $targetGroupModel = Group::find($targetGroup);
+
+                        $this->logAction('group_users_moved', [
+                            'from'  => $model->name,
+                            'to'    => $targetGroupModel ? $targetGroupModel->name : 'Unassigned'
+                        ]);
+
                         break;
 
                     case 'delete':
                         $model->users()->delete();
+
+                        $this->logAction('group_users_deleted', [
+                            'name'  => $model->name
+                        ]);
 
                         break;
                 }
@@ -197,6 +216,10 @@ class GroupController extends Controller
 
         $model->restore();
 
+        $this->logAction('group_restored', [
+            'name'  => $model->name
+        ]);
+
         return redirect()->route('admin.groups.index')
             ->with('message', ['success', __('group.restored', ['name' => $model->name])]);
     }
@@ -219,6 +242,10 @@ class GroupController extends Controller
         }
 
         $model->forceDelete();
+
+        $this->logAction('group_purged', [
+            'name'  => $model->name
+        ]);
 
         return redirect()->route('admin.groups.index')
             ->with('message', ['success', __('group.purged', ['name' => $model->name])]);

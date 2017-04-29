@@ -145,7 +145,6 @@ class User extends Authenticatable
      * @param string $action Action code
      * @param array $params Action parameters
      * @param \Illuminate\Http\Request $request Request object
-     * 
      */
     public function log($action, array $params = [], HttpRequest $request = null)
     {
@@ -222,5 +221,32 @@ class User extends Authenticatable
         if (!$isRememberTokenAttribute) {
             parent::setAttribute($key, $value);
         }
+    }
+
+    public function setGroupIdAttribute($value)
+    {
+        if ($value == 0) {
+            $value = null;
+        }
+
+        $this->attributes['group_id'] = $value;
+    }
+
+    public function setDepartmentIdAttribute($value)
+    {
+        if ($value == 0) {
+            $value = null;
+        }
+
+        $this->attributes['department_id'] = $value;
+    }
+
+    public function setProfileIdAttribute($value)
+    {
+        if ($value == 0) {
+            $value = null;
+        }
+
+        $this->attributes['profile_id'] = $value;
     }
 }

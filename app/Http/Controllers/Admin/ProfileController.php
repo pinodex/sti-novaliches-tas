@@ -63,6 +63,10 @@ class ProfileController extends Controller
             $model->fill($data);
             $model->save();
 
+            $this->logAction('profile_saved', [
+                'name'  => $model->name
+            ]);
+
             return redirect()->route('admin.profiles.index')
                 ->with('message', ['success',
                     $editMode ? __('profile.edited', ['name' => $model->name]) :
@@ -87,6 +91,10 @@ class ProfileController extends Controller
     public function delete(Request $request, Profile $model)
     {
         $model->delete();
+
+        $this->logAction('profile_deleted', [
+            'name'  => $model->name
+        ]);
 
         return redirect()->route('admin.profiles.index')
             ->with('message', ['success', __('profile.deleted', ['name' => $model->name])]);

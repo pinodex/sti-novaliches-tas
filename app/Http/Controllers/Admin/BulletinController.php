@@ -71,6 +71,10 @@ class BulletinController extends Controller
             $model->fill($data);
             $model->save();
 
+            $this->logAction('bulletin_saved', [
+                'title' => $model->title
+            ]);
+
             return redirect()->route('admin.bulletins.index')
                 ->with('message', ['success', __('bulletin.created')]);
         }
@@ -92,6 +96,10 @@ class BulletinController extends Controller
     public function delete(Request $request, Bulletin $model)
     {
         $model->delete();
+
+        $this->logAction('bulletin_deleted', [
+            'title' => $model->title
+        ]);
 
         return redirect()->route('admin.bulletins.index')
             ->with('message', ['success', __('bulletin.deleted')]);

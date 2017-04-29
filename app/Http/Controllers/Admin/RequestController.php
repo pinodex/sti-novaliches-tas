@@ -87,6 +87,10 @@ class RequestController extends Controller
             $model->fill($data);
             $model->save();
 
+            $this->logAction('request_edited', [
+                'id'    => $model->id
+            ]);
+
             return redirect()->route('admin.requests.index')
                 ->with('message', ['success', __('request.saved')]);
         }
