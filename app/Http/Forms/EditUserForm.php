@@ -39,7 +39,8 @@ class EditUserForm extends Form
         $this->add('first_name', Type\TextType::class);
 
         $this->add('middle_name', Type\TextType::class, [
-            'required'  => false
+            'required'  => false,
+            'label'     => 'Middle name (optional)'
         ]);
 
         $this->add('last_name', Type\TextType::class);
@@ -68,11 +69,11 @@ class EditUserForm extends Form
             ]
         ]);
         
-        $this->add('email_address', Type\EmailType::class, [
+        $this->add('email', Type\EmailType::class, [
             'constraints' => new CustomAssert\UniqueRecord([
                 'model'     => User::class,
-                'exclude'   => $this->model ? $this->model->email_address : null,
-                'row'       => 'email_address',
+                'exclude'   => $this->model ? $this->model->email : null,
+                'row'       => 'email',
                 'message'   => 'Email address already in use.'
             ])
         ]);

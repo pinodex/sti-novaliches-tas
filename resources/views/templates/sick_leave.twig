@@ -4,14 +4,14 @@
 
 <label style="display: block; margin-bottom: 10px;">Starting date and time</label>
 
-<div class="field has-addons date-time-field">
+<div class="field has-addons is-fluid">
     {{ form_widget(form.from_date, { attr: { 'v-model': 'request.start_date' }}) }}
     {{ form_widget(form.from_time, { attr: { 'v-model': 'request.start_time' }}) }}
 </div>
 
 <label style="display: block; margin-bottom: 10px;">Ending date and time</label>
 
-<div class="field has-addons date-time-field">
+<div class="field has-addons is-fluid">
     {{ form_widget(form.to_date, { attr: { 'v-model': 'request.end_date' }}) }}
 
     {{ form_widget(form.to_time, { attr: { 'v-model': 'request.end_time' }}) }}

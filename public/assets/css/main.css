@@ -272,14 +272,26 @@ label, .label {
   cursor: default;
 }
 
-button .fa,
 .button .fa {
   font-size: 16px;
   margin-right: 10px;
 }
-
-.date-time-field .control {
+.button.is-block {
+  display: block;
   width: 100%;
+}
+.button.is-block + .button.is-block.is-block {
+  margin-top: 5px;
+}
+
+.is-fluid .control {
+  width: 100%;
+}
+.is-fluid .column:first-child {
+  padding-left: 0;
+}
+.is-fluid .column:last-child {
+  padding-right: 0;
 }
 
 .notification.is-small {
@@ -414,11 +426,28 @@ input[readonly] {
   font-size: 0.8rem;
 }
 
+.user-header {
+  background: #607D8B;
+  color: #fff;
+}
+.user-header .title {
+  color: #fff;
+}
+.user-header .subtitle {
+  color: #eee;
+}
+.user-header .image {
+  border-radius: 100%;
+  overflow: hidden;
+}
+.user-header .media .media-content {
+  margin-top: 16px;
+}
+
 .user-box {
   box-shadow: none;
   border-radius: 0;
   margin-bottom: 0;
-  padding: 0;
   overflow: hidden;
 }
 .user-box .picture {
@@ -461,12 +490,12 @@ input[readonly] {
   margin: 0;
 }
 .info .title {
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 0 !important;
   color: #777;
 }
 .info .value {
-  font-size: 18px;
+  font-size: 16px;
 }
 .info + .info {
   margin-top: 10px;

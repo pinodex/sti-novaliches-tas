@@ -40,7 +40,7 @@ class User extends Authenticatable
         'first_name',
         'middle_name',
         'last_name',
-        'email_address',
+        'email',
         'picture_path',
         'thumbnail_path',
         'require_password_change'
@@ -70,16 +70,6 @@ class User extends Authenticatable
     protected $appends = [
         'name'
     ];
-
-    /**
-     * Route notifications for the mail channel.
-     *
-     * @return string
-     */
-    public function routeNotificationForMail()
-    {
-        return $this->email_address;
-    }
 
     /**
      * Get user group

@@ -2,6 +2,7 @@
 
 {% set page_title = 'Users' %}
 {% set active_menu = 'users' %}
+{% set enable_bulletin = false %}
 
 {% if trash is defined and trash %}
     {% set page_title = 'Deleted Users' %}
@@ -14,97 +15,46 @@
     ]
 %}
 
-{% block subcontent %}
-    <div class="columns is-marginless">
-        <div class="column">
-            <div class="box user-box">
-                <div class="columns">
-                    <div class="column is-1">
-                        <div class="picture">
-                            {% if user.thumbnail_path %}
-                                <img src="{{ '/storage/' ~ user.thumbnail_path }}" alt="User Avatar" />
+{% block pageheader %}
+    <div class="box user-box user-header is-marginless">
+        <div class="columns is-marginless">
+            <div class="column">
+                <div class="media">
+                    <div class="media-left">
+                        <figure class="image is-96x96">
+                            {% if user.picture_path %}
+                                <img src="{{ '/storage/' ~ user.picture_path }}" alt="User Avatar" />
                             {% else %}
-                                <img src="/assets/img/default-thumb.jpg" alt="User Avatar" />
+                                <img src="/assets/img/default-image.jpg" alt="User Avatar" />
                             {% endif %}
-                        </div>
+                        </figure>
                     </div>
-
-                    <div class="column">
-                        <div class="columns is-mobile is-marginless">
-                            <div class="column">
-                                <h1 class="title">{{ user.name }}</h1>
-                                <h2 class="subtitle">
-                                    @{{ user.username }}
-
-                                    {% if user.group %}
-                                        <em>&bullet; {{ user.group.name }} group</em>
-                                    {% endif %}
-                                </h2>
-                            </div>
-
-                            <div class="column with-divider">
-                                <div class="info">
-                                    <p class="title">E-mail</p>
-                                    <p class="value">{{ user.email_address }}</p>
-                                </div>
-                            </div>
-
-                            {% if user.department %}
-                                <div class="column with-divider">
-                                    <div class="info">
-                                        <p class="title">Department</p>
-                                        <p class="value">{{ user.department.name }}</p>
-                                    </div>
-                                </div>
-                            {% endif %}
-
-                            <div class="column is-2">
-                                <div class="field has-addons has-addons-right">
-                                    <p class="control">
-                                        <a href="{{ route('admin.users.edit', { model: user }, false) }}" class="button is-small is-pulled-right" title="Edit User">
-                                            <i class="fa fa-pencil is-marginless"></i>
-                                        </a>
-                                    </p>
-
-                                    <p class="control">
-                                        <button class="button is-small is-pulled-right" @click="userExtraInfo = !userExtraInfo" title="View Additional Info">
-                                            <i class="fa fa-chevron-down is-marginless" v-show="!userExtraInfo"></i>
-                                            <i class="fa fa-chevron-up is-marginless" v-show="userExtraInfo"></i>
-                                        </button>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="columns has-contents-below" v-show="userExtraInfo">
-                            <div class="column">
-                                <div class="info">
-                                    <p class="title">Last login on</p>
-                                    <p class="value">{{ user.last_login_at ? user.last_login_at|date('F d, Y h:i A') : 'None recorded' }}</p>
-                                </div>
-                            </div>
-
-                            <div class="column">
-                                <div class="info">
-                                    <p class="title">Created on</p>
-                                    <p class="value">{{ user.created_at ? user.created_at|date('F d, Y h:i A') : 'N/A' }}</p>
-                                </div>
-                            </div>
-
-                            <div class="column">
-                                <div class="info">
-                                    <p class="title">Updated on</p>
-                                    <p class="value">{{ user.updated_at ? user.updated_at|date('F d, Y h:i A') : 'N/A' }}</p>
-                                </div>
-                            </div>
-                        </div>
+                            
+                    <div class="media-content">
+                        <p class="title is-4">{{ user.name }}</p>
+                        <p class="subtitle is-6">
+                            <span>{{ user.email }}</span><br />
+                            <span>@{{ user.username }}</span>
+                        </p>
                     </div>
+                </div>
+            </div>
+
+            <div class="column is-2">
+                <div class="field has-addons-right">
+                    <p class="control">
+                        <a href="{{ route('admin.users.edit', { model: user }, false) }}" class="button is-white is-outlined is-pulled-right" title="Edit User">
+                            <i class="fa fa-pencil"></i> Edit
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
 
-    <div class="columns is-marginless">
+{% block subcontent %}
+    <div class="columns">
         <div class="column">
             <div class="tabs">
                 <ul>
@@ -115,8 +65,60 @@
                     {% endfor %}
                 </ul>
             </div>
+
+            {% block viewcontent %}{% endblock %}
+        </div>
+
+        <div class="column is-3">
+            <div class="box user-box">
+                {% if user.department %}
+                    <div class="info">
+                        <p class="title">Department</p>
+                        <p class="value">{{ user.department.name }}</p>
+                    </div>
+                {% endif %}
+
+                {% if user.group %}
+                    <div class="info">
+                        <p class="title">Group</p>
+                        <p class="value">{{ user.group.name }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="info">
+                    <p class="title">Last login on</p>
+                    <p class="value">{{ user.last_login_at ? user.last_login_at|date('F d, Y h:i A') : 'None recorded' }}</p>
+                </div>
+
+                <div class="info">
+                    <p class="title">Created on</p>
+                    <p class="value">{{ user.created_at ? user.created_at|date('F d, Y h:i A') : 'N/A' }}</p>
+                </div>
+
+                <div class="info">
+                    <p class="title">Updated on</p>
+                    <p class="value">{{ user.updated_at ? user.updated_at|date('F d, Y h:i A') : 'N/A' }}</p>
+                </div>
+            </div>
+            
+            <button class="button is-danger is-block" @click="modals.confirm = true">Delete User</button>
         </div>
     </div>
-    
-    {% block viewcontent %}{% endblock %}
+
+    <modal :show.sync="modals.confirm">
+        <h3 slot="header">Delete {{ user.first_name }}</h3>
+        
+        <div slot="body">
+            <p>Are you sure you want to delete this user?</p>
+        </div>
+
+        <div slot="footer">
+            <form method="post" action="{{ route('admin.users.delete', { model: user }, false) }}">
+                {{ csrf_field() }}
+                    
+                <button type="button" class="button is-light" @click="modals.confirm = false">Cancel</button>
+                <button type="submit" class="button is-danger"><i class="fa fa-trash-o"></i> Delete User</button>
+            </form>
+        </div>
+    </modal>
 {% endblock %}

@@ -69,7 +69,6 @@ Object.defineProperty(Array.prototype, 'pluck', {
         sidebarActive: false,
         notificationActive: false,
         disableAction: false,
-        userExtraInfo: false,
         paginationPage: 1,
         modelId: 0,
 
@@ -91,16 +90,14 @@ Object.defineProperty(Array.prototype, 'pluck', {
         },
         
         modals: {
-            alert: true,
             confirm: false,
-            confirm2: false,
-            helpBox: false,
-            loading: false
+            confirm2: false
         },
 
         buttons: {
             approveLoading: false,
-            disapproveLoading: false
+            disapproveLoading: false,
+            postLoading: false
         }
     };
 

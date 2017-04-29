@@ -16,19 +16,23 @@
                 <p class="panel-heading is-small">{{ page_title }}</p>
 
                 <div class="box is-clearfix">
-                    <div class="columns">
-                        <div class="column">
-                            {% if model.picture_path %}
-                                <img src="{{ '/storage/' ~ model.picture_path }}" alt="User Avatar" />
-                            {% else %}
-                                <img src="/assets/img/default-image.jpg" alt="User Avatar" />
-                            {% endif %}
-                        </div>
+                    <form action="{{ app.request.getRequestUri() }}" method="POST" enctype="multipart/form-data">
+                        {{ form_widget(form._token) }}
                         
-                        <div class="column">
-                            <form action="{{ app.request.getRequestUri() }}" method="POST" enctype="multipart/form-data">
-                                {{ form_widget(form) }}
+                        <div class="columns">
+                            <div class="column is-4 is-offset-1">
+                                {% if model.picture_path %}
+                                    <img src="{{ '/storage/' ~ model.picture_path }}" alt="User Avatar" />
+                                {% else %}
+                                    <img src="/assets/img/default-image.jpg" alt="User Avatar" />
+                                {% endif %}
 
+                                {{ form_row(form.picture) }}
+                            </div>
+                            
+                            <div class="column is-6">
+                                {{ form_widget(form) }}
+                                
                                 <div class="field is-grouped is-grouped-right">
                                     {% if model.id %}
                                         <p class="control">
@@ -42,9 +46,9 @@
                                         <button class="button is-primary" type="submit"><i class="fa fa-floppy-o"></i> Save</button>
                                     </p>
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

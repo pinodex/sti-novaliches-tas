@@ -21,6 +21,6 @@
 @component('mail::subcopy')
     If you’re having trouble clicking the "View Request" button, copy and paste the URL below into your web browser: [{{ $url }}]({{ $url }})<br />
 
-    This is a no reply e-mail. Any replies will be ignored. Should you have any questions, please proceed to your department head.
+    This is an automatically generated email &mdash; please do not reply. If you have questions, please contact your department head or your academic head.
 @endcomponent
 @endcomponent

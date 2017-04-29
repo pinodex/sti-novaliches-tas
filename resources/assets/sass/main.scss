@@ -340,15 +340,33 @@ label, .label {
     }
 }
 
-button .fa,
-.button .fa {
-    font-size: 16px;
-    margin-right: 10px;
+.button {
+    .fa {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    &.is-block {
+        display: block;
+        width: 100%;
+
+        & + &.is-block {
+            margin-top: 5px;
+        }
+    }
 }
 
-.date-time-field {
+.is-fluid {
     .control {
         width: 100%;
+    }
+
+    .column:first-child {
+        padding-left: 0;
+    }
+
+    .column:last-child {
+        padding-right: 0;
     }
 }
 
@@ -510,11 +528,34 @@ input[readonly] {
     }
 }
 
+.user-header {
+    background: #607D8B;
+    color: #fff;
+
+    .title {
+        color: #fff;
+    }
+
+    .subtitle {
+        color: #eee;
+    }
+
+    .image {
+        border-radius: 100%;
+        overflow: hidden;
+    }
+
+    .media {
+        .media-content {
+            margin-top: 16px;
+        }
+    }
+}
+
 .user-box {
     box-shadow: none;
     border-radius: 0;
     margin-bottom: 0;
-    padding: 0;
     overflow: hidden;
 
     .picture {
@@ -567,13 +608,13 @@ input[readonly] {
     }
 
     .title {
-        font-size: 16px;
+        font-size: 14px;
         margin-bottom: 0 !important;
         color: #777;
     }
 
     .value {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     & + .info {

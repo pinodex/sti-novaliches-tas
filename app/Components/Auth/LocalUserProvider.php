@@ -36,7 +36,7 @@ class LocalUserProvider implements UserProvider
     public function retrieveByCredentials(array $credentials)
     {
         return User::where('username', $credentials['id'])
-            ->orWhere('email_address', $credentials['id'])
+            ->orWhere('email', $credentials['id'])
             ->first();
     }
 
