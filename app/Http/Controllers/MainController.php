@@ -22,6 +22,7 @@ class MainController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('require_password_change');
     }
 
     /**
@@ -44,9 +45,9 @@ class MainController extends Controller
             ->get();
 
         return view('index', [
-            'model'                         => $model,
-            'requests'                      => $requests,
-            'inbox'                         => $inbox
+            'model'     => $model,
+            'requests'  => $requests,
+            'inbox'     => $inbox
         ]);
     }
 
