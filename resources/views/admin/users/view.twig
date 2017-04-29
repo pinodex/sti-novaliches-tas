@@ -86,6 +86,11 @@
                 {% endif %}
 
                 <div class="info">
+                    <p class="title">Leaves Balance</p>
+                    <p class="value">{{ user.leaves_balance }}</p>
+                </div>
+
+                <div class="info">
                     <p class="title">Last login on</p>
                     <p class="value">{{ user.last_login_at ? user.last_login_at|date('F d, Y h:i A') : 'None recorded' }}</p>
                 </div>

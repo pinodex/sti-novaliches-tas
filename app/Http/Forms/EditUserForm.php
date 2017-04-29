@@ -107,7 +107,7 @@ class EditUserForm extends Form
 
         $this->add('profile_id', Type\ChoiceType::class, [
             'label'     => 'Profile',
-            'choices'   => $this->toChoices($profiles)
+            'choices'   => $this->toChoices($profiles, true)
         ]);
     }
 }
