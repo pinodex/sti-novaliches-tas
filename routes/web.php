@@ -24,9 +24,17 @@ Route::get('/', ['as' => 'index', 'uses' => 'MainController@index']);
 
 Route::get('/notifications', ['as' => 'notifications', 'uses' => 'MainController@notifications']);
 
-Route::match(['get', 'post'], '/login', ['as' => 'auth.login', 'uses' => 'AuthController@login', 'middleware' => ['guest']]);
+Route::group([
+    'prefix'    => 'auth',
+    'as'        => 'auth.'
+], function () {
 
-Route::get('/logout', ['as' => 'auth.logout', 'uses' => 'AuthController@logout']);
+    Route::match(['get', 'post'], '/login', 'AuthController@login')->name('login')->middleware('guest');
+    Route::get('/logout', 'AuthController@logout')->name('logout');
+
+    Route::match(['get', 'post'], '/reset/{email}/{token}', 'AuthController@reset')->name('reset')->middleware('guest');
+    
+});
 
 Route::group([
     'namespace'     => 'Admin',
@@ -52,18 +60,19 @@ Route::group([
 
     });
 
-    // EmployeesController
+    // UserController
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
 
         Route::get('/', 'UserController@index')->name('index');
         Route::get('/deleted', 'UserController@deleted')->name('deleted');
-        Route::match(['get', 'post'], '/add', 'UserController@edit')->name('add');
-        Route::match(['get', 'post'], '/{model}/edit', 'UserController@edit')->name('edit');
-        Route::post('/{model}/delete', 'UserController@delete')->name('delete');
-        Route::post('/restore', 'UserController@restore')->name('restore');
         Route::post('/purge', 'UserController@purge')->name('purge');
+        Route::post('/restore', 'UserController@restore')->name('restore');
+        Route::match(['get', 'post'], '/add', 'UserController@edit')->name('add');
         Route::get('/{model}', 'UserController@view')->name('view');
         Route::get('/{model}/logs', 'UserController@logs')->name('logs');
+        Route::post('/{model}/delete', 'UserController@delete')->name('delete');
+        Route::post('/{model}/reset-password', 'UserController@resetPassword')->name('reset_password');
+        Route::match(['get', 'post'], '/{model}/edit', 'UserController@edit')->name('edit');
 
     });
 

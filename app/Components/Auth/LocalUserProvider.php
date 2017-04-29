@@ -42,6 +42,10 @@ class LocalUserProvider implements UserProvider
 
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
+        if ($user->password === null) {
+            return false;
+        }
+        
         if (Hash::check($credentials['password'], $user->password)) {
             $user->timestamps = false;
 

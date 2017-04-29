@@ -9,6 +9,7 @@ return [
     'purged'    		=> 'User :name has been permanently deleted',
     'not_found' 		=> 'Cannot find requested user',
     'picture_updated'	=> 'User picture has been successfully updated',
-    'picture_error' 	=> 'Unable to process uploaded image'
+    'picture_error' 	=> 'Unable to process uploaded image',
+    'password_reset'    => 'Password reset has been requested'
 
 ];

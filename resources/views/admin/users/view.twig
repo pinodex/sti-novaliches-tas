@@ -100,7 +100,8 @@
                     <p class="value">{{ user.updated_at ? user.updated_at|date('F d, Y h:i A') : 'N/A' }}</p>
                 </div>
             </div>
-            
+
+            <button class="button is-warning is-inverted is-block" @click="modals.confirm2 = true">Reset Password</button>
             <button class="button is-danger is-block" @click="modals.confirm = true">Delete User</button>
         </div>
     </div>
@@ -116,8 +117,25 @@
             <form method="post" action="{{ route('admin.users.delete', { model: user }, false) }}">
                 {{ csrf_field() }}
                     
-                <button type="button" class="button is-light" @click="modals.confirm = false">Cancel</button>
-                <button type="submit" class="button is-danger"><i class="fa fa-trash-o"></i> Delete User</button>
+                <button type="button" class="button is-light" @click="modals.confirm = false" :disabled="buttons.postLoading">Cancel</button>
+                <button type="submit" class="button is-danger"  @click="buttons.postLoading = true" :class="{ 'is-loading' : buttons.postLoading }"><i class="fa fa-trash-o"></i> Delete User</button>
+            </form>
+        </div>
+    </modal>
+
+    <modal :show.sync="modals.confirm2">
+        <h3 slot="header">Reset user password</h3>
+        
+        <div slot="body">
+            <p>A password reset link will be sent to {{ user.name }} via email. The link will be valid for 60 minutes.</p>
+        </div>
+
+        <div slot="footer">
+            <form method="post" action="{{ route('admin.users.reset_password', { model: user }, false) }}">
+                {{ csrf_field() }}
+                    
+                <button type="button" class="button is-light" @click="modals.confirm2 = false" :disabled="buttons.postLoading">Cancel</button>
+                <button type="submit" class="button is-warning" @click="buttons.postLoading = true" :class="{ 'is-loading' : buttons.postLoading }">Reset Password</button>
             </form>
         </div>
     </modal>

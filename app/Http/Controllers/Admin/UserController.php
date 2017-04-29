@@ -11,8 +11,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Auth;
+use Password;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use App\Notifications\PasswordReset;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\EditUserForm;
 use App\Models\Department;
@@ -215,6 +218,31 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('message', ['success', __('user.deleted', ['name' => $model->name])]);
+    }
+
+    /**
+     * User reset password action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\User $model User model object
+     * 
+     * @return mixed
+     */
+    public function resetPassword(Request $request, User $model)
+    {
+        $model->password = null;
+        $model->save();
+
+        $token = Password::getRepository()->create($model);
+
+        $model->notify(new PasswordReset($token));
+
+        Auth::user()->log('request_password_reset', [
+            'user'  => $model->name
+        ]);
+
+        return redirect()->route('admin.users.view', ['model' => $model])
+            ->with('message', ['success', __('user.password_reset')]);
     }
 
     /**

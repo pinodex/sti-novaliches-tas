@@ -3,7 +3,7 @@
 {% form_theme form '/layouts/bulma.twig' %}
 
 {% set body_class = 'login-page' %}
-{% set page_title = 'Login' %}
+{% set page_title = 'Reset Password' %}
 
 {% block content %}
     <section class="hero is-medium">
@@ -16,7 +16,8 @@
                     </div>
 
                     <div class="column is-one-third">
-                        <h1 class="title">User Login</h1>
+                        <h1 class="title">Reset Password</h1>
+                        <h2 class="subtitle">{{ user.first_name }} {{ user.last_name }}</h2>
 
                         {% if session_get('message') %}
                             <div class="notification is-{{ session_get('message')[0] }} is-small">
@@ -25,29 +26,11 @@
                         {% endif %}
 
                         <form action="{{ app.request.getRequestUri() }}" method="POST">
-                            {{ csrf_field() }}
-
-                            <div class="field">
-                                <p class="control has-icon">
-                                    <input class="input" type="text" name="id" placeholder="Username or E-mail" autofocus />
-                                    <span class="icon">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-                                </p>
-                            </div>
-
-                            <div class="field">
-                                <p class="control has-icon">
-                                    <input class="input" type="password" name="password" placeholder="Password" />
-                                    <span class="icon">
-                                        <i class="fa fa-key"></i>
-                                    </span>
-                                </p>
-                            </div>
+                            {{ form_widget(form) }}
 
                             <div class="field">
                                 <button class="button is-primary is-pulled-right">
-                                    <i class="fa fa-sign-in"></i> Login
+                                    Reset Password
                                 </button>
                             </div>
                         </form>
