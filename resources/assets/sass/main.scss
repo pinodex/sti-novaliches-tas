@@ -34,6 +34,7 @@ nav.nav {
 
     .top-nav-container {
         margin-left: 0;
+        width: 100%;
     }
 
     .nav-item.has-logo {
@@ -285,10 +286,6 @@ nav.nav {
     }
 }
 
-.container.is-fluid {
-    width: 100%;
-}
-
 .full-height {
     min-height: 100%;
 }
@@ -347,12 +344,9 @@ label, .label {
     }
 
     &.is-block {
+        margin-bottom: 1rem;
         display: block;
         width: 100%;
-
-        & + &.is-block {
-            margin-top: 5px;
-        }
     }
 }
 
@@ -529,15 +523,9 @@ input[readonly] {
 }
 
 .user-header {
-    background: #607D8B;
-    color: #fff;
-
-    .title {
-        color: #fff;
-    }
-
-    .subtitle {
-        color: #eee;
+    .hero-body {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
 
     .image {
@@ -547,7 +535,7 @@ input[readonly] {
 
     .media {
         .media-content {
-            margin-top: 16px;
+            margin-top: 14px;
         }
     }
 }

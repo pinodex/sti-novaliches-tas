@@ -16,41 +16,45 @@
 %}
 
 {% block pageheader %}
-    <div class="box user-box user-header is-marginless">
-        <div class="columns is-marginless">
-            <div class="column">
-                <div class="media">
-                    <div class="media-left">
-                        <figure class="image is-96x96">
-                            {% if user.picture_path %}
-                                <img src="{{ '/storage/' ~ user.picture_path }}" alt="User Avatar" />
-                            {% else %}
-                                <img src="/assets/img/default-image.jpg" alt="User Avatar" />
-                            {% endif %}
-                        </figure>
+    <section class="hero is-small is-info is-bold user-header">
+        <div class="hero-body">
+            <div class="container is-fluid">
+                <div class="columns">
+                    <div class="column">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-96x96">
+                                    {% if user.picture_path %}
+                                        <img src="{{ '/storage/' ~ user.picture_path }}" alt="User Avatar" />
+                                    {% else %}
+                                        <img src="/assets/img/default-image.jpg" alt="User Avatar" />
+                                    {% endif %}
+                                </figure>
+                            </div>
+                                    
+                            <div class="media-content">
+                                <p class="title is-4">{{ user.name }}</p>
+                                <p class="subtitle is-6">
+                                    <span>{{ user.email }}</span><br />
+                                    <span>@{{ user.username }}</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                            
-                    <div class="media-content">
-                        <p class="title is-4">{{ user.name }}</p>
-                        <p class="subtitle is-6">
-                            <span>{{ user.email }}</span><br />
-                            <span>@{{ user.username }}</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="column is-2">
-                <div class="field has-addons-right">
-                    <p class="control">
-                        <a href="{{ route('admin.users.edit', { model: user }, false) }}" class="button is-white is-outlined is-pulled-right" title="Edit User">
-                            <i class="fa fa-pencil"></i> Edit
-                        </a>
-                    </p>
+                    <div class="column is-2">
+                        <div class="field has-addons-right">
+                            <p class="control">
+                                <a href="{{ route('admin.users.edit', { model: user }, false) }}" class="button is-dark is-pulled-right" title="Edit User">
+                                    <i class="fa fa-pencil"></i> Edit
+                                </a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 {% endblock %}
 
 {% block subcontent %}
@@ -106,8 +110,15 @@
                 </div>
             </div>
 
-            <button class="button is-warning is-inverted is-block" @click="modals.confirm2 = true">Reset Password</button>
-            <button class="button is-danger is-block" @click="modals.confirm = true">Delete User</button>
+            <div class="field has-addons is-fluid">
+                <p class="control">
+                    <button class="button is-warning is-block" @click="modals.confirm2 = true">Reset Password</button>
+                </p>
+
+                <p class="control">
+                    <button class="button is-danger is-block" @click="modals.confirm = true">Delete User</button>
+                </p>
+            </div>
         </div>
     </div>
 
