@@ -20,6 +20,10 @@ class Authenticate
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             }
+
+            if ($request->getPathInfo() == '/') {
+                return redirect()->route('auth.login');    
+            }
             
             return redirect()->route('auth.login', [
                 'next' => $request->getRequestUri()
