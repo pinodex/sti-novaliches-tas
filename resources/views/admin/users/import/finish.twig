@@ -1,0 +1,19 @@
+{% extends '/admin/users/import/wizard.twig' %}
+
+{% block viewcontent %}
+    <section class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Finished</h1>
+                <h2 class="subtitle">Your file has been queued for import in background.</h2>
+                <p>You will get a notification after the import process is complete.</p>
+
+                <p>&nbsp;</p>
+
+                <a href="{{ route('admin.users.index', {}, false) }}" class="button">
+                    <i class="fa fa-users"></i> View Users
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

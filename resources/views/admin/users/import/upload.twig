@@ -1,0 +1,21 @@
+{% extends '/admin/users/import/wizard.twig' %}
+
+{% form_theme form '/layouts/bulma.twig' %}
+
+{% block viewcontent %}
+    <div class="panel">
+        <div class="panel-block import-upload-form-container">
+            <form  action="{{ app.request.getRequestUri() }}" method="post" enctype="multipart/form-data">
+                {{ form_widget(form) }}
+
+                <div class="field is-grouped is-grouped-right">
+                    <p class="control">
+                        <button class="button is-primary" type="submit">
+                            <i class="fa fa-upload"></i> Upload
+                        </button>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

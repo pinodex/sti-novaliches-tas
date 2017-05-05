@@ -1,0 +1,67 @@
+{% extends '/admin/users/import/wizard.twig' %}
+
+{% block viewcontent %}
+    <div class="panel">
+        <div class="panel-block">
+            <ol class="list">
+                <li><a href="{{ route('admin.users.import.download', {}, false) }}">Download</a> the spreadsheet template.</li>
+                <li>
+                    Fill the spreadsheet with user information
+
+                    <ul class="list">
+                        <li>Leave username column empty to automatically generate one (e.g. John Doe &mdash; jdoe).</li>
+                        <li>Leave password column empty to use the default password.</li>
+                        <li>
+                            Fill the group column with the group name the user will belong to.
+
+                            <br /><strong>Available Groups:</strong>
+                            <ul class="list">
+                                {% for group in groups %}
+                                    <li>{{ group.name }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            Otherwise, leave it empty to unassign users from any groups.
+                        </li>
+                        <li>
+                            Fill the department column with the department name the user will belong to.
+
+                            <br /><strong>Available Departments:</strong>
+                            <ul class="list">
+                                {% for department in departments %}
+                                    <li>{{ department.name }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            Otherwise, leave it empty to unassign users from any departments.
+                        </li>
+                        <li>
+                            Fill the profile column with the profile the user will use.
+
+                            <br /><strong>Available Profile:</strong>
+                            <ul class="list">
+                                {% for profile in profiles %}
+                                    <li>{{ profile.name }}</li>
+                                {% endfor %}
+                            </ul>
+
+                            Otherwise, leave it empty to leave the user without profile.
+                        </li>
+                    </ul>
+                </li>
+                <li>Proceed to the next step and upload your file.</li>
+            </ol>
+        </div>
+
+        <div class="panel-block">
+            <div class="level block">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <a class="button is-primary" href="{{ route('admin.users.import.upload', {}, false) }}"><i class="fa fa-chevron-right"></i> Next</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

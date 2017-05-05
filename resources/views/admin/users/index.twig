@@ -2,10 +2,17 @@
 
 {% set page_title = 'Users' %}
 {% set active_menu = 'users' %}
+{% set enable_bulletin = true %}
 
 {% if trash %}
     {% set page_title = 'Deleted Users' %}
 {% endif %}
+
+{% block pageside %}
+    <a href="{{ route('admin.users.import.index', {}, false) }}" class="button is-block">
+        <i class="fa fa-upload"></i> Import Users
+    </a>
+{% endblock %}
 
 {% block subcontent %}
     <div class="columns">

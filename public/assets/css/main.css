@@ -6,7 +6,7 @@ html, body {
 }
 
 body {
-  background: #f1f1f1;
+  background: #f6f9fc;
 }
 body.login-page {
   background: #fff;
@@ -129,7 +129,7 @@ nav.nav .avatar {
   transition: margin-left 200ms ease;
 }
 .main-container > .columns {
-  background: #f1f1f1;
+  background: #f6f9fc;
   margin: 0;
 }
 
@@ -374,11 +374,18 @@ input[readonly] {
 .panel .panel-heading.is-small {
   font-size: 1.1em;
 }
+.panel .panel-block {
+  background: #fff;
+}
 .panel > .box {
   padding: 1em;
   border: 1px solid #dbdbdb;
   border-radius: 0;
   box-shadow: none;
+}
+
+.message {
+  background: #fff;
 }
 
 .page-heading {
@@ -488,6 +495,49 @@ input[readonly] {
 }
 .info + .info {
   margin-top: 10px;
+}
+
+.wizard-steps-header {
+  background: #607D8B;
+  margin-bottom: 0 !important;
+}
+.wizard-steps-header .level-item {
+  padding: 1.5rem 1rem;
+}
+.wizard-steps-header .level-item .heading, .wizard-steps-header .level-item .title {
+  line-height: 1;
+  color: #eee;
+}
+.wizard-steps-header .level-item .title {
+  font-size: 1rem;
+}
+.wizard-steps-header .level-item.is-active {
+  background: #546E7A;
+}
+
+.import-upload-form-container {
+  padding: 5rem;
+}
+.import-upload-form-container form {
+  margin: 0 auto;
+}
+
+.list {
+  margin: 1em 0;
+  padding-left: 40px;
+}
+
+li > .list {
+  margin-top: 0;
+}
+
+ul.list {
+  list-style: disc;
+}
+
+.block {
+  display: block;
+  width: 100%;
 }
 
 .modal-mask {

@@ -9,6 +9,7 @@
         "barryvdh/laravel-async-queue": "^0.6.0",
         "barryvdh/laravel-debugbar": "^2.3",
         "barryvdh/laravel-form-bridge": "^0.3.2",
+        "box/spout": "^2.7",
         "intervention/image": "^2.3",
         "jenssegers/agent": "^2.5",
         "laravel/framework": "5.4.*",

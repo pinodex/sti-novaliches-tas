@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-    background: #f1f1f1;
+    background: #f6f9fc;
 
     &.login-page {
         background: #fff;
@@ -162,7 +162,7 @@ nav.nav {
     transition: margin-left 200ms ease;
 
     & > .columns {
-        background: #f1f1f1;
+        background: #f6f9fc;
         margin: 0;
     }
 }
@@ -465,12 +465,20 @@ input[readonly] {
         }
     }
 
+    .panel-block {
+        background: #fff;
+    }
+
     & > .box {
         padding: 1em;
         border: 1px solid #dbdbdb;
         border-radius: 0;
         box-shadow: none;
     }
+}
+
+.message {
+    background: #fff;
 }
 
 .page-heading {
@@ -608,6 +616,54 @@ input[readonly] {
     & + .info {
         margin-top: 10px;
     }
+}
+
+.wizard-steps-header {
+    background: #607D8B;
+    margin-bottom: 0 !important;
+
+    .level-item {
+        padding: 1.5rem 1rem;
+
+        .heading, .title {
+            line-height: 1;
+            color: #eee;
+        }
+
+        .title {
+            font-size: 1rem;
+        }
+
+        &.is-active {
+            background: #546E7A;
+        }
+    }
+}
+
+.import-upload-form-container {
+    padding: 5rem;
+
+    form {
+        margin: 0 auto;
+    }
+}
+
+.list {
+    margin: 1em 0;
+    padding-left: 40px;
+}
+
+li > .list {
+    margin-top: 0;
+}
+
+ul.list {
+    list-style: disc;
+}
+
+.block {
+    display: block;
+    width: 100%;
 }
 
 .modal-mask {

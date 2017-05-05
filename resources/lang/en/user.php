@@ -10,6 +10,9 @@ return [
     'not_found' 		=> 'Cannot find requested user',
     'picture_updated'	=> 'User picture has been successfully updated',
     'picture_error' 	=> 'Unable to process uploaded image',
-    'password_reset'    => 'Password reset has been requested'
+    'password_reset'    => 'Password reset has been requested',
+
+    'import_read_error' => 'Cannot read the uploaded file.',
+    'import_invalid'    => 'The file you uploaded is invalid'
 
 ];

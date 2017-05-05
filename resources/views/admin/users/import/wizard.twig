@@ -1,0 +1,33 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Import Users' %}
+{% set active_menu = 'users' %}
+{% set enable_bulletin = false %}
+
+{%
+    set wizard_steps = [
+        { identifier: 'index', text: 'Pre-flight Checks', icon: 'list' },
+        { identifier: 'upload', text: 'Upload', icon: 'upload' },
+        { identifier: 'confirm', text: 'Confirm', icon: 'square-o' },
+        { identifier: 'finish', text: 'Finish', icon: 'check-square-o' }
+    ]
+%}
+
+{% block pageheader %}
+    <div class="level is-mobile wizard-steps-header">
+        {% for step in wizard_steps %}
+            <div class="level-item has-text-centered{{ step.identifier == current_step ? ' is-active' : '' }}">
+                <div>
+                    <p class="heading">{{ step.text }}</p>
+                    <p class="title">
+                        <i class="fa fa-{{ step.icon }}"></i>
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block subcontent %}
+    {% block viewcontent %}{% endblock %}
+{% endblock %}

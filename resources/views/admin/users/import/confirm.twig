@@ -1,0 +1,59 @@
+{% extends '/admin/users/import/wizard.twig' %}
+
+{% block viewcontent %}
+    <div class="panel">
+        <div class="panel-block is-paddingless">
+            <table class="table is-marginless">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Department</th>
+                        <th>Group</th>
+                        <th>Profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in contents %}
+                        <tr>
+                            <td>{{ entry.first_name }}</td>
+                            <td>{{ entry.middle_name }}</td>
+                            <td>{{ entry.last_name }}</td>
+                            <td>{{ entry.email }}</td>
+                            <td>{{ entry.username }}</td>
+                            <td>{{ entry.password }}</td>
+                            <td>{{ entry.department ? entry.department.name : 'Unassigned' }}</td>
+                            <td>{{ entry.group ? entry.group.name : 'Unassigned' }}</td>
+                            <td>{{ entry.profile ? entry.profile.name : 'Unassigned' }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9">Empty record set</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel-block">
+            <div class="level block">
+                <div class="level-left"></div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <form  action="{{ app.request.getRequestUri() }}" method="post" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+                            
+                            <button class="button is-primary" type="submit">
+                                <i class="fa fa-check"></i> Confirm
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

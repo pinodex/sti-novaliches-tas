@@ -63,6 +63,16 @@ Route::group([
     // UserController
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
 
+        Route::group(['prefix' => 'import', 'as' => 'import.'], function () {
+
+            Route::get('/', 'UserImportController@index')->name('index');
+            Route::get('/download', 'UserImportController@download')->name('download');
+            Route::match(['get', 'post'], '/upload', 'UserImportController@upload')->name('upload');
+            Route::match(['get', 'post'], '/session/{id}/confirm', 'UserImportController@confirm')->name('confirm');
+            Route::get('/session/{id}/finish', 'UserImportController@finish')->name('finish');
+
+        });
+
         Route::get('/', 'UserController@index')->name('index');
         Route::get('/deleted', 'UserController@deleted')->name('deleted');
         Route::post('/purge', 'UserController@purge')->name('purge');
