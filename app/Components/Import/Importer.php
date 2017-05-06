@@ -148,6 +148,14 @@ abstract class Importer
     }
 
     /**
+     * Delete importer session
+     */
+    public function delete()
+    {
+        Cache::forget($this->getCacheKey());
+    }
+
+    /**
      * Get sheet contents
      * 
      * @return mixed

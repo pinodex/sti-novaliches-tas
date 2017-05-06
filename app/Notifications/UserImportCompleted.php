@@ -15,17 +15,17 @@ class UserImportCompleted extends Notification
         return ['database'];
     }
 
-    protected function getLink()
+    protected function getLink($notifiable)
     {
         return route('admin.users.index');
     }
 
-    protected function getIcon()
+    protected function getIcon($notifiable)
     {
         return 'upload';
     }
 
-    protected function getContent()
+    protected function getContent($notifiable)
     {
         return 'User import completed';
     }

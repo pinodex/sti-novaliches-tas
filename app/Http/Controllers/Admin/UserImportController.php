@@ -11,12 +11,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Auth;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\UserImportUploadForm;
 use App\Components\Import\UserImporter;
 use App\Components\Import\InvalidSheetException;
+use App\Jobs\UserImportJob;
 use App\Models\Department;
 use App\Models\Profile;
 use App\Models\Group;
@@ -124,7 +126,8 @@ class UserImportController extends Controller
 
         if ($request->getMethod() == 'POST') {
             $importer->lock();
-            $importer->import();
+
+            $this->dispatch(new UserImportJob($importer, Auth::user()));
 
             return redirect()->route('admin.users.import.finish', [
                 'id' => $importer->getSessionId()
