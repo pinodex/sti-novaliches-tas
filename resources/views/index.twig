@@ -19,14 +19,13 @@
                             <div class="media-content">
                                 <p class="title is-4">{{ model.name }}</p>
                                 <p class="subtitle is-6">
-                                    <span>{{ model.email }}</span><br />
                                     <span>@{{ model.username }}</span>
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="column is-narrow">
+                    <div class="column is-narrow is-hidden-mobile">
                         <div class="level is-mobile">
                             {% if model.deppartment %}
                                 <div class="level-item">
@@ -69,11 +68,50 @@
 
 {% block subcontent %}
     <div class="columns">
+        <div class="column is-3 is-hidden-tablet-only is-hidden-desktop-only is-hidden-widescreen">
+            <div class="box user-box">
+                {% if model.department %}
+                    <div class="info">
+                        <p class="title">Department</p>
+                        <p class="value">{{ model.department.name }}</p>
+                    </div>
+                {% endif %}
+
+                {% if model.group %}
+                    <div class="info">
+                        <p class="title">Group</p>
+                        <p class="value">{{ model.group.name }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="info">
+                    <p class="title">Leaves Balance</p>
+                    <p class="value">{{ model.leaves_balance }}</p>
+                </div>
+
+                <div class="info">
+                    <p class="title">Last login on</p>
+                    <p class="value">{{ model.last_login_at ? model.last_login_at|date('F d, Y h:i A') : 'None recorded' }}</p>
+                </div>
+
+                <div class="info">
+                    <p class="title">Created on</p>
+                    <p class="value">{{ model.created_at ? model.created_at|date('F d, Y h:i A') : 'N/A' }}</p>
+                </div>
+
+                <div class="info">
+                    <p class="title">Updated on</p>
+                    <p class="value">{{ model.updated_at ? model.updated_at|date('F d, Y h:i A') : 'N/A' }}</p>
+                </div>
+            </div>
+        </div>
+
         <div class="column">
             <transition name="notif-slide-fade-up">
-                <div class="notification is-info" v-show="unreadNotificationCount > 0">
-                    You have <span class="tag is-danger">{{ '{{ unreadNotificationCount }}' }}</span> unread notifications.
-                    <button class="button is-small is-info is-inverted is-outlined is-pulled-right" @click.stop="toggleNotifications()">
+                <div class="notification is-primary" v-show="unreadNotificationCount > 0">
+                    You have <span class="tag is-danger">{{ '{{ unreadNotificationCount }}' }}</span> unread {{ '{{ unreadNotificationCount == 1 ? "notification" : "notifications" }}' }}.
+                    
+                    <button class="button is-small is-info is-inverted is-outlined is-pulled-right is-hidden-mobile" @click.stop="toggleNotifications()">
                         View notifications
                     </button>
                 </div>
@@ -81,7 +119,7 @@
 
             <div class="panel">
                 <div class="panel-heading">
-                    <div class="level">
+                    <div class="level is-mobile">
                         <div class="level-left">
                             <div class="level-item">Recent Requests</div>
                         </div>
@@ -125,7 +163,7 @@
             {% if inbox|length > 0 %}
                 <div class="panel">
                     <div class="panel-heading">
-                    <div class="level">
+                    <div class="level is-mobile">
                         <div class="level-left">
                             <div class="level-item">Latest Inbox Requests</div>
                         </div>

@@ -15,7 +15,7 @@
                         <div class="column is-offset-3 is-6">
                             <h2 class="subtitle">{{ request_form.getType().getName() }}</h2>
 
-                            <form action="{{ app.request.getRequestUri() }}" method="post" @submit="disableAction = true">
+                            <form class="is-clearfix" action="{{ app.request.getRequestUri() }}" method="post" @submit="disableAction = true">
                                 {% include request_form.getType().getFormTemplate() %}
                                 
                                 <div class="field">

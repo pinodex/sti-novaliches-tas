@@ -32,6 +32,9 @@ nav.nav .top-nav-container {
   margin-left: 0;
   width: 100%;
 }
+nav.nav .nav-left {
+  overflow: hidden;
+}
 nav.nav .nav-item.has-logo {
   width: 198px;
   margin-right: 1rem;
@@ -44,12 +47,14 @@ nav.nav .nav-item.has-logo img {
 nav.nav .nav-item .icon {
   margin-right: 0.5em;
 }
-nav.nav .notification-tab {
-  transition: width .3s ease;
-  width: 64px;
-}
-nav.nav .notification-tab.has-notification {
-  width: 106px;
+@media (min-width: 768px) {
+  nav.nav .notification-tab {
+    transition: width .3s ease;
+    width: 64px;
+  }
+  nav.nav .notification-tab.has-notification {
+    width: 106px;
+  }
 }
 nav.nav .toggle-menu-button {
   position: relative;
@@ -78,9 +83,22 @@ nav.nav .avatar {
   right: 0;
   bottom: 0;
   width: 250px;
-  background: #222;
   padding: 15px 0;
+  background: #222;
+  text-align: left;
   transition: left 200ms ease;
+}
+@media (max-width: 768px) {
+  .sidebar.menu {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    z-index: 1000;
+    overflow-y: auto;
+    text-align: center;
+    width: 100%;
+  }
 }
 .sidebar.menu .menu-label {
   padding: 0 0.75em;
@@ -135,7 +153,13 @@ nav.nav .avatar {
 .off-menu.active .main-container {
   margin-left: 250px;
 }
+@media (max-width: 768px) {
+  .off-menu.active .main-container {
+    margin-left: 0;
+  }
+}
 .off-menu.active .sidebar.menu {
+  display: block;
   left: 0px;
 }
 
@@ -342,11 +366,6 @@ label, .label {
 }
 .columns:last-child {
   margin-bottom: 0;
-}
-@media (min-width: 768px) {
-  .columns .column.with-divider {
-    border-left: 1px solid #eee;
-  }
 }
 
 .level.is-small {

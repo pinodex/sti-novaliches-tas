@@ -66,8 +66,9 @@ Object.defineProperty(Array.prototype, 'pluck', {
     }
 
     var appData = {
-        sidebarActive: false,
-        notificationActive: false,
+        sideBarActive: false,
+        notifBarActive: false,
+
         disableAction: false,
         paginationPage: 1,
         modelId: 0,
@@ -137,8 +138,43 @@ Object.defineProperty(Array.prototype, 'pluck', {
     };
 
     var appMethods = {
-        toggleNav: function() {
-            this.isNavActive = !this.isNavActive;
+        toggleSideBar: function() {
+            this.sideBarActive = !this.sideBarActive;
+
+            this.notifBarActive = false;
+        },
+
+        toggleNotifBar: function() {
+            this.notifBarActive = !this.notifBarActive;
+
+            this.sideBarActive = false;
+
+            this.unreadNotificationCount = 0;
+
+            if (this.notifBarActive) {
+                var localUnreadCount = 0;
+
+                for (var i = 0; i < this.notifications.length; i++) {
+                    if (this.notifications[i].read_at == null) {
+                        this.notifications[i].read_at = new Date();
+                        
+                        localUnreadCount++;
+                    }
+
+                }
+
+                if (localUnreadCount > 0) {
+                    this.$http.post('/account/notifications/read', {
+                        ids: this.notifications.pluck('id')
+                    });
+                }
+            }
+        },
+
+        closeAllBar: function() {
+            this.topBarActive = false;
+            this.sideBarActive = false;
+            this.notifBarActive = false;
         },
 
         setFormId: function(id) {
@@ -175,30 +211,6 @@ Object.defineProperty(Array.prototype, 'pluck', {
                     this.notifications.unshift(response.body.entries[i]);
                 }
             });
-        },
-
-        toggleNotifications: function () {
-            this.notificationActive = !this.notificationActive;
-            this.unreadNotificationCount = 0;
-
-            if (this.notificationActive) {
-                var localUnreadCount = 0;
-
-                for (var i = 0; i < this.notifications.length; i++) {
-                    if (this.notifications[i].read_at == null) {
-                        this.notifications[i].read_at = new Date();
-                        
-                        localUnreadCount++;
-                    }
-
-                }
-
-                if (localUnreadCount > 0) {
-                    this.$http.post('/account/notifications/read', {
-                        ids: this.notifications.pluck('id')
-                    });
-                }
-            }
         },
 
         dismissNotification: function (index) {

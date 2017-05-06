@@ -37,6 +37,10 @@ nav.nav {
         width: 100%;
     }
 
+    .nav-left {
+        overflow: hidden;
+    }
+
     .nav-item.has-logo {
         width: 198px;
         margin-right: 1rem;
@@ -52,12 +56,14 @@ nav.nav {
         margin-right: 0.5em;
     }
 
-    .notification-tab {
-        transition: width .3s ease;
-        width: 64px;
+    @media (min-width: 768px) {
+        .notification-tab {
+            transition: width .3s ease;
+            width: 64px;
 
-        &.has-notification {
-            width: 106px;
+            &.has-notification {
+                width: 106px;
+            }
         }
     }
 
@@ -91,12 +97,27 @@ nav.nav {
     left: -250px;
     right: 0;
     bottom: 0;
+    
     width: 250px;
-
-    background: #222;
     padding: 15px 0;
 
+    background: #222;
+    text-align: left;
     transition: left 200ms ease;
+
+    @media (max-width: 768px) {
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        display: none;
+
+        z-index: 1000;
+        overflow-y: auto;
+        text-align: center;
+
+        width: 100%;
+    }
 
     .menu-label {
         padding: 0 0.75em;
@@ -169,9 +190,14 @@ nav.nav {
 .off-menu.active {
     .main-container {
         margin-left: 250px;
+
+        @media (max-width: 768px) {
+            margin-left: 0;
+        }
     }
 
     .sidebar.menu {
+        display: block;
         left: 0px;
     }
 }
@@ -427,12 +453,6 @@ label, .label {
 
     &:last-child {
         margin-bottom: 0;
-    }
-
-    @media (min-width: 768px) {
-        .column.with-divider {
-            border-left: 1px solid #eee;
-        }
     }
 }
 
