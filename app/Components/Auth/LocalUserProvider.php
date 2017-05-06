@@ -53,7 +53,7 @@ class LocalUserProvider implements UserProvider
                 $user->password = Hash::make($credentials['password']);
             }
 
-            $user->last_login_at = date('Y-m-d H:i:s');
+            $user->last_login_at = now();
             $user->save();
 
             return true;

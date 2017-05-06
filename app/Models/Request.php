@@ -135,7 +135,7 @@ class Request extends Model
     {
         $this->status = static::STATUS_DISAPPROVED;
         $this->disapproval_reason = $reason;
-        $this->responded_at = date('Y-m-d H:i:s');
+        $this->responded_at = now();
         
         $this->save();
 
@@ -155,7 +155,7 @@ class Request extends Model
         if ($this->approver && $this->approver->department && $this->approver->department->head) {
             $this->approver_id = $this->approver->department->head->id;
             $this->status = static::STATUS_ESCALATED;
-            $this->responded_at = date('Y-m-d H:i:s');
+            $this->responded_at = now();
 
             $this->save();
 

@@ -45,8 +45,8 @@ class OvertimeType extends AbstractType
     {
         $data = $form->getData();
 
-        $data['from_date'] = date('Y-m-d H:i:s');
-        $data['to_date'] = date('Y-m-d H:i:s');
+        $data['from_date'] = now();
+        $data['to_date'] = now();
 
         $request = new Request();
         

@@ -215,11 +215,11 @@ class UserImporter extends Importer
                     }
 
                     if ($column == 'created_at') {
-                        $values['created_at'] = date('Y-m-d H:i:s');
+                        $values['created_at'] = now();
                     }
 
                     if ($column == 'updated_at') {
-                        $values['updated_at'] = date('Y-m-d H:i:s');
+                        $values['updated_at'] = now();
                     }
                 }
 

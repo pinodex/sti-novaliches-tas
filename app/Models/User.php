@@ -154,7 +154,7 @@ class User extends Authenticatable
 
         $log->action = $action;
         $log->params = $params;
-        $log->timestamp = date('Y-m-d H:i:s');
+        $log->timestamp = now();
         $log->ip_address = $request->ip();
         $log->user_agent = $request->header('User-Agent');
 

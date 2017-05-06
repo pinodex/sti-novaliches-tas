@@ -22,3 +22,10 @@ if (!function_exists('default_avatar_picture')) {
         return '/assets/img/default-image.jpg';
     }
 }
+
+if (!function_exists('now')) {
+    function now()
+    {
+        return date('Y-m-d H:i:s');
+    }
+}
