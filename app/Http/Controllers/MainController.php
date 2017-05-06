@@ -58,22 +58,28 @@ class MainController extends Controller
      */
     public function notifications()
     {
-        $pagination = Auth::user()->notifications()->paginate(50);
-        $notifications = $pagination->map(function (DatabaseNotification $model) use (&$notifications) {
-                $nr = new NotificationReader($model);
-
-                return [
-                    'id' => $model->id,
-                    'title' => $nr->getTitle(),
-                    'content' => $nr->getContent(),
-                    'read_at' => $model->read_at ? $model->read_at->toDateTimeString() : null,
-                    'created_at' => $model->created_at ? $model->created_at->toDateTimeString() : null
-                ];
-            });
+        $notifications = Auth::user()->notifications()->paginate(50);
 
         return view('notifications', [
-            'notifications' => $notifications,
-            'pagination'    => $pagination
+            'notifications' => $notifications
         ]);
+    }
+
+    /**
+     * View notification action
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
+    public function viewNotification(Request $request, DatabaseNotification $notification)
+    {
+        $notification->markAsRead();
+
+        if (array_key_exists('link', $notification->data) && $notification->data['link']) {
+            return redirect($notification->data['link']);
+        }
+
+        return redirect('/');
     }
 }

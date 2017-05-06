@@ -18,5 +18,22 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class RequestEscalated extends RequestResponded
 {
+    protected function getImage($notifiable)
+    {
+        if (!$this->request->approver) {
+            return default_avatar_thumb();
+        }
 
+        return $this->request->approver->thumbnail_path;
+    }
+
+    protected function getContent($notifiable)
+    {
+        if (!$this->request->approver) {
+            return 'Your request has been escalated';
+        }
+
+        return 'Your request has been escalated to ' .
+            $this->request->approver->name;
+    }
 }

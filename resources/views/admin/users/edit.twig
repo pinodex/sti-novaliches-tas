@@ -21,11 +21,7 @@
                         
                         <div class="columns">
                             <div class="column is-4 is-offset-1">
-                                {% if model.picture_path %}
-                                    <img src="{{ '/storage/' ~ model.picture_path }}" alt="User Avatar" />
-                                {% else %}
-                                    <img src="/assets/img/default-image.jpg" alt="User Avatar" />
-                                {% endif %}
+                                <img src="{{ model.picture_path }}" alt="User Avatar" />
 
                                 {{ form_row(form.picture) }}
                             </div>

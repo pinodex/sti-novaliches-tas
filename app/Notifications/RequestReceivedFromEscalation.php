@@ -18,26 +18,28 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class RequestReceivedFromEscalation extends RequestResponded
 {
-    public function toArray($notifiable)
+    protected function getLink($notifiable)
     {
-        $types = config('request.types');
-        
-        $typeName = $this->request->type;
-        $requestorName = null;
-
-        if (array_key_exists($this->request->type, $types)) {
-            $typeName = $types[$this->request->type]::getName();
+        return route('employee.requests.inbox.view', [
+            'request' => $this->request
+        ]);
+    }
+    
+    protected function getImage($notifiable)
+    {
+        if (!$this->request->requestor) {
+            return default_avatar_thumb();
         }
 
-        if ($this->request->requestor) {
-            $requestorName = $this->request->requestor->name;
+        return $this->request->requestor->thumbnail_path;
+    }
+
+    protected function getContent($notifiable)
+    {
+        if (!$this->request->requestor) {
+            return 'A request has been escalated to you';
         }
 
-        return [
-            'request_id' => $this->request->id,
-            'type_name' => $typeName,
-            'requestor_name' => $requestorName,
-            'time' => $this->request->responded_at
-        ];
+        return 'A request by ' . $this->request->requestor->name . ' has been escalated to you';
     }
 }

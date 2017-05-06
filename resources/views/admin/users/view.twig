@@ -24,11 +24,7 @@
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-96x96">
-                                    {% if user.picture_path %}
-                                        <img src="{{ '/storage/' ~ user.picture_path }}" alt="User Avatar" />
-                                    {% else %}
-                                        <img src="/assets/img/default-image.jpg" alt="User Avatar" />
-                                    {% endif %}
+                                    <img src="{{ user.picture_path }}" alt="User Avatar" />
                                 </figure>
                             </div>
                                     

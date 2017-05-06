@@ -128,11 +128,7 @@
                         {% if trash %}
                             <tr>
                                 <td>
-                                    {% if item.thumbnail_path %}
-                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
-                                    {% else %}
-                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
-                                    {% endif %}
+                                    <img class="avatar" src="{{ item.thumbnail_path }}" alt="User Avatar" />
                                 </td>
                                 <td>
                                     <h1 class="title">{{ item.name }}</h1>
@@ -166,11 +162,7 @@
                         {% else %}
                             <tr class="clickable" @click="location('{{ route('admin.users.view', { model: item }, false) }}')">
                                 <td>
-                                    {% if item.thumbnail_path %}
-                                        <img class="avatar" src="{{ '/storage/' ~ item.thumbnail_path }}" alt="User Avatar" />
-                                    {% else %}
-                                        <img class="avatar" src="/assets/img/default-thumb.jpg" alt="User Avatar" />
-                                    {% endif %}
+                                    <img class="avatar" src="{{ item.thumbnail_path }}" alt="User Avatar" />
                                 </td>
                                 <td>
                                     <a href="{{ route('admin.users.view', { model: item }, false) }}">

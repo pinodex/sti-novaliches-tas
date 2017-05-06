@@ -33,23 +33,21 @@ class NotificationController extends Controller
             ->unreadNotifications()
             ->orderBy('created_at', 'DESC')
             ->each(function (DatabaseNotification $notification) use (&$notifications) {
-                $notifications['entries'][] = $this->view($notification);
+                $entry = [
+                    'id'            => $notification->id,
+                    'data'          => $notification->data,
+                    'read_at'       => $notification->read_at ? $notification->read_at->toDateTimeString() : null,
+                    'created_at'    => $notification->created_at ? $notification->created_at->toDateTimeString() : null
+                ];
+
+                $entry['data']['link'] = route('notifications.view', [
+                    'notification' => $notification
+                ], false);
+
+                $notifications['entries'][] = $entry;
             });
 
         return $notifications;
-    }
-
-    public function view(DatabaseNotification $model)
-    {
-        $nr = new NotificationReader($model);
-
-        return [
-            'id' => $model->id,
-            'title' => $nr->getTitle(),
-            'content' => $nr->getContent(),
-            'read_at' => $model->read_at ? $model->read_at->toDateTimeString() : null,
-            'created_at' => $model->created_at ? $model->created_at->toDateTimeString() : null
-        ];
     }
 
     public function read(Request $request)

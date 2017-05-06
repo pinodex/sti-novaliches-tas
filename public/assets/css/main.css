@@ -171,40 +171,24 @@ nav.nav .avatar {
   color: #00d1b2;
   text-decoration: underline;
 }
+.notification-container .notification-entry {
+  color: #9e9e9e;
+  background: transparent;
+  transition: color 3s ease-out;
+}
+.notification-container .notification-entry .content {
+  color: #fff;
+}
+.notification-container .notification-entry.is-unread {
+  color: #ffeb3b;
+}
+.notification-container .notification-entry:hover {
+  background: #363636;
+}
 .notification-container .empty-message {
   padding: 15px;
   color: #fff;
   text-align: center;
-}
-.notification-container .notification-entry {
-  display: block;
-  padding: 15px;
-  color: #80deea;
-  background: transparent;
-  transition: color 3s ease-out;
-  cursor: default;
-}
-.notification-container .notification-entry .header {
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-.notification-container .notification-entry .header .fa {
-  margin-right: 5px;
-}
-.notification-container .notification-entry .header .time {
-  margin-top: 3px;
-  font-size: 11px;
-  float: right;
-}
-.notification-container .notification-entry .content {
-  font-size: 12px;
-  color: #eee;
-}
-.notification-container .notification-entry.is-unread {
-  color: #ffdd57;
-}
-.notification-container .notification-entry:hover {
-  background: #363636;
 }
 .notification-container::-webkit-scrollbar {
   width: 10px;
@@ -217,11 +201,47 @@ nav.nav .avatar {
   background: #333;
 }
 
-.notifications-table tr {
-  border-left: 5px solid transparent;
+.notification-list {
+  margin-bottom: 1rem;
 }
-.notifications-table .is-unread {
-  border-color: #ffdd57;
+.notification-list .notification-entry {
+  border-left: 3px solid transparent;
+  background: #fff;
+  color: #111;
+}
+.notification-list .notification-entry.is-unread {
+  border-color: #ffeb3b;
+}
+.notification-list .notification-entry + .notification-entry {
+  border-top: 1px solid #ccc;
+}
+.notification-list .notification-entry:hover {
+  background: #eee;
+}
+
+.notification-entry {
+  display: block;
+  padding: 1rem;
+}
+.notification-entry .media {
+  line-height: 1;
+  align-items: center;
+}
+.notification-entry .media .media-left {
+  margin-right: 0.5rem;
+}
+.notification-entry .content {
+  font-size: 14px;
+  margin-bottom: 0.25rem !important;
+}
+.notification-entry .footer {
+  background: transparent;
+  font-size: 11px;
+  padding: 0;
+}
+.notification-entry .footer .fa {
+  margin-right: 0.25rem;
+  font-size: 11px;
 }
 
 .full-height {

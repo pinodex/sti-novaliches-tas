@@ -24,6 +24,8 @@ Route::get('/', ['as' => 'index', 'uses' => 'MainController@index']);
 
 Route::get('/notifications', ['as' => 'notifications', 'uses' => 'MainController@notifications']);
 
+Route::get('/notifications/{notification}', ['as' => 'notifications.view', 'uses' => 'MainController@viewNotification']);
+
 Route::group([
     'prefix'    => 'auth',
     'as'        => 'auth.'

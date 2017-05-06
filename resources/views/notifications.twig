@@ -14,25 +14,33 @@
 {% block subcontent %}
     <div class="columns">
         <div class="column">
-            <table class="table notifications-table">
-                <tbody>
-                    {% for notification in notifications %}
-                        <tr class="{{ notification.read_at is null ? 'is-unread' : '' }}">
-                            <td>
-                                <h3 class="title is-6 is-marginless">{{ notification.title }}</h3>
-                                <p class="is-marginless">{{ notification.content }}</p>
-                            </td>
-                            <td>{{ notification.created_at | date('M d, h:i a') }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="notification-list">
+                {% for notification in notifications %}
+                    <a href="{{ route('notifications.view', { notification: notification }, false) }}" class="notification-entry {{ notification.read_at is null ? 'is-unread' : '' }}">
+                        <article class="media">
+                            <figure class="media-left">
+                                <p class="image is-48x48">
+                                    <img src="{{ notification.data.image }}" alt="Notification" />
+                                </p>
+                            </figure>
+
+                            <div class="media-content">
+                                <div class="content">{{ notification.data.content }}</div>
+                                <div class="footer">
+                                    <i class="fa fa-{{ notification.data.icon }}"></i>
+                                    {{ notification.created_at | date('M d, h:i a') }}
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+                {% endfor %}
+            </div>
 
             <div class="columns">
                 <div class="column is-3 is-offset-9 is-paddingless">
                     <span class="select">
                         <select name="pages" @change="changePaginationPage" v-model="paginationPage">
-                            {% for i in 1..pagination.lastPage %}
+                            {% for i in 1..notifications.lastPage %}
                                 <option value="{{ i }}">Page {{ i }}</option>
                             {% endfor %}
                         </select>

@@ -54,12 +54,6 @@
     <div id="app">
         {% block content %}{% endblock %}
     </div>
-
-    {% if requestBalances is defined %}
-        <script>
-            var balances = {{ requestBalances|json_encode|raw }}
-        </script>
-    {% endif %}
     
     <script type="text/template" id="modal-template">
         <transition name="modal">
@@ -80,6 +74,7 @@
             </div>
         </transition>
     </script>
+
 {% if config('app.debug') %}
     <script src="/assets/js/vue.js"></script>
     <script src="/assets/js/vue-resource.js"></script>

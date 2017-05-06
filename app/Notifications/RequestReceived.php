@@ -18,26 +18,28 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class RequestReceived extends RequestResponded
 {
-    public function toArray($notifiable)
+    protected function getLink($notifiable)
     {
-        $types = config('request.types');
-        
-        $typeName = $this->request->type;
-        $requestorName = null;
+        return route('employee.requests.inbox.view', [
+            'request' => $this->request
+        ]);
+    }
 
-        if (array_key_exists($this->request->type, $types)) {
-            $typeName = $types[$this->request->type]::getName();
+    protected function getImage($notifiable)
+    {
+        if (!$this->request->requestor) {
+            return default_avatar_thumb();
         }
 
-        if ($this->request->requestor) {
-            $requestorName = $this->request->requestor->name;
+        return $this->request->requestor->thumbnail_path;
+    }
+
+    protected function getContent($notifiable)
+    {
+        if (!$this->request->requestor) {
+            return 'You receieved a request';
         }
 
-        return [
-            'request_id' => $this->request->id,
-            'type_name' => $typeName,
-            'requestor_name' => $requestorName,
-            'time' => $this->request->responded_at
-        ];
+        return $this->request->requestor->name . ' has sent you a request';
     }
 }

@@ -9,11 +9,7 @@
             <div class="card">
                 <div class="card-image">
                     <figure class="image">
-                        {% if model.picture_path %}
-                            <img src="{{ '/storage/' ~ model.picture_path }}" alt="User Avatar" />
-                        {% else %}
-                            <img src="/assets/img/default-image.jpg" alt="User Avatar" />
-                        {% endif %}
+                        <img src="{{ model.picture_path }}" alt="User Avatar" />
                     </figure>
                 </div>
                             

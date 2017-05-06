@@ -12,7 +12,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Models\Request;
@@ -26,11 +25,6 @@ class RequestResponded extends Notification implements ShouldQueue
      */
     protected $request;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -61,15 +55,6 @@ class RequestResponded extends Notification implements ShouldQueue
         $notifClass = get_class($this);
 
         $entry = $mapping[$notifClass];
-        $url = url(route('employee.requests.view', [
-            'model' => $this->request 
-        ]));
-
-        if ($notifClass == RequestReceived::class || $notifClass == RequestReceivedFromEscalation::class) {
-            $url = url(route('employee.requests.inbox.view', [
-                'model' => $this->request 
-            ]));
-        }
 
         $message = (new MailMessage)
             ->subject(sprintf('%s: %s', $entry['title'], $this->request->type_name))
@@ -77,32 +62,26 @@ class RequestResponded extends Notification implements ShouldQueue
                 'entry'     => $entry,
                 'recipient' => $notifiable,
                 'request'   => $this->request,
-                'url'       => $url
+                'url'       => $this->getLink($notifiable)
             ]);
 
         return $message;
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
+    protected function getLink($notifiable)
     {
-        $types = config('request.types');
-        $approverName = null;
+        return route('employee.requests.view', [
+            'request' => $this->request
+        ]);
+    }
 
-        if ($this->request->approver) {
-            $approverName = $this->request->approver->name;
-        }
+    protected function getIcon($notifiable)
+    {
+        return 'envelope';
+    }
 
-        return [
-            'request_id' => $this->request->id,
-            'type_name' => $this->request->type_name,
-            'approver_name' => $approverName,
-            'time' => $this->request->responded_at
-        ];
+    protected function getContent($notifiable)
+    {
+        return 'There has been a response to your request';
     }
 }

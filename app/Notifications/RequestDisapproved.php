@@ -18,5 +18,22 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class RequestDisapproved extends RequestResponded
 {
+    protected function getImage($notifiable)
+    {
+        if (!$this->request->approver) {
+            return default_avatar_thumb();
+        }
 
+        return $this->request->approver->thumbnail_path;
+    }
+
+    protected function getContent($notifiable)
+    {
+        if (!$this->request->approver) {
+            return 'Your request has been disapproved';
+        }
+
+        return 'Your request has been disapproved by ' .
+            $this->request->approver->name;
+    }
 }
