@@ -194,7 +194,6 @@ Object.defineProperty(Array.prototype, 'pluck', {
 
         getNotifications: function () {
             this.$http.get('/account/notifications').then(function (response) {
-                console.log(response);
                 if (!this.notificationActive) {
                     this.unreadNotificationCount = response.body.unread_count;
                 }
