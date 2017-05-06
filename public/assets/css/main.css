@@ -69,7 +69,6 @@ nav.nav .toggle-menu-button .fa {
 }
 nav.nav .avatar {
   margin-right: 10px;
-  border-radius: 100%;
 }
 
 .sidebar.menu {
@@ -309,12 +308,14 @@ label, .label {
   padding-right: 0;
 }
 
+.notification {
+  padding: 1.25rem 1.5rem;
+}
 .notification.is-small {
   font-size: 12px;
   padding: 10px;
   margin-bottom: 1em;
 }
-
 .notification.is-main {
   margin-bottom: 0;
   border-radius: 0;
@@ -453,16 +454,24 @@ input[readonly] {
   padding-bottom: 1rem;
 }
 .user-header .image {
-  border-radius: 100%;
   overflow: hidden;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.2);
+}
+.user-header .media {
+  align-items: center;
 }
 .user-header .media .media-content {
-  margin-top: 14px;
+  text-shadow: 0 2px 3px rgba(10, 10, 10, 0.2);
+}
+.user-header .level .level-item + .level-item {
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid rgba(250, 250, 250, 0.5);
 }
 
 .user-box {
-  box-shadow: none;
-  border-radius: 0;
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1);
+  border-radius: 3px;
   margin-bottom: 0;
   overflow: hidden;
 }
