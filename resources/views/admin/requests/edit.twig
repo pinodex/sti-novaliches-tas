@@ -13,12 +13,14 @@
                 <div class="box">
                     <div class="columns">
                         <div class="column is-6 is-offset-3">
-                            <form action="{{ app.request.getRequestUri() }}" method="post">
+                            <form action="{{ app.request.getRequestUri() }}" method="post" @submit="buttons.postLoading = true">
                                 {{ form_widget(form) }}
 
                                 <div class="field">
                                     <p class="control">
-                                        <button type="submit" class="button is-primary">Submit</button>
+                                        <button type="submit" class="button is-primary" :class="{ 'is-loading' : buttons.postLoading }">
+                                            <i class="fa fa-floppy-o"></i> Save
+                                        </button>
                                     </p>
                                 </div>
                             </form>

@@ -16,7 +16,7 @@
                 <p class="panel-heading is-small">{{ page_title }}</p>
 
                 <div class="box is-clearfix">
-                    <form action="{{ app.request.getRequestUri() }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ app.request.getRequestUri() }}" method="POST" enctype="multipart/form-data" @submit="buttons.postLoading = true">
                         {{ form_widget(form._token) }}
                         
                         <div class="columns">
@@ -34,14 +34,16 @@
                                 <div class="field is-grouped is-grouped-right">
                                     {% if model.id %}
                                         <p class="control">
-                                            <button class="button is-danger is-outlined" type="button" @click.prevent="modals.confirm = true">
+                                            <button class="button is-danger is-outlined" type="button" @click.prevent="modals.confirm = true" :disabled="buttons.postLoading">
                                                 <i class="fa fa-trash"></i> Delete
                                             </button>
                                         </p>
                                     {% endif %}
 
                                     <p class="control">
-                                        <button class="button is-primary" type="submit"><i class="fa fa-floppy-o"></i> Save</button>
+                                        <button class="button is-primary" type="submit" :class="{ 'is-loading' : buttons.postLoading }">
+                                            <i class="fa fa-floppy-o"></i> Save
+                                        </button>
                                     </p>
                                 </div>
                             </div>
@@ -60,11 +62,16 @@
         </div>
 
         <div slot="footer">
-            <form method="post" action="{{ route('admin.users.delete', { model: model }, false) }}">
+            <form method="post" action="{{ route('admin.users.delete', { model: model }, false) }}" @submit="buttons.deleteLoading = true">
                 {{ csrf_field() }}
                     
-                <button type="button" class="button is-light" @click="modals.confirm = false">Cancel</button>
-                <button type="submit" class="button is-danger"><i class="fa fa-trash-o"></i> Delete User</button>
+                <button type="button" class="button is-light" @click="modals.confirm = false" :disabled="buttons.deleteLoading">
+                    Cancel
+                </button>
+
+                <button type="submit" class="button is-danger" :class="{ 'is-loading' : buttons.deleteLoading }">
+                    <i class="fa fa-trash-o"></i> Delete User
+                </button>
             </form>
         </div>
     </modal>

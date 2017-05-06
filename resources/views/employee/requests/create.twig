@@ -15,11 +15,12 @@
                         <div class="column is-offset-3 is-6">
                             <h2 class="subtitle">{{ request_form.getType().getName() }}</h2>
 
-                            <form action="{{ app.request.getRequestUri() }}" method="post">
+                            <form action="{{ app.request.getRequestUri() }}" method="post" @submit="disableAction = true">
                                 {% include request_form.getType().getFormTemplate() %}
                                 
                                 <div class="field">
-                                    <button class="button is-primary is-pulled-right">
+                                    <button class="button is-primary is-pulled-right" :class="{ 'is-loading' : disableAction }">
+
                                         <i class="fa fa-send"></i> Send
                                     </button>
                                 </div>

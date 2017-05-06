@@ -26,16 +26,20 @@
 
                             <p>Please select an action for the affected users.</p>
 
-                            <form action="{{ route('admin.groups.delete.confirm', { model: model }, false) }}" method="POST">
+                            <form action="{{ route('admin.groups.delete.confirm', { model: model }, false) }}" method="POST" @submit="buttons.deleteLoading = true">
                                 {{ form_widget(form) }}
 
                                 <div class="field is-grouped is-grouped-right">
                                     <p class="control">
-                                        <a href="{{ route('admin.groups.index', {}, false) }}" class="button is-outline">Cancel</a>
+                                        <a href="{{ route('admin.groups.index', {}, false) }}" class="button is-outline" :disabled="buttons.deleteLoading">
+                                            Cancel
+                                        </a>
                                     </p>
 
                                     <p class="control">
-                                        <button class="button is-danger" type="submit"><i class="fa fa-trash"></i> Confirm</button>
+                                        <button class="button is-danger" type="submit" :class="{ 'is-loading' : buttons.deleteLoading }">
+                                            <i class="fa fa-trash"></i> Confirm
+                                        </button>
                                     </p>
                                 </div>
                             </form>

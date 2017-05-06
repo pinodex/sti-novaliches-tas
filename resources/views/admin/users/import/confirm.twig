@@ -44,10 +44,11 @@
                 <div class="level-left"></div>
                 <div class="level-right">
                     <div class="level-item">
-                        <form  action="{{ app.request.getRequestUri() }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ app.request.getRequestUri() }}" method="post" enctype="multipart/form-data" @submit="disableAction = true">
                             {{ csrf_field() }}
                             
-                            <button class="button is-primary" type="submit">
+                            <button class="button is-primary" type="submit" :class="{ 'is-loading' : disableAction }">
+
                                 <i class="fa fa-check"></i> Confirm
                             </button>
                         </form>

@@ -98,7 +98,8 @@ Object.defineProperty(Array.prototype, 'pluck', {
         buttons: {
             approveLoading: false,
             disapproveLoading: false,
-            postLoading: false
+            postLoading: false,
+            deleteLoading: false
         }
     };
 
