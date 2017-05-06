@@ -18,22 +18,23 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait WithPicture
 {
-    public function getThumbnailPathAttribute($value)
+    public function getPictureAttribute()
     {
-        if ($value) {
-            return asset('/storage/' . $value);
+        $image = asset('/assets/img/default-image.jpg');
+        $thumb = asset('/assets/img/default-thumb.jpg');
+
+        if ($this->picture_path) {
+            $image = asset('/storage/' . $this->picture_path);
         }
 
-        return asset('/assets/img/default-thumb.jpg');
-    }
-
-    public function getPicturePathAttribute($value)
-    {
-        if ($value) {
-            return asset('/storage/' . $value);
+        if ($this->thumbnail_path) {
+            $thumb = asset('/storage/' . $this->thumbnail_path);
         }
 
-        return asset('/assets/img/default-image.jpg');
+        return [
+            'image' => $image,
+            'thumb' => $thumb
+        ];
     }
 
     public function setPictureAttribute(UploadedFile $file)
