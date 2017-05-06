@@ -9,29 +9,34 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Components\RequestType;
+namespace App\Components\Request;
 
-use DateTime;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type;
 use App\Notifications\RequestReceived;
 use App\Models\Request;
 
-class VacationLeaveType extends AbstractType
+class SickLeaveType extends AbstractType
 {
+    protected $reasons = [
+        'Headache, toothache, heartache',
+        'Another reason',
+        'Another reason 2',
+    ];
+
     public static function getName()
     {
-        return 'Vacation Leave';
+        return 'Sick Leave';
     }
 
     public static function getMoniker()
     {
-        return 'vacation_leave';
+        return 'sick_leave';
     }
 
     public function getFormTemplate()
     {
-        return '/templates/leave.twig';
+        return '/templates/sick_leave.twig';
     }
 
     protected function onSubmitted(Form $form)
@@ -56,6 +61,10 @@ class VacationLeaveType extends AbstractType
         $data['to_date'] = $this->getFormatted($data['to_date'], $data['to_time']);
 
         $request = new Request();
+
+        if ($data['reason'] = 'other') {
+            $data['reason'] = $data['_custom_reason'];
+        }
         
         $request->fill($data);
 
@@ -79,6 +88,9 @@ class VacationLeaveType extends AbstractType
     protected function buildForm()
     {
         $approver = $this->getApprover();
+        $reasons = array_combine($this->reasons, $this->reasons);
+
+        $reasons['Other (please specify)'] = 'other';
 
         $this->form->add('_requestor', Type\TextType::class, [
             'label' => 'Requestor',
@@ -100,11 +112,7 @@ class VacationLeaveType extends AbstractType
             'required'      => false,
             'html5'         => true,
             'input'         => 'string',
-            'widget'        => 'single_text',
-
-            'attr'          => [
-                'min'   => date('Y-m-d')
-            ]
+            'widget'        => 'single_text'
         ]);
 
         $this->form->add('from_time', Type\ChoiceType::class, [
@@ -115,17 +123,23 @@ class VacationLeaveType extends AbstractType
             'required'      => false,
             'html5'         => true,
             'input'         => 'string',
-            'widget'        => 'single_text',
-
-            'attr'          => [
-                'min'   => date('Y-m-d')
-            ]
+            'widget'        => 'single_text'
         ]);
 
         $this->form->add('to_time', Type\ChoiceType::class, [
             'choices'       => array_combine($this->timeChoices, $this->timeChoices)
         ]);
 
-        $this->form->add('reason', Type\TextareaType::class);
+        $this->form->add('reason', Type\ChoiceType::class, [
+            'choices'   => $reasons
+        ]);
+
+        $this->form->add('_custom_reason', Type\TextareaType::class, [
+            'label'     => 'Reason',
+            'attr'      => [
+                'placeholder' => 'Please specify the reason for your sick leave request.'
+            ],
+            'required'  => false
+        ]);
     }
 }

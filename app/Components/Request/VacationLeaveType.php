@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Components\RequestType;
+namespace App\Components\Request;
 
 use DateTime;
 use Symfony\Component\Form\Form;
@@ -17,26 +17,40 @@ use Symfony\Component\Form\Extension\Core\Type;
 use App\Notifications\RequestReceived;
 use App\Models\Request;
 
-class OfficialBusinessType extends AbstractType
+class VacationLeaveType extends AbstractType
 {
     public static function getName()
     {
-        return 'Official Business';
+        return 'Vacation Leave';
     }
 
     public static function getMoniker()
     {
-        return 'official_business';
+        return 'vacation_leave';
     }
 
     public function getFormTemplate()
     {
-        return '/templates/official_business.twig';
+        return '/templates/leave.twig';
     }
 
     protected function onSubmitted(Form $form)
     {
         $data = $form->getData();
+        
+        $days = $this->computeDays(
+            $this->getFormatted($data['from_date'], $data['from_time']),
+            $this->getFormatted($data['to_date'], $data['to_time'])
+        );
+
+        if ($days == 0) {
+            return null;
+        }
+
+        if ($days > $this->requestor->leaves_balance) {
+            return redirect()->route('employee.requests.index')
+                ->with('message', ['danger', __('request.insufficient')]);
+        }
 
         $data['from_date'] = $this->getFormatted($data['from_date'], $data['from_time']);
         $data['to_date'] = $this->getFormatted($data['to_date'], $data['to_time']);
@@ -50,7 +64,7 @@ class OfficialBusinessType extends AbstractType
         }
 
         $request->type = $this->getMoniker();
-        $request->incurred_balance = 0;
+        $request->incurred_balance = $days;
 
         $this->requestor->requests()->save($request);
 

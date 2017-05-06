@@ -9,62 +9,39 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Components\RequestType;
+namespace App\Components\Request;
 
+use DateTime;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type;
 use App\Notifications\RequestReceived;
 use App\Models\Request;
 
-class SickLeaveType extends AbstractType
+class OfficialBusinessType extends AbstractType
 {
-    protected $reasons = [
-        'Headache, toothache, heartache',
-        'Another reason',
-        'Another reason 2',
-    ];
-
     public static function getName()
     {
-        return 'Sick Leave';
+        return 'Official Business';
     }
 
     public static function getMoniker()
     {
-        return 'sick_leave';
+        return 'official_business';
     }
 
     public function getFormTemplate()
     {
-        return '/templates/sick_leave.twig';
+        return '/templates/official_business.twig';
     }
 
     protected function onSubmitted(Form $form)
     {
         $data = $form->getData();
-        
-        $days = $this->computeDays(
-            $this->getFormatted($data['from_date'], $data['from_time']),
-            $this->getFormatted($data['to_date'], $data['to_time'])
-        );
-
-        if ($days == 0) {
-            return null;
-        }
-
-        if ($days > $this->requestor->leaves_balance) {
-            return redirect()->route('employee.requests.index')
-                ->with('message', ['danger', __('request.insufficient')]);
-        }
 
         $data['from_date'] = $this->getFormatted($data['from_date'], $data['from_time']);
         $data['to_date'] = $this->getFormatted($data['to_date'], $data['to_time']);
 
         $request = new Request();
-
-        if ($data['reason'] = 'other') {
-            $data['reason'] = $data['_custom_reason'];
-        }
         
         $request->fill($data);
 
@@ -73,7 +50,7 @@ class SickLeaveType extends AbstractType
         }
 
         $request->type = $this->getMoniker();
-        $request->incurred_balance = $days;
+        $request->incurred_balance = 0;
 
         $this->requestor->requests()->save($request);
 
@@ -88,9 +65,6 @@ class SickLeaveType extends AbstractType
     protected function buildForm()
     {
         $approver = $this->getApprover();
-        $reasons = array_combine($this->reasons, $this->reasons);
-
-        $reasons['Other (please specify)'] = 'other';
 
         $this->form->add('_requestor', Type\TextType::class, [
             'label' => 'Requestor',
@@ -112,7 +86,11 @@ class SickLeaveType extends AbstractType
             'required'      => false,
             'html5'         => true,
             'input'         => 'string',
-            'widget'        => 'single_text'
+            'widget'        => 'single_text',
+
+            'attr'          => [
+                'min'   => date('Y-m-d')
+            ]
         ]);
 
         $this->form->add('from_time', Type\ChoiceType::class, [
@@ -123,23 +101,17 @@ class SickLeaveType extends AbstractType
             'required'      => false,
             'html5'         => true,
             'input'         => 'string',
-            'widget'        => 'single_text'
+            'widget'        => 'single_text',
+
+            'attr'          => [
+                'min'   => date('Y-m-d')
+            ]
         ]);
 
         $this->form->add('to_time', Type\ChoiceType::class, [
             'choices'       => array_combine($this->timeChoices, $this->timeChoices)
         ]);
 
-        $this->form->add('reason', Type\ChoiceType::class, [
-            'choices'   => $reasons
-        ]);
-
-        $this->form->add('_custom_reason', Type\TextareaType::class, [
-            'label'     => 'Reason',
-            'attr'      => [
-                'placeholder' => 'Please specify the reason for your sick leave request.'
-            ],
-            'required'  => false
-        ]);
+        $this->form->add('reason', Type\TextareaType::class);
     }
 }

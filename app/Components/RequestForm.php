@@ -12,14 +12,14 @@
 namespace App\Components;
 
 use Illuminate\Http\Request;
-use App\Components\RequestType\AbstractType;
+use App\Components\Request\AbstractType;
 use App\Exceptions\RequestTypeNotFoundException;
 use App\Models\User;
 
 class RequestForm
 {
     /**
-     * @var \App\Components\RequestType\AbstractType
+     * @var \App\Components\Request\AbstractType
      */    
     protected $type;
 
@@ -56,7 +56,7 @@ class RequestForm
     /**
      * Get type
      * 
-     * @return \App\Components\RequestType\AbstractType
+     * @return \App\Components\Request\AbstractType
      */
     public function getType()
     {

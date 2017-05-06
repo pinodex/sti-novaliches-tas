@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Components\RequestType;
+namespace App\Components\Request;
 
 use DateTime;
 use Symfony\Component\Form\Form;
