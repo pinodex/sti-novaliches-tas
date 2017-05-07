@@ -426,6 +426,30 @@ label, .label {
     }
 }
 
+
+.scrollable-table {
+    margin-bottom: 1.5rem;
+    width: 100%;
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+        overflow-x: scroll;
+
+        .table {
+            white-space: nowrap;
+        }
+    }
+}
+
+.scrollable-generic {
+    @media (max-width: 768px) {
+        overflow-x: scroll;
+    }
+}
+
 .table {
     font-size: 14px;
 
@@ -443,7 +467,27 @@ label, .label {
         &:hover,
         &:hover .title,
         &:hover .subtitle {
-            color: hsl(217, 71%,  53%);
+            color: #3273dc;
+        }
+    }
+
+    tr.is-link {
+        td {
+            padding: 0;
+
+            a {
+                color: #363636;
+                display: block;
+                padding: 0.5em 0.75em;
+            }
+        }
+
+        &:hover {
+            td {
+                a, .title, .subtitle {
+                    color: #3273dc;
+                }
+            }
         }
     }
 }
@@ -556,13 +600,8 @@ input[readonly] {
 }
 
 .user-list {
-    .avatar-column {
-        width: 52px;
-    }
-
-    .avatar {
-        height: 32px;
-        width: 32px;
+    .media {
+        align-items: center;
     }
 
     .title {

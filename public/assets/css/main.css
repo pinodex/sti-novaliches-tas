@@ -345,6 +345,28 @@ label, .label {
   border-radius: 0;
 }
 
+.scrollable-table {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+.scrollable-table .table {
+  margin-bottom: 0;
+}
+@media (max-width: 768px) {
+  .scrollable-table {
+    overflow-x: scroll;
+  }
+  .scrollable-table .table {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .scrollable-generic {
+    overflow-x: scroll;
+  }
+}
+
 .table {
   font-size: 14px;
 }
@@ -358,6 +380,17 @@ label, .label {
   cursor: pointer;
 }
 .table tr.clickable:hover, .table tr.clickable:hover .title, .table tr.clickable:hover .subtitle {
+  color: #3273dc;
+}
+.table tr.is-link td {
+  padding: 0;
+}
+.table tr.is-link td a {
+  color: #363636;
+  display: block;
+  padding: 0.5em 0.75em;
+}
+.table tr.is-link:hover td a, .table tr.is-link:hover td .title, .table tr.is-link:hover td .subtitle {
   color: #3273dc;
 }
 
@@ -453,12 +486,8 @@ input[readonly] {
   margin-top: 60px;
 }
 
-.user-list .avatar-column {
-  width: 52px;
-}
-.user-list .avatar {
-  height: 32px;
-  width: 32px;
+.user-list .media {
+  align-items: center;
 }
 .user-list .title {
   font-size: 1rem;

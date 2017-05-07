@@ -17,46 +17,50 @@
                 </div>
             </div>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Posted on</th>
-                        <th class="is-fit">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                	{% for item in bulletins %}
-                		<tr>
-                			<td>{{ item.title ? item.title : 'Untitled' }}</td>
-                			<td>
-                				{{ item.author ? item.author.name : 'N/A' }}
+            <div class="scrollable-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Posted on</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in bulletins %}
+                            <tr class="is-link">
+                                <td>
+                                    <a href="{{ route('admin.bulletins.edit', { model: item }, false) }}">
+                                        {{ item.title ? item.title : 'Untitled' }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.bulletins.edit', { model: item }, false) }}">
+                                        {{ item.author ? item.author.name : 'N/A' }}
 
-                				{% if item.lastAuthor %}
-                					<br /><em>(last edited by {{ item.lastAuthor.name }})</em>
-                				{% endif %}
-                			</td>
-                			<td>
-                				{{ item.created_at ? item.created_at|date('M d, h:i a') : 'N/A' }}
+                                        {% if item.lastAuthor %}
+                                            <br /><em>(last edited by {{ item.lastAuthor.name }})</em>
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.bulletins.edit', { model: item }, false) }}">
+                                        {{ item.created_at ? item.created_at|date('M d, h:i a') : 'N/A' }}
 
-                				{% if item.updated_at != item.created_at %}
-                					<br /><em>Edited {{ item.updated_at|date('M d, h:i a') }}</em>
-                				{% endif %}
-                			</td>
-                			<td>
-                				<a href="{{ route('admin.bulletins.edit', { model: item }, false) }}" class="button is-small">
-                					<i class="fa fa-pencil is-marginless"></i>
-                				</a>
-                			</td>
-                		</tr>
-                	{% else %}
-                		<tr>
-                			<td colspan="4">The bulletin board is empty.</td>
-                		</tr>
-                	{% endfor %}
-                </tbody>
-            </table>
+                                        {% if item.updated_at != item.created_at %}
+                                            <br /><em>Edited {{ item.updated_at|date('M d, h:i a') }}</em>
+                                        {% endif %}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4">The bulletin board is empty.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}

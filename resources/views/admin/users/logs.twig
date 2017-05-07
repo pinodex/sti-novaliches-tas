@@ -1,30 +1,32 @@
 {% extends '/admin/users/view.twig' %}
 
 {% block viewcontent %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>Action</th>
-                <th>Browser</th>
-                <th>IP Address</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
+    <div class="scrollable-table">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>{{ log.timestamp }}</td>
-                    <td>{{ trans('action.' ~ log.action, log.params) }}</td>
-                    <td>{{ log.getUserAgentFriendlyName() }}</td>
-                    <td>{{ log.ip_address }}</td>
+                    <th>Timestamp</th>
+                    <th>Action</th>
+                    <th>Browser</th>
+                    <th>IP Address</th>
                 </tr>
-            {% else %}
-                <tr>
-                    <td colspan="4">No records found</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.timestamp }}</td>
+                        <td>{{ trans('action.' ~ log.action, log.params) }}</td>
+                        <td>{{ log.getUserAgentFriendlyName() }}</td>
+                        <td>{{ log.ip_address }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <div class="level">
         <div class="level-left"></div>

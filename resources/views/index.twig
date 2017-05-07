@@ -135,28 +135,30 @@
                 </div>
                 
                 <div class="panel-block is-paddingless">
-                    <table class="table is-marginless">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Reason</th>
-                                <th>Filing Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for request in requests %}
+                    <div class="scrollable-table is-marginless">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{ request.type_name }}</td>
-                                    <td>{{ request.reason[0:20] ~ '...' }}</td>
-                                    <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                                    <th>Type</th>
+                                    <th>Reason</th>
+                                    <th>Filing Date</th>
                                 </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="3">No records found</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for request in requests %}
+                                    <tr>
+                                        <td>{{ request.type_name }}</td>
+                                        <td>{{ request.reason[0:20] ~ '...' }}</td>
+                                        <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3">No records found</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -179,28 +181,30 @@
                 </div>
                     
                     <div class="panel-block is-paddingless">
-                        <table class="table is-marginless">
-                            <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Reason</th>
-                                    <th>Filing Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for request in inbox %}
+                        <div class="scrollable-table is-marginless">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>{{ request.type_name }}</td>
-                                        <td>{{ request.reason[0:20] ~ '...' }}</td>
-                                        <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                                        <th>Type</th>
+                                        <th>Reason</th>
+                                        <th>Filing Date</th>
                                     </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="3">No records found</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {% for request in inbox %}
+                                        <tr>
+                                            <td>{{ request.type_name }}</td>
+                                            <td>{{ request.reason[0:20] ~ '...' }}</td>
+                                            <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="3">No records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             {% endif %}

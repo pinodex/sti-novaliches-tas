@@ -110,86 +110,109 @@
                 <div class="notification is-info is-small">This page shows the deleted users. You can restore their account or delete it permanently here.</div>
             {% endif %}
 
-            <table class="table user-list">
-                <thead>
-                    <tr>
-                        <th class="avatar-column">&nbsp;</th>
-                        <th>Name</th>
-                        <th>Group</th>
-                        <th>Department</th>
-                        <th>Last Login</th>
-                        {% if trash %}
-                            <th class="is-fit">Actions</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in result %}
-                        {% if trash %}
-                            <tr>
-                                <td>
-                                    <img class="avatar" src="{{ item.picture['thumb'] }}" alt="User Avatar" />
-                                </td>
-                                <td>
-                                    <h1 class="title">{{ item.name }}</h1>
-                                    <h2 class="subtitle">@{{ item.username }}</h2>
-                                </td>
-                                {% if item.group %}
-                                    <td>{{ item.group.name }}</td>
-                                {% else %}
-                                    <td><em>Unassigned</em></td>
-                                {% endif %}
-                                {% if item.department %}
-                                    <td>{{ item.department.name }}</td>
-                                {% else %}
-                                    <td><em>Unassigned</em></td>
-                                {% endif %}
-                                <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
-                                <td @click.stop>
-                                    <div class="field is-grouped">
-                                        <p class="control">
-                                            <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true;setFormId({{ item.id }})">Restore</button>
-                                        </p>
-
-                                        <p class="control">
-                                            <button class="button is-small is-danger" @click="modals.confirm = true; setFormId({{ item.id }})" title="Delete Permanently">
-                                                <i class="fa fa-ban is-marginless"></i>
-                                            </button>
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% else %}
-                            <tr class="clickable" @click="location('{{ route('admin.users.view', { model: item }, false) }}')">
-                                <td>
-                                    <img class="avatar" src="{{ item.picture['thumb'] }}" alt="User Avatar" />
-                                </td>
-                                <td>
-                                    <a href="{{ route('admin.users.view', { model: item }, false) }}">
-                                        <h1 class="title">{{ item.name }}</h1>
-                                        <h2 class="subtitle">@{{ item.username }}</h2>
-                                    </a>
-                                </td>
-                                {% if item.group %}
-                                    <td>{{ item.group.name }}</td>
-                                {% else %}
-                                    <td><em>Unassigned</em></td>
-                                {% endif %}
-                                {% if item.department %}
-                                    <td>{{ item.department.name }}</td>
-                                {% else %}
-                                    <td><em>Unassigned</em></td>
-                                {% endif %}
-                                <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
-                            </tr>
-                        {% endif %}
-                    {% else %}
+            <div class="scrollable-table">
+                <table class="table user-list">
+                    <thead>
                         <tr>
-                            <td colspan="3">No results found</td>
+                            <th></th>
+                            <th>Group</th>
+                            <th>Department</th>
+                            <th>Last Login</th>
+                            {% if trash %}
+                                <th class="is-fit">Actions</th>
+                            {% endif %}
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for item in result %}
+                            {% if trash %}
+                                <tr>
+                                    <td>
+                                        <div class="media is-vcentered">
+                                            <div class="media-left">
+                                                <figure class="image is-48x48">
+                                                    <img src="{{ item.picture['image'] }}" alt="User Avatar" />
+                                                </figure>
+                                            </div>
+                                                        
+                                            <div class="media-content">
+                                                <p class="title is-4">{{ item.name }}</p>
+                                                <p class="subtitle is-6">
+                                                    <span>@{{ item.username }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {% if item.group %}
+                                        <td>{{ item.group.name }}</td>
+                                    {% else %}
+                                        <td><em>Unassigned</em></td>
+                                    {% endif %}
+                                    {% if item.department %}
+                                        <td>{{ item.department.name }}</td>
+                                    {% else %}
+                                        <td><em>Unassigned</em></td>
+                                    {% endif %}
+                                    <td>{{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}</td>
+                                    <td @click.stop>
+                                        <div class="field is-grouped">
+                                            <p class="control">
+                                                <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true;setFormId({{ item.id }})">Restore</button>
+                                            </p>
+
+                                            <p class="control">
+                                                <button class="button is-small is-danger" @click="modals.confirm = true; setFormId({{ item.id }})" title="Delete Permanently">
+                                                    <i class="fa fa-ban is-marginless"></i>
+                                                </button>
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr class="is-link">
+                                    <td>
+                                        <a href="{{ route('admin.users.view', { model: item }, false) }}">
+                                            <div class="media is-vcentered">
+                                                <div class="media-left">
+                                                    <figure class="image is-48x48">
+                                                        <img src="{{ item.picture['image'] }}" alt="User Avatar" />
+                                                    </figure>
+                                                </div>
+                                                        
+                                                <div class="media-content">
+                                                    <p class="title is-4">{{ item.name }}</p>
+                                                    <p class="subtitle is-6">
+                                                        <span>@{{ item.username }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.users.view', { model: item }, false) }}">
+                                            {{ item.group ? item.group.name : 'Unassigned' }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.users.view', { model: item }, false) }}">
+                                            {{ item.department ? item.department.name : 'Unassigned' }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.users.view', { model: item }, false) }}">
+                                            {{ item.last_login_at ? item.last_login_at|date('M d, h:i a') : 'N/A' }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4">No results found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <div class="columns">
                 <div class="column is-3 is-offset-9 is-paddingless">

@@ -77,25 +77,19 @@
                         <th>Name</th>
                         {% if not trash %}
                             <th>Head</th>
+                            <th>Members</th>
                         {% endif %}
-                        <th class="is-fit">Action</th>
+                        {% if trash %}
+                            <th class="is-fit">Action</th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in result %}
-                        <tr>
-                            <td>{{ item.name }}</td>
-                            {% if not trash %}
-                                {% if item.head %}
-                                    <td>
-                                        <a href="{{ route('admin.users.view', { model: item.head }, false) }}">{{ item.head.name }}</a>
-                                    </td>
-                                {% else %}
-                                    <td><em>Unassigned</em></td>
-                                {% endif %}
-                            {% endif %}
-                            <td>
-                                {% if trash %}
+                        {% if trash %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>
                                     <div class="field is-grouped">
                                         <p class="control">
                                             <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true; setFormId({{ item.id }})">Restore</button>
@@ -107,23 +101,35 @@
                                             </button>
                                         </p>
                                     </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr class="is-link">
+                                <td>
+                                    <a href="{{ route('admin.departments.edit', { model: item }, false) }}">
+                                        {{ item.name }}
+                                    </a>
+                                </td>
+                                {% if item.head %}
+                                    <td>
+                                        <a href="{{ route('admin.users.view', { model: item.head }, false) }}">
+                                            {{ item.head.name }}
+                                        </a>
+                                    </td>
                                 {% else %}
-                                    <div class="field is-grouped">
-                                        <p class="control">
-                                            <a href="{{ route('admin.users.index', { department: item }, false) }}" class="button is-small" title="View department users">
-                                                <i class="fa fa-address-book is-marginless"></i>
-                                            </a>
-                                        </p>
-
-                                        <p class="control">
-                                            <a href="{{ route('admin.departments.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
-                                                <i class="fa fa-pencil-square-o is-marginless"></i>
-                                            </a>
-                                        </p>
-                                    </div>
+                                    <td>
+                                        <a href="{{ route('admin.departments.edit', { model: item }, false) }}">
+                                            <em>Unassigned</em>
+                                        </a>
+                                    </td>
                                 {% endif %}
-                            </td>
-                        </tr>
+                                <td>
+                                    <a href="{{ route('admin.users.index', { group: item.id }, false) }}">
+                                        {{ item.users_count }} members
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% else %}
                         <tr>
                             <td colspan="3">No results found</td>

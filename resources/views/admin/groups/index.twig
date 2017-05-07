@@ -71,52 +71,60 @@
                 <div class="notification is-info is-small">This page shows the deleted groups. You can restore groups or delete them permanently.</div>
             {% endif %}
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        {% if not trash %}
-                            <th>Members</th>
-                        {% endif %}
-                        <th class="is-fit">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in result %}
+            <div class="scrollable-table">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>{{ item.name }}</td>
+                            <th>Name</th>
                             {% if not trash %}
-                                <td>
-                                    <a href="{{ route('admin.users.index', { group: item.id }, false) }}">{{ item.users_count }}</a>
-                                </td>
+                                <th>Members</th>
                             {% endif %}
-                            <td>
-                                {% if trash %}
-                                    <div class="field is-grouped">
-                                        <p class="control">
-                                            <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true; setFormId({{ item.id }})">Restore</button>
-                                        </p>
+                            {% if trash %}
+                                <th class="is-fit">Action</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in result %}
+                            {% if trash %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td>
+                                        <div class="field is-grouped">
+                                            <p class="control">
+                                                <button class="button is-small is-info is-outlined" @click.prevent="modals.confirm2 = true; setFormId({{ item.id }})">Restore</button>
+                                            </p>
 
-                                        <p class="control">
-                                            <button class="button is-small is-danger" @click.prevent="modals.confirm = true; setFormId({{ item.id }})" title="Delete Permanently">
-                                                <i class="fa fa-ban is-marginless"></i>
-                                            </button>
-                                        </p>
-                                    </div>
-                                {% else %}
-                                    <a href="{{ route('admin.groups.edit', { model: item }, false) }}" class="button is-small" title="Edit {{ item.name }}">
-                                        <i class="fa fa-pencil-square-o is-marginless"></i>
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="3">No results found</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                                            <p class="control">
+                                                <button class="button is-small is-danger" @click.prevent="modals.confirm = true; setFormId({{ item.id }})" title="Delete Permanently">
+                                                    <i class="fa fa-ban is-marginless"></i>
+                                                </button>
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr class="is-link">
+                                    <td>
+                                        <a href="{{ route('admin.groups.edit', { model: item }, false) }}">
+                                            {{ item.name }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.users.index', { group: item.id }, false) }}">
+                                            {{ item.users_count }} members
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% else %}
+                            <tr>
+                                <td colspan="2">No results found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <div class="columns">
                 <div class="column is-3 is-offset-9 is-paddingless">

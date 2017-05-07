@@ -6,95 +6,127 @@
 {% block subcontent %}
     <div class="columns is-marginless">
         <div class="column is-12">
-            <div class="level is-mobile is-small">
-                <div class="level-left">
-                    <div class="level-item">
-                        <div class="tabs is-small">
-                            <ul>
-                                <li class="{{ is_all ? 'is-active' : '' }}">
-                                    <a href="{{ route('employee.requests.inbox.index', {}, false) }}">
-                                        <span class="icon is-small"><i class="fa fa-inbox"></i></span>
-                                        <span>All</span>
-                                    </a>
-                                </li>
-                                <li class="{{ show == 'pending' ? 'is-active' : '' }}">
-                                    <a href="{{ route('employee.requests.inbox.index', { show: 'pending' }, false) }}">
-                                        <span class="icon is-small"><i class="fa fa-tasks"></i></span>
-                                        <span>Pending</span>
-                                    </a>
-                                </li>
-                                <li class="{{ show == 'approved' ? 'is-active' : '' }}">
-                                    <a href="{{ route('employee.requests.inbox.index', { show: 'approved' }, false) }}">
-                                        <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
-                                        <span>Approved</span>
-                                    </a>
-                                </li>
-                                <li class="{{ show == 'escaalted' ? 'is-active' : '' }}">
-                                    <a href="{{ route('employee.requests.inbox.index', { show: 'escaalted' }, false) }}">
-                                        <span class="icon is-small"><i class="fa fa-level-up"></i></span>
-                                        <span>Escalated</span>
-                                    </a>
-                                </li>
-                                <li class="{{ show == 'disapproved' ? 'is-active' : '' }}">
-                                    <a href="{{ route('employee.requests.inbox.index', { show: 'disapproved' }, false) }}">
-                                        <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>
-                                        <span>Disapproved</span>
-                                    </a>
-                                </li>
-                            </ul>
+            <div class="scrollable-generic">
+                <div class="level is-mobile is-small">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <div class="tabs is-small">
+                                <ul>
+                                    <li class="{{ is_all ? 'is-active' : '' }}">
+                                        <a href="{{ route('employee.requests.inbox.index', {}, false) }}">
+                                            <span class="icon is-small"><i class="fa fa-inbox"></i></span>
+                                            <span>All</span>
+                                        </a>
+                                    </li>
+                                    <li class="{{ show == 'pending' ? 'is-active' : '' }}">
+                                        <a href="{{ route('employee.requests.inbox.index', { show: 'pending' }, false) }}">
+                                            <span class="icon is-small"><i class="fa fa-tasks"></i></span>
+                                            <span>Pending</span>
+                                        </a>
+                                    </li>
+                                    <li class="{{ show == 'approved' ? 'is-active' : '' }}">
+                                        <a href="{{ route('employee.requests.inbox.index', { show: 'approved' }, false) }}">
+                                            <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
+                                            <span>Approved</span>
+                                        </a>
+                                    </li>
+                                    <li class="{{ show == 'escaalted' ? 'is-active' : '' }}">
+                                        <a href="{{ route('employee.requests.inbox.index', { show: 'escaalted' }, false) }}">
+                                            <span class="icon is-small"><i class="fa fa-level-up"></i></span>
+                                            <span>Escalated</span>
+                                        </a>
+                                    </li>
+                                    <li class="{{ show == 'disapproved' ? 'is-active' : '' }}">
+                                        <a href="{{ route('employee.requests.inbox.index', { show: 'disapproved' }, false) }}">
+                                            <span class="icon is-small"><i class="fa fa-thumbs-down"></i></span>
+                                            <span>Disapproved</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <table class="table is-marginless">
-                <thead>
-                    <tr>
-                        <th>Requestor</th>
-                        <th>Type</th>
-                        <th>Reason</th>
-                        <th>Incurred Balance</th>
-                        <th>Date Filed</th>
-                        {% if is_all %}
-                            <th>Status</th>
-                        {% else %}
-                            <th>Responded At</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for request in requests %}
-                        <tr class="clickable" @click="location('{{ route('employee.requests.inbox.view', { model: request }, false) }}')">
-                            <td>{{ request.requestor ? request.requestor.name : 'N/A' }}</td>
-                            <td>{{ request.type_name }}</td>
-                            <td>{{ request.reason[0:20] ~ '...' }}</td>
-                            <td>{{ request.incurred_balance }}</td>
-                            <td>{{ request.created_at|date('M d Y, h:i a') }}</td>
+            <div class="scrollable-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Requestor</th>
+                            <th>Type</th>
+                            <th>Reason</th>
+                            <th>Incurred Balance</th>
+                            <th>Date Filed</th>
                             {% if is_all %}
-                                <td>{{ request.status_label }}</td>
+                                <th>Status</th>
                             {% else %}
-                                <td>{{ request.responded_at ? request.responded_at|date('M d Y, h:i a') : 'N/A' }}</td>
+                                <th>Responded At</th>
                             {% endif %}
                         </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="7">No records found</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+                    </thead>
+                    <tbody>
+                        {% for request in requests %}
+                            <tr class="is-link">
+                                <td>
+                                    <a href="{{ route('employee.requests.inbox.view', { model: request }, false) }}">
+                                        {{ request.requestor ? request.requestor.name : 'N/A' }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('employee.requests.inbox.view', { model: request }, false) }}">
+                                        {{ request.type_name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('employee.requests.inbox.view', { model: request }, false) }}">
+                                        {{ request.reason[0:20] ~ '...' }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('employee.requests.inbox.view', { model: request }, false) }}">
+                                        {{ request.incurred_balance }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ route('employee.requests.inbox.view', { model: request }, false) }}">
+                                        {{ request.created_at|date('M d Y, h:i a') }}
+                                    </a>
+                                </td>
+                                {% if is_all %}
+                                    <td>
+                                        <a href="{{ route('employee.requests.inbox.view', { model: request }, false) }}">
+                                            {{ request.status_label }}
+                                        </a>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <a href="{{ route('employee.requests.inbox.view', { model: request }, false) }}">
+                                            {{ request.responded_at ? request.responded_at|date('M d Y, h:i a') : 'N/A' }}
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">No records found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-    <div class="columns">
-        <div class="column is-3 is-offset-9">
-            <span class="select">
-                <select name="pages" @change="changePaginationPage" v-model="paginationPage">
-                    {% for i in 1..requests.lastPage %}
-                        <option value="{{ i }}">Page {{ i }}</option>
-                    {% endfor %}
-                </select>
-            </span>
+            <div class="columns">
+                <div class="column is-3 is-offset-9 is-paddingless">
+                    <span class="select">
+                        <select name="pages" @change="changePaginationPage" v-model="paginationPage">
+                            {% for i in 1..requests.lastPage %}
+                                <option value="{{ i }}">Page {{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

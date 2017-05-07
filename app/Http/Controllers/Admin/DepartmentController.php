@@ -35,7 +35,7 @@ class DepartmentController extends Controller
      */
     public function index(Request $request)
     {
-        $departments = Department::with('head');
+        $departments = Department::with('head')->withCount('users');
 
         $showTrashed = $request->query->get('show') == 'deleted';
         $isAll = true;
