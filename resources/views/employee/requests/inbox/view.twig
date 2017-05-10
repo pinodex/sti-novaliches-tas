@@ -51,7 +51,22 @@
 
         <div class="column">
             <div class="panel">
-                <div class="panel-heading is-small">{{ model.type_name }} Request</div>
+                <div class="panel-heading is-small">
+                    <div class="level is-mobile">
+                        <div class="level-left">
+                            <div class="level-item">{{ model.type_name }} Request</div>
+                        </div>
+
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a href="{{ route('employee.requests.inbox.printable', { model: model }, false) }}" class="button is-small">
+                                    <i class="fa fa-print"></i> View Printable
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="box">
                     <div class="columns">
                         <div class="column">

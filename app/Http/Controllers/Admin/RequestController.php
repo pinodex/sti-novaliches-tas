@@ -70,6 +70,23 @@ class RequestController extends Controller
     }
 
     /**
+     * Request printable page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Request $model Request model object
+     * 
+     * @return mixed
+     */
+    public function printable(Request $request, RequestModel $model)
+    {
+        $model->load('requestor', 'requestor.department', 'approver', 'approver.department');
+
+        return view('commons.print.request', [
+            'model' => $model
+        ]);
+    }
+
+    /**
      * Request action
      * 
      * @param \Illuminate\Http\Request $request Request object

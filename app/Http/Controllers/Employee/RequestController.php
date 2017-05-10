@@ -70,6 +70,25 @@ class RequestController extends Controller
     }
 
     /**
+     * Request printable view page
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * @param \App\Models\Request $model Request model object
+     * 
+     * @return mixed
+     */
+    public function printable(Request $request, RequestModel $model)
+    {
+        if (!$model->canBeViewedBy(Auth::user())) {
+            abort(403);
+        }
+
+        return view('commons.print.request', [
+            'model' => $model
+        ]);
+    }
+
+    /**
      * Create request action
      * 
      * @param \Illuminate\Http\Request $request Request object

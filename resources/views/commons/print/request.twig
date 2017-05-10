@@ -1,0 +1,100 @@
+{% extends '/layouts/main.twig' %}
+
+{% set page_title = 'Print Request' %}
+{% set body_class = 'print-page' %}
+
+{% block content %}
+    <div class="container">
+        <div class="is-print-hidden">
+            <br />
+
+            <button @click="printDocument()" class="button is-small">
+                <i class="fa fa-print"></i> Print Document
+            </button>
+        </div>
+
+        <div class="level is-mobile">
+            <div class="level-left">
+                <div>
+                    <h1 class="title">STI College Novaliches</h1>
+                    <h2 class="subtitle">Employee Portal</h2>
+                </div>
+            </div>
+
+            <div class="level-right">
+                <div class="level-item">
+                    <img src="/assets/img/logo-print.png" alt="Logo" />
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <h1 class="title is-4">Request for {{ model.type_name }}</h1>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td>Requestor</td>
+                    <td>{{ model.requestor ? model.requestor.name : 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td>Approver</td>
+                    <td>{{ model.approver ? model.approver.name : 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <td>Filing Date</td>
+                    <td>{{ model.created_at }}</td>
+                </tr>
+                <tr>
+                    <td>Requested Dates</td>
+                    <td>{{ model.from_date }} - {{ model.to_date }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>{{ model.status_label }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+
+        <h2 class="subtitle is-5">Reason</h2>
+
+        <article class="message is-dark">
+            <div class="message-body">
+                {{ model.reason|nl2br }}
+            </div>
+        </article>
+
+        {% if model.status == 0 %}
+            <h2 class="subtitle is-5">Disapproval Reason</h2>
+
+            <article class="message is-dark">
+                <div class="message-body">
+                    {{ model.disapproval_reason|nl2br }}
+                </div>
+            </article>
+        {% endif %}
+
+        <br />
+
+        <div class="columns is-mobile">
+            <div class="column is-4 has-text-centered is-paddingless">
+                <div class="signature-line">
+                    <p>{{ model.requestor.name }}</p>
+                    <p class="heading">Requestor</p>
+                </div>
+            </div>
+
+            <div class="column is-4 is-offset-4 has-text-centered is-paddingless">
+                <div class="signature-line">
+                    <p>{{ model.approver.name }}</p>
+                    <p class="heading">Approver</p>
+                </div>
+            </div>
+        </div>
+
+        <small>Request ID: {{ model.id }}</small>
+    </div>
+{% endblock %}

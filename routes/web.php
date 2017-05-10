@@ -49,6 +49,7 @@ Route::group([
 
         Route::get('/', 'RequestController@index')->name('index');
         Route::get('/{model}', 'RequestController@view')->name('view');
+        Route::get('/{model}/printable', 'RequestController@printable')->name('printable');
         Route::match(['get', 'post'], '/{model}/edit', 'RequestController@edit')->name('edit');
 
     });
@@ -142,6 +143,7 @@ Route::group([
 
             Route::get('/', 'InboxController@index')->name('index');
             Route::get('/{model}', 'InboxController@view')->name('view');
+            Route::get('/{model}/printable', 'InboxController@printable')->name('printable');
             Route::post('/{model}/approve', 'InboxController@approve')->name('approve');
             Route::post('/{model}/disapprove', 'InboxController@disapprove')->name('disapprove');
 
@@ -151,6 +153,7 @@ Route::group([
         Route::post('/create', 'RequestController@create')->name('create');
         Route::match(['get', 'post'], '/create/{type}', 'RequestController@createType')->name('create.type');
         Route::get('/{model}', 'RequestController@view')->name('view');
+        Route::get('/{model}/printable', 'RequestController@printable')->name('printable');
 
     });
 

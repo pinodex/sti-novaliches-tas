@@ -16,11 +16,23 @@ body.error-page {
   background: #fff;
   padding-top: 60px;
 }
+body.print-page {
+  background: #fff;
+}
+body.print-page .container {
+  width: 8.5in !important;
+  margin: 0 auto;
+}
 
 modal, [v-show] {
   display: none;
 }
 
+@media print {
+  .is-print-hidden {
+    display: none;
+  }
+}
 nav.nav {
   position: fixed;
   top: 0;
@@ -610,6 +622,11 @@ li > .list {
 
 ul.list {
   list-style: disc;
+}
+
+.signature-line {
+  border-top: 1px solid #111;
+  margin-top: 60px;
 }
 
 .block {
