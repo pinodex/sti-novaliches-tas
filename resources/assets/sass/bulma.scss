@@ -4,9 +4,9 @@
 $primary:       hsl(217, 71%,  53%);
 $info:          hsl(171, 100%, 41%);
 
-@import "bulma/utilities/_all";
-@import "bulma/base/_all";
-@import "bulma/elements/_all";
-@import "bulma/components/_all";
-@import "bulma/grid/_all";
-@import "bulma/layout/_all";
+@import "node_modules/bulma/sass/utilities/_all";
+@import "node_modules/bulma/sass/base/_all";
+@import "node_modules/bulma/sass/elements/_all";
+@import "node_modules/bulma/sass/components/_all";
+@import "node_modules/bulma/sass/grid/_all";
+@import "node_modules/bulma/sass/layout/_all";

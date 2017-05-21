@@ -111,7 +111,7 @@
                 <div class="notification is-primary" v-show="unreadNotificationCount > 0">
                     You have <span class="tag is-danger">{{ '{{ unreadNotificationCount }}' }}</span> unread {{ '{{ unreadNotificationCount == 1 ? "notification" : "notifications" }}' }}.
                     
-                    <button class="button is-small is-info is-inverted is-outlined is-pulled-right is-hidden-mobile" @click.stop="toggleNotifications()">
+                    <button class="button is-small is-info is-inverted is-outlined is-pulled-right is-hidden-mobile" @click.stop="toggleNotifBar()">
                         View notifications
                     </button>
                 </div>

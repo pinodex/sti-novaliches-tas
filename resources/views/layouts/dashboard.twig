@@ -8,7 +8,7 @@
 
 {% block content %}
     <nav class="nav has-shadow is-fixed-top">
-        <div class="container top-nav-container">
+        <div class="container is-fluid top-nav-container">
             <div class="nav-left">
                 <button class="nav-item toggle-menu-button" @click="toggleSideBar()">
                     <transition name="fade">
@@ -56,7 +56,7 @@
         </div>
     </nav>
 
-    <div class="off-menu" :class="{ active: sideBarActive }">
+    <div class="off-menu is-always-active" :class="{ active: sideBarActive }">
         <aside class="menu sidebar">
             {% for item in menu %}
                 {% if item.header != null %}

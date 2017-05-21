@@ -19,13 +19,9 @@
     <meta property="og:url" content="{{ app.request.uri }}" />
     <meta property="og:description" content="STI College Novaliches Employee Portal" />
     <meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() }}/assets/img/og-image.png" />
-{% if config('app.debug') %}
-    <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/bulma.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/main.css" />
-{% else %}
-    <link rel="stylesheet" type="text/css" href="/assets/css/compiled.css" />
-{% endif %}
+    <link rel="stylesheet" type="text/css" href="{{ mix('/assets/css/bulma.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ mix('/assets/css/font-awesome.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ mix('/assets/css/main.css') }}" />
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu" />
     <link rel="apple-touch-icon" sizes="57x57" href="/assets/icon/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="60x60" href="/assets/icon/apple-touch-icon-60x60.png" />
@@ -54,7 +50,7 @@
     <div id="app">
         {% block content %}{% endblock %}
     </div>
-    
+
     <script type="text/template" id="modal-template">
         <transition name="modal">
             <div class="modal-mask" v-show="show">
@@ -74,14 +70,9 @@
             </div>
         </transition>
     </script>
-
-{% if config('app.debug') %}
-    <script src="/assets/js/vue.js"></script>
-    <script src="/assets/js/vue-resource.js"></script>
-    <script src="/assets/js/timeago.js"></script>
-    <script src="/assets/js/app.js"></script>
-{% else %}
-    <script src="/assets/js/compiled.js"></script>
-{% endif %}
+    
+    <script src="{{ mix('/assets/js/manifest.js') }}"></script>
+    <script src="{{ mix('/assets/js/vendor.js') }}"></script>
+    <script src="{{ mix('/assets/js/app.js') }}"></script>
 </body>
 </html>
