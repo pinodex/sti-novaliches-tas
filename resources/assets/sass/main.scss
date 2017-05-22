@@ -273,6 +273,10 @@ nav.nav {
         &:hover {
             background: rgb(54, 54, 54);
         }
+
+        &:not([href]) {
+            cursor: default;
+        }
     }
 
     .empty-message {

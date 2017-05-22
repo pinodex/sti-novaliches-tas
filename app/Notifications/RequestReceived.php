@@ -31,7 +31,7 @@ class RequestReceived extends RequestResponded
             return default_avatar_thumb();
         }
 
-        return $this->request->requestor->thumbnail_path;
+        return $this->request->requestor->picture['thumb'];
     }
 
     protected function getContent($notifiable)

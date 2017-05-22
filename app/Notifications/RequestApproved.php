@@ -24,7 +24,7 @@ class RequestApproved extends RequestResponded
             return default_avatar_thumb();
         }
 
-        return $this->request->approver->thumbnail_path;
+        return $this->request->approver->picture['thumb'];
     }
 
     protected function getContent($notifiable)

@@ -40,9 +40,11 @@ class NotificationController extends Controller
                     'created_at'    => $notification->created_at ? $notification->created_at->toDateTimeString() : null
                 ];
 
-                $entry['data']['link'] = route('notifications.view', [
-                    'notification' => $notification
-                ], false);
+                if ($entry['data']['link']) {
+                    $entry['data']['link'] = route('notifications.view', [
+                        'notification' => $notification
+                    ], false);
+                }
 
                 $notifications['entries'][] = $entry;
             });
