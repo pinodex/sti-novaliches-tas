@@ -14,10 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\Lab\Email::class,
-        Commands\Lab\QueuedEmail::class,
-        Commands\Lab\Notify::class,
-        Commands\Lab\Queue::class
+        // ...
     ];
 
     /**
