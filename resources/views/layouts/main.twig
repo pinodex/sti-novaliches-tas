@@ -49,6 +49,12 @@
 <body class="{{ body_class | default('') }}">
     <div id="app">
         {% block content %}{% endblock %}
+
+        <transition name="fade">
+            <div class="loading-overlay" v-show="loadingOverlayActive">
+                <div class="spinner"></div>
+            </div>
+        </transition>
     </div>
 
     <script type="text/template" id="modal-template">

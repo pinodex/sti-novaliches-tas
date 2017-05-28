@@ -41,6 +41,8 @@ let app = new Vue({
     el: '#app',
     
     data: {
+        loadingOverlayActive: false,
+
         sideBarActive: false,
         notifBarActive: false,
 
@@ -219,3 +221,11 @@ if (isLoggedIn) {
     app.getNotifications()
     setInterval(app.getNotifications, 30000)
 }
+
+window.addEventListener('beforeunload', () => {
+    if (navigator.standalone ||
+        window.matchMedia('(display-mode: standalone)').matches) {
+        
+        app.loadingOverlayActive = true
+    }
+}, false)
