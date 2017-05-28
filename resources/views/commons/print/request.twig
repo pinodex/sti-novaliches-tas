@@ -35,6 +35,10 @@
         <table>
             <tbody>
                 <tr>
+                    <td>ID</td>
+                    <td>{{ model.id }}</td>
+                </tr>
+                <tr>
                     <td>Requestor</td>
                     <td>{{ model.requestor ? model.requestor.name : 'N/A' }}</td>
                 </tr>
@@ -80,21 +84,23 @@
         <br />
 
         <div class="columns is-mobile">
-            <div class="column is-4 has-text-centered is-paddingless">
-                <div class="signature-line">
-                    <p>{{ model.requestor.name }}</p>
-                    <p class="heading">Requestor</p>
+            {% if model.requestor %}
+                <div class="column is-4 has-text-centered is-paddingless">
+                    <div class="signature-line">
+                        <p>{{ model.requestor.name }}</p>
+                        <p class="heading">Requestor</p>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
 
-            <div class="column is-4 is-offset-4 has-text-centered is-paddingless">
-                <div class="signature-line">
-                    <p>{{ model.approver.name }}</p>
-                    <p class="heading">Approver</p>
+            {% if model.approver %}
+                <div class="column is-4 is-offset-4 has-text-centered is-paddingless">
+                    <div class="signature-line">
+                        <p>{{ model.approver.name }}</p>
+                        <p class="heading">Approver</p>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
-
-        <small>Request ID: {{ model.id }}</small>
     </div>
 {% endblock %}
