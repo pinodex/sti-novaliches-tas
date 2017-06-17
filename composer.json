@@ -10,6 +10,7 @@
         "barryvdh/laravel-debugbar": "^2.3",
         "barryvdh/laravel-form-bridge": "^0.3.2",
         "box/spout": "^2.7",
+        "bugsnag/bugsnag-laravel": "^2.0",
         "intervention/image": "^2.3",
         "jenssegers/agent": "^2.5",
         "laravel/framework": "5.4.*",
