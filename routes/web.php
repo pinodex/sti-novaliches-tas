@@ -128,6 +128,13 @@ Route::group([
 
     });
 
+    // ProfileController
+    Route::group(['prefix' => 'configuration', 'as' => 'configuration.'], function () {
+
+        Route::get('/', 'ConfigurationController@index')->name('index');
+
+    });
+
 });
 
 Route::group([

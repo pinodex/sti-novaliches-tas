@@ -28,7 +28,8 @@ class EditGroupForm extends Form
         'Can Administer Bulletin'           => Acl::ADMIN_BULLETIN,
         'Can Administer Groups'             => Acl::ADMIN_GROUPS,
         'Can Administer Users'              => Acl::ADMIN_USERS,
-        'Can Administer Profiles'           => Acl::ADMIN_PROFILES
+        'Can Administer Profiles'           => Acl::ADMIN_PROFILES,
+        'Can Edit Configuration'            => Acl::ADMIN_CONFIGURATION
     ];
 
     public function create()

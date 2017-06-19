@@ -1,0 +1,18 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{% set page_title = 'Configuration' %}
+{% set active_menu = 'configuration' %}
+{% set enable_bulletin = false %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-3">
+            <div class="panel">
+                <div class="panel-heading is-small">Configuration</div>
+                <div class="panel-block">
+                    {% include '/admin/configuration/menu.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
