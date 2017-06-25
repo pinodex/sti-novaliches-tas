@@ -90,15 +90,7 @@ return [
                 'route'         => 'admin.profiles.index',
                 'name'          => 'Profiles',
                 'visibility'    => [ Acl::ADMIN_PROFILES ],
-            ],
-
-            [
-                'icon'          => 'wrench',
-                'identifier'    => 'configuration',
-                'route'         => 'admin.configuration.index',
-                'name'          => 'Configuration',
-                'visibility'    => [ Acl::ADMIN_PROFILES ],
-            ],
+            ]
         ]  
     ],
 
