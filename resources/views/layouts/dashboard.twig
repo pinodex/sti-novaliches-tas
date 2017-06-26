@@ -65,9 +65,10 @@
 
                 <ul class="menu-list">
                     {% for listItem in item.list %}
-                        <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }}>
+                        <li{{ active_menu starts with listItem.identifier ? ' class="is-active"' : '' }} title="{{ listItem.name }}">
                             <a href="{{ route(listItem.route, {}, false) }}">
-                                <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span> {{ listItem.name }}
+                                <span class="icon"><i class="fa fa-{{ listItem.icon }}" aria-hidden="true"></i></span>
+                                <span class="text">{{ listItem.name }}</span>
                             </a>
                         </li>    
                     {% endfor %}

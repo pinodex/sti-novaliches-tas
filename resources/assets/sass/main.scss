@@ -136,33 +136,32 @@ nav.nav {
 .sidebar.menu {
     position: fixed;
     top: 52px;
-    left: -250px;
-    right: 0;
+    left: 0;
     bottom: 0;
     
-    width: 250px;
+    width: 52px;
     padding: 15px 0;
 
     background: #222;
     text-align: left;
-    transition: left 200ms ease;
+    transition: width 200ms ease;
+
+    overflow: hidden;
+
+    z-index: 10000;
 
     @media (max-width: 768px) {
-        left: 0;
         right: 0;
-        bottom: 0;
 
         display: none;
 
-        z-index: 1000;
         overflow-y: auto;
         text-align: center;
-
-        width: 100%;
     }
 
     .menu-label {
         padding: 0 0.75em;
+        transition: all 200ms ease;
     }
 
     .menu-list {
@@ -172,14 +171,25 @@ nav.nav {
             line-height: 1.8em;
             font-size: 14px;
 
-            border-left: 5px solid transparent;
-
             &:hover {
                 background-color: #404040;
             }
 
             .icon .fa {
                 font-size: 16px;
+            }
+        }
+
+        li {
+            white-space: nowrap;
+
+            .icon {
+                margin-left: 4px;
+            }
+
+            .text {
+                opacity: 0;
+                transition: opacity 200ms ease;
             }
         }
 
@@ -218,6 +228,7 @@ nav.nav {
 
 .main-container {
     margin-top: 52px;
+    padding-left: 52px;
     overflow: hidden;
     width: 100%;
 
@@ -227,20 +238,33 @@ nav.nav {
         background: #f6f9fc;
         margin: 0;
     }
+
+    @media (max-width: 768px) {
+        padding-left: 0;
+    }
 }
 
 .off-menu.active {
-    .main-container {
-        margin-left: 250px;
-
-        @media (max-width: 768px) {
-            margin-left: 0;
-        }
-    }
-
     .sidebar.menu {
         display: block;
-        left: 0px;
+        width: 250px;
+
+        li .text {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            width: 100%;
+        }
+    }
+}
+
+.off-menu:not(.active) {
+    .sidebar.menu {
+        .menu-label {
+            margin: 0;
+            opacity: 0;
+        }
     }
 }
 
@@ -256,6 +280,8 @@ nav.nav {
     width: 350px;
 
     transition: right 200ms ease;
+
+    z-index: 10000;
 
     &.is-active {
         right: 0;
