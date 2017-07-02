@@ -12,20 +12,12 @@
 namespace App\Components\Request;
 
 use DateTime;
-use Symfony\Component\Form\Form;
+use Illuminate\Http\Request;
 use Symfony\Component\Form\Extension\Core\Type;
 use App\Notifications\RequestReceived;
-use App\Models\Request;
 
 class OvertimeType extends AbstractType
 {
-    protected $hourChoices = [
-        '0.5',
-        '1.0',
-        '1.5',
-        '2.0'
-    ];
-
     public static function getName()
     {
         return 'Overtime';
@@ -41,28 +33,15 @@ class OvertimeType extends AbstractType
         return '/templates/overtime.twig';
     }
 
-    protected function onSubmitted(Form $form)
+    protected function onSubmit(Request $request)
     {
-        $data = $form->getData();
+        $model = $this->makeModel($request);
+        $model->incurred_balance = 0;
 
-        $data['from_date'] = now();
-        $data['to_date'] = now();
-
-        $request = new Request();
-        
-        $request->fill($data);
+        $this->requestor->requests()->save($model);
 
         if ($this->getApprover()) {
-            $request->approver_id = $this->getApprover()->id;
-        }
-
-        $request->type = $this->getMoniker();
-        $request->incurred_balance = 0;
-
-        $this->requestor->requests()->save($request);
-
-        if ($this->getApprover()) {
-            $this->getApprover()->notify(new RequestReceived($request));
+            $this->getApprover()->notify(new RequestReceived($model));
         }
 
         return redirect()->route('employee.requests.index')
@@ -89,8 +68,7 @@ class OvertimeType extends AbstractType
             ]
         ]);
 
-        $this->form->add('from_date', Type\DateType::class, [
-            'required'      => false,
+        $this->form->add('start_date', Type\DateType::class, [
             'html5'         => true,
             'input'         => 'string',
             'widget'        => 'single_text',
@@ -100,12 +78,11 @@ class OvertimeType extends AbstractType
             ]
         ]);
 
-        $this->form->add('from_time', Type\ChoiceType::class, [
-            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
+        $this->form->add('start_time', Type\ChoiceType::class, [
+            'choices'       => $this->timeChoices
         ]);
 
-        $this->form->add('to_date', Type\DateType::class, [
-            'required'      => false,
+        $this->form->add('end_date', Type\DateType::class, [
             'html5'         => true,
             'input'         => 'string',
             'widget'        => 'single_text',
@@ -115,8 +92,8 @@ class OvertimeType extends AbstractType
             ]
         ]);
 
-        $this->form->add('to_time', Type\ChoiceType::class, [
-            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
+        $this->form->add('end_time', Type\ChoiceType::class, [
+            'choices'       => $this->timeChoices
         ]);
 
         $this->form->add('reason', Type\TextareaType::class);

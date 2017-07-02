@@ -151,6 +151,7 @@ Route::group([
 
         Route::get('/', 'RequestController@index')->name('index');
         Route::post('/create', 'RequestController@create')->name('create');
+        Route::post('/create/{type}/compute', 'RequestController@compute')->name('compute');
         Route::match(['get', 'post'], '/create/{type}', 'RequestController@createType')->name('create.type');
         Route::get('/{model}', 'RequestController@view')->name('view');
         Route::get('/{model}/printable', 'RequestController@printable')->name('printable');

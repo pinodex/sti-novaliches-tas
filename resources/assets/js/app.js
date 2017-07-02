@@ -13,6 +13,22 @@ const isNumeric = function isNumeric(value) {
     return Number(parseFloat(value)) == value;
 }
 
+const isAllFilled = function isAllFilled(obj, excludes) {
+    excludes = excludes || []
+
+    for (let key in obj) {
+        if (excludes.indexOf(key) > -1) {
+            continue
+        }
+
+        if (!obj[key]) {
+            return false
+        }
+    }
+
+    return true
+}
+
 Vue.component('modal', {
     template: '#modal-template',
         
@@ -56,15 +72,15 @@ let app = new Vue({
         groupDeleteAction: 'move',
 
         request: {
-            start_date: null,
-            start_time: null,
-            end_date: null,
-            end_time: null,
+            disabled: false,
+            incurredBalance: '0 days',
 
-            form: {
-                sick_leave: {
-                    reason: null
-                }
+            data: {
+                start_date: null,
+                start_time: null,
+                end_date: null,
+                end_time: null,
+                subtype: null
             }
         },
         
@@ -172,37 +188,32 @@ let app = new Vue({
             window.location = url
         }
     },
-    
-    computed: {
-        requestBalance: function () {
-            if (!this.request.start_date ||
-                !this.request.start_time ||
-                !this.request.end_date   ||
-                !this.request.end_time    ) {
 
-                return 0
-            }
+    watch: {
+        'request.data': {
+            handler: function(valueAfter, valueBefore) {
+                if (!isAllFilled(valueAfter, ['subtype'])) {
+                    return
+                }
 
-            var startDate = new Date(this.request.start_date + ' ' + this.request.start_time)
-            var endDate = new Date(this.request.end_date + ' ' + this.request.end_time)
+                let computeUrl = `${location.pathname}/compute`
 
-            var days = endDate.getDate() - startDate.getDate()
-            var startHour = startDate.getHours() + (startDate.getMinutes() / 6 / 10)
-            var endHour = endDate.getHours() + (endDate.getMinutes() / 6 / 10)
+                this.request.incurredBalance = 'Loading...'
 
-            if (days < 0) {
-                return 0
-            }
+                axios.post(computeUrl, valueAfter).then(response => {
+                    this.request.disabled = false
 
-            if (endHour - startHour < 4) {
-                days += 0.5
-            }
+                    if (response.data.incurred_balance == 1) {
+                        this.request.incurredBalance = `${response.data.incurred_balance} day`
 
-            if (endHour - startHour >= 4) {
-                days += 1
-            }
+                        return
+                    }
 
-            return days
+                    this.request.incurredBalance = `${response.data.incurred_balance} days`
+                })
+            },
+
+            deep: true
         }
     }
 })

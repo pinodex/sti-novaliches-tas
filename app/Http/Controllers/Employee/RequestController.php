@@ -12,11 +12,13 @@
 namespace App\Http\Controllers\Employee;
 
 use Auth;
+use DateTime;
 use Illuminate\Http\Request;
 use App\Components\RequestForm;
 use App\Models\Request as RequestModel;
 use App\Http\Controllers\Controller;
 use App\Http\Forms\RequestTypeForm;
+use App\Components\Request\RequestException;
 use App\Exceptions\RequestTypeNotFoundException;
 use App\Components\Acl;
 
@@ -115,6 +117,11 @@ class RequestController extends Controller
     {
         $user = Auth::user();
 
+        if (!$user->department || !$user->department->head) {
+            return redirect()->route('employee.requests.index')
+                ->with('message', ['danger', __('request.unassigned')]);
+        }
+
         try {
             $requestForm = RequestForm::create($typeName, $user);
         } catch (RequestTypeNotFoundException $e) {
@@ -122,7 +129,13 @@ class RequestController extends Controller
         }
 
         $form = $requestForm->getForm();
-        $response = $requestForm->handleRequest($request);
+
+        try {
+            $response = $requestForm->handleRequest($request);
+        } catch (RequestException $e) {
+            return redirect()->route('employee.requests.index')
+                ->with('message', ['danger', $e->getMessage()]);
+        }
 
         if ($response) {
             return $response;
@@ -132,5 +145,29 @@ class RequestController extends Controller
             'request_form'  => $requestForm,
             'form'          => $form->createView(),
         ]);
+    }
+
+    /**
+     * Get computed days
+     * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
+     * @return mixed
+     */
+    public function compute(Request $request, $typeName)
+    {
+        $user = Auth::user();
+
+        try {
+            $requestForm = RequestForm::create($typeName, $user);
+        } catch (RequestTypeNotFoundException $e) {
+            abort(404);
+        }
+
+        $model = $requestForm->getType()->makeModel($request);
+
+        return [
+            'incurred_balance' => $model->incurred_balance
+        ];
     }
 }

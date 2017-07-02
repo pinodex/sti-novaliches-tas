@@ -31,6 +31,10 @@ class Request extends Model
 
     const STATUS_ESCALATED = 5;
 
+    const TYPE_HALF_DAY = 5;
+
+    const TYPE_FULL_DAY = 10;
+
     public static $statusLabels = [
         self::STATUS_WAITING        => 'Pending',
         self::STATUS_APPROVED       => 'Approved',
@@ -38,10 +42,16 @@ class Request extends Model
         self::STATUS_ESCALATED      => 'Escalated'
     ];
 
+    public static $typeLabels = [
+        self::TYPE_FULL_DAY => 'Full Day',
+        self::TYPE_HALF_DAY => 'Half Day'
+    ];
+
     protected $fillable = [
         'requestor_id',
         'approver_id',
-        'type_id',
+        'type',
+        'subtype',
         'from_date',
         'to_date',
         'incurred_balance',

@@ -10,5 +10,6 @@ return [
     'approve_fail'      => 'Approval failed. You may not be authorized to approve this request',
     'saved'             => 'Changes to request has been saved',
     'insufficient'      => 'Your leave balance is insufficient',
-    'submitted'         => 'Your request has been submitted and is pending approval'
+    'submitted'         => 'Your request has been submitted and is pending approval',
+    'unassigned'        => 'You are not assigned to any department'
 ];

@@ -12,8 +12,8 @@
 namespace App\Components\Request;
 
 use DateTime;
-use Symfony\Component\Form\Form as SymfonyForm;
 use Illuminate\Http\Request;
+use App\Models\Request as RequestModel;
 use App\Http\Forms\Form;
 use App\Models\User;
 
@@ -29,32 +29,43 @@ abstract class AbstractType
      */
     protected $requestor;
 
+    /**
+     * @var array
+     */
     protected $timeChoices = [
-        '7:00 AM',
-        '7:30 AM',
-        '8:00 AM',
-        '8:30 AM',
-        '9:00 AM',
-        '9:30 AM',
-        '10:00 AM',
-        '10:30 AM',
-        '11:00 AM',
-        '11:30 AM',
-        '12:00 PM',
-        '12:30 PM',
-        '1:00 PM',
-        '1:30 PM',
-        '2:00 PM',
-        '2:30 PM',
-        '3:00 PM',
-        '3:30 PM',
-        '4:00 PM',
-        '4:30 PM',
-        '5:00 PM',
-        '5:30 PM',
-        '6:00 PM',
-        '6:30 PM',
-        '7:00 PM'
+        '5:00 AM' => '05:00:00',
+        '5:30 AM' => '05:30:00',
+        '6:00 AM' => '06:00:00',
+        '6:30 AM' => '06:30:00',
+        '7:00 AM' => '07:00:00',
+        '7:30 AM' => '07:30:00',
+        '8:00 AM' => '08:00:00',
+        '8:30 AM' => '08:30:00',
+        '9:00 AM' => '09:00:00',
+        '9:30 AM' => '09:30:00',
+        '10:00 AM' => '10:00:00',
+        '10:30 AM' => '10:30:00',
+        '11:00 AM' => '11:00:00',
+        '11:30 AM' => '11:30:00',
+        '12:00 PM' => '12:00:00',
+        '12:30 PM' => '12:30:00',
+        '1:00 PM' => '13:00:00',
+        '1:30 PM' => '13:30:00',
+        '2:00 PM' => '14:00:00',
+        '2:30 PM' => '14:30:00',
+        '3:00 PM' => '15:00:00',
+        '3:30 PM' => '15:30:00',
+        '4:00 PM' => '16:00:00',
+        '4:30 PM' => '16:30:00',
+        '5:00 PM' => '17:00:00',
+        '5:30 PM' => '17:30:00',
+        '6:00 PM' => '18:00:00',
+        '6:30 PM' => '18:30:00',
+        '7:00 PM' => '19:00:00',
+        '7:30 PM' => '19:30:00',
+        '8:00 PM' => '20:00:00',
+        '8:30 PM' => '20:30:00',
+        '9:00 PM' => '21:00:00',
     ];
 
     /**
@@ -80,18 +91,16 @@ abstract class AbstractType
     }
 
     /**
-     * Get form template
+     * Handle request. Calls form->handleRequest internally
      * 
-     * @return string
+     * @return mixed
      */
-    abstract public function getFormTemplate();
-
     public function handleRequest(Request $request)
     {
         $this->form->handleRequest($request);
 
         if ($request->method() == 'POST') {
-            return $this->onSubmitted($this->form);
+            return $this->onSubmit($request);
         }
     }
 
@@ -100,37 +109,50 @@ abstract class AbstractType
      * 
      * @return \App\Models\User
      */
-    protected function getApprover()
+    public function getApprover()
     {
         if ($this->requestor->department && $this->requestor->department->head) {
             if ($this->requestor->id != $this->requestor->department->head->id) {
                 return $this->requestor->department->head;
             }
-        }   
+        }
+
+        throw new RequestException('No assigned approver');
     }
 
     /**
-     * Compute days inccured
+     * Compute date difference
      * 
-     * @param string $fromDate Starting date
-     * @param string $toDate Ending date
+     * @param DateTime $fromDate Starting date
+     * @param DateTime $toDate Ending date
+     * @param int $type Leave type
      * 
      * @return int
      */
-    protected function computeDays($fromDate, $toDate)
+    public function diff(DateTime $fromDate, DateTime $toDate, $type = RequestModel::TYPE_FULL_DAY)
     {
-        $from = date_parse($fromDate);
-        $to = date_parse($toDate);
+        if ($fromDate > $toDate) {
+            throw new RequestException('Start date is past the end date');
+        }
+        
+        $diff = $toDate->diff($fromDate);
+        $days = $diff->days;
 
-        $days = $to['day'] - $from['day'];
-        $fromHour = $from['hour'] + ($from['minute'] / 6 / 10);
-        $toHour = $to['hour'] + ($to['minute'] / 6 / 10);
+        if ($days == 0) {
+            switch ($type) {
+                case RequestModel::TYPE_HALF_DAY:
+                    return 0.5;
 
-        if ($toHour - $fromHour < 4) {
+                case RequestModel::TYPE_FULL_DAY:
+                    return 1;
+            }
+        }
+
+        if ($diff->h > 0 && $diff->h <= 4) {
             $days += 0.5;
         }
 
-        if ($toHour - $fromHour >= 4) {
+        if ($diff->h > 4) {
             $days += 1;
         }
 
@@ -138,62 +160,37 @@ abstract class AbstractType
     }
 
     /**
-     * Get 24h time for input time
+     * Make request model from request data
      * 
-     * @param string $time Input time
+     * @param \Illuminate\Http\Request $request Request data
      * 
-     * @return double
+     * @return \App\Models\Request
      */
-    protected function toHour($time)
+    public function makeModel(Request $request)
     {
-        $parsed = date_parse($time);
-        $hours = $parsed['hour'];
+        $model = new RequestModel();
 
-        if ($parsed['minute']) {
-            $hours += $parsed['minute'] / 6 / 10;
-        }
+        $fromDate = new DateTime("{$request->start_date} {$request->start_time}");
+        $toDate = new DateTime("{$request->end_date} {$request->end_time}");
 
-        return round($hours, 3);
+        $days = $this->diff($fromDate, $toDate, $request->subtype);
+
+        $model->fill([
+            'requestor_id'      => $this->requestor->id,
+            'approver_id'       => $this->getApprover()->id,
+            'type'              => $this->getMoniker(),
+            'subtype'           => $request->subtype,
+            
+            'from_date'         => $fromDate->format('Y-m-d H:i:s'),
+            'to_date'           => $toDate->format('Y-m-d H:i:s'),
+            'incurred_balance'  => $days,
+
+            'reason'            => $request->input('reason'),
+            'status'            => RequestModel::STATUS_WAITING
+        ]);
+
+        return $model;
     }
-
-    /**
-     * Get the 12h time for input hour
-     * 
-     * @param double $hour Input hour
-     * 
-     * @return string
-     */
-    protected function toTime($hour)
-    {
-        $minute = round(fmod($hour, 1) * 6 * 10);
-        $hour = intval($hour);
-
-        $militaryTime = sprintf('%02d:%02d', $hour, $minute);
-
-        return date('g:i A', strtotime($militaryTime));
-    }
-
-    /**
-     * Get formatted datetime string for database storage
-     * 
-     * @param string $datetime Datetime string
-     * 
-     * @return string
-     */
-    protected function getFormatted($date, $time = null)
-    {
-        $dateTimeString = $date;
-
-        if ($time) {
-            $dateTimeString .= ' ' . $time;
-        }
-
-        $dt = new DateTime($dateTimeString);
-
-        return $dt->format('Y-m-d H:i:s');
-    }
-
-
 
     /**
      * Get type name
@@ -210,6 +207,13 @@ abstract class AbstractType
     abstract public static function getMoniker();
 
     /**
+     * Get form template
+     * 
+     * @return string
+     */
+    abstract public function getFormTemplate();
+
+    /**
      * Build the form by adding fields to it
      */
     abstract protected function buildForm();
@@ -217,7 +221,9 @@ abstract class AbstractType
     /**
      * Called on form post request
      * 
+     * @param \Illuminate\Http\Request $request Request object
+     * 
      * @return mixed
      */
-    abstract protected function onSubmitted(SymfonyForm $form);
+    abstract protected function onSubmit(Request $request);
 }

@@ -5,16 +5,15 @@
 <label style="display: block; margin-bottom: 10px;">Starting date and time</label>
 
 <div class="field has-addons is-fluid">
-    {{ form_widget(form.from_date, { attr: { 'v-model': 'request.start_date' }}) }}
-    {{ form_widget(form.from_time, { attr: { 'v-model': 'request.start_time' }}) }}
+    {{ form_widget(form.start_date, { attr: { 'v-model': 'request.data.start_date', ':max': 'request.data.end_date' }}) }}
+    {{ form_widget(form.start_time, { attr: { 'v-model': 'request.data.start_time' }}) }}
 </div>
 
 <label style="display: block; margin-bottom: 10px;">Ending date and time</label>
 
 <div class="field has-addons is-fluid">
-    {{ form_widget(form.to_date, { attr: { 'v-model': 'request.end_date' }}) }}
-
-    {{ form_widget(form.to_time, { attr: { 'v-model': 'request.end_time' }}) }}
+    {{ form_widget(form.end_date, { attr: { 'v-model': 'request.data.end_date', ':min': 'request.data.start_date' }}) }}
+    {{ form_widget(form.end_time, { attr: { 'v-model': 'request.data.end_time' }}) }}
 </div>
 
 <div class="columns">
@@ -22,7 +21,7 @@
         <div class="field">
             <label class="label">Incurred Balance</label>
             <p class="control">
-                <input type="text" class="input" value="0 days" :value="requestBalance + ' ' + (requestBalance == 1 ? 'day' : 'days')" readonly />
+                <input type="text" class="input" value="0 days" :value="request.incurredBalance" readonly />
             </p>
         </div>
     </div>

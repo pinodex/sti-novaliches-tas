@@ -12,10 +12,10 @@
 namespace App\Components\Request;
 
 use DateTime;
-use Symfony\Component\Form\Form;
+use Illuminate\Http\Request;
 use Symfony\Component\Form\Extension\Core\Type;
 use App\Notifications\RequestReceived;
-use App\Models\Request;
+use App\Models\Request as RequestModel;
 
 class VacationLeaveType extends AbstractType
 {
@@ -34,42 +34,19 @@ class VacationLeaveType extends AbstractType
         return '/templates/leave.twig';
     }
 
-    protected function onSubmitted(Form $form)
+    protected function onSubmit(Request $request)
     {
-        $data = $form->getData();
-        
-        $days = $this->computeDays(
-            $this->getFormatted($data['from_date'], $data['from_time']),
-            $this->getFormatted($data['to_date'], $data['to_time'])
-        );
+        $model = $this->makeModel($request);
 
-        if ($days == 0) {
-            return null;
-        }
-
-        if ($days > $this->requestor->leaves_balance) {
+        if ($model->incurred_balance > $this->requestor->leaves_balance) {
             return redirect()->route('employee.requests.index')
                 ->with('message', ['danger', __('request.insufficient')]);
         }
 
-        $data['from_date'] = $this->getFormatted($data['from_date'], $data['from_time']);
-        $data['to_date'] = $this->getFormatted($data['to_date'], $data['to_time']);
-
-        $request = new Request();
-        
-        $request->fill($data);
+        $this->requestor->requests()->save($model);
 
         if ($this->getApprover()) {
-            $request->approver_id = $this->getApprover()->id;
-        }
-
-        $request->type = $this->getMoniker();
-        $request->incurred_balance = $days;
-
-        $this->requestor->requests()->save($request);
-
-        if ($this->getApprover()) {
-            $this->getApprover()->notify(new RequestReceived($request));
+            $this->getApprover()->notify(new RequestReceived($model));
         }
 
         return redirect()->route('employee.requests.index')
@@ -96,8 +73,7 @@ class VacationLeaveType extends AbstractType
             ]
         ]);
 
-        $this->form->add('from_date', Type\DateType::class, [
-            'required'      => false,
+        $this->form->add('start_date', Type\DateType::class, [
             'html5'         => true,
             'input'         => 'string',
             'widget'        => 'single_text',
@@ -107,12 +83,11 @@ class VacationLeaveType extends AbstractType
             ]
         ]);
 
-        $this->form->add('from_time', Type\ChoiceType::class, [
-            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
+        $this->form->add('start_time', Type\ChoiceType::class, [
+            'choices'       => $this->timeChoices
         ]);
 
-        $this->form->add('to_date', Type\DateType::class, [
-            'required'      => false,
+        $this->form->add('end_date', Type\DateType::class, [
             'html5'         => true,
             'input'         => 'string',
             'widget'        => 'single_text',
@@ -122,8 +97,13 @@ class VacationLeaveType extends AbstractType
             ]
         ]);
 
-        $this->form->add('to_time', Type\ChoiceType::class, [
-            'choices'       => array_combine($this->timeChoices, $this->timeChoices)
+        $this->form->add('end_time', Type\ChoiceType::class, [
+            'choices'       => $this->timeChoices
+        ]);
+
+        $this->form->add('subtype', Type\ChoiceType::class, [
+            'label'         => 'Type',
+            'choices'       => array_flip(RequestModel::$typeLabels)
         ]);
 
         $this->form->add('reason', Type\TextareaType::class);

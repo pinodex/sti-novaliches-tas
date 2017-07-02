@@ -18,6 +18,7 @@ class CreateRequestsTable extends Migration {
 			$table->integer('requestor_id');
 			$table->integer('approver_id');
 			$table->string('type');
+			$table->string('subtype')->nullable();
 			$table->dateTime('from_date');
 			$table->dateTime('to_date');
 			$table->float('incurred_balance', 10, 0);
