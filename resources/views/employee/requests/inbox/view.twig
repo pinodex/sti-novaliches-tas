@@ -2,36 +2,45 @@
 
 {% set page_title = 'View request' %}
 {% set active_menu = 'inbox' %}
+{% set enable_bulletin = false %}
 
 {% block subcontent %}
     <div class="columns">
         <div class="column is-3">
             <div class="card">
-                <div class="card-image">
-                    <figure class="image">
-                        <img src="{{ model.requestor.picture['image'] }}" alt="User Avatar" />
-                    </figure>
-                </div>
+                {% if model.requestor %}
+                    <div class="card-image">
+                        <figure class="image">
+                            <img src="{{ model.requestor.picture['image'] }}" alt="User Avatar" />
+                        </figure>
+                    </div>
+                {% endif %}
                             
                 <div class="card-content">
-                    <div class="media">
-                        <div class="media-content">
-                            <p class="title is-5">{{ model.requestor.name }}</p>
-                            <p class="subtitle is-6">Requestor</p>
-                            {% if model.requestor.department %}
-                                <p class="subtitle is-6">{{ model.requestor.department.name }}</p>
-                            {% endif %}
+                    {% if model.requestor %}
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">{{ model.requestor.name }}</p>
+                                <p class="subtitle is-6">Requestor</p>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
 
                     <div class="content">
+                        {% if model.approver %}
+                        <div class="info">
+                            <p class="title">Approver</p>
+                            <p class="value">{{ model.approver.name }}</p>
+                        </div>
+                        {% endif %}
+
                         <div class="info">
                             <p class="title">Leaves Balance</p>
                             <p class="value">{{ model.requestor.leaves_balance }}</p>
                         </div>
 
                         <div class="info">
-                            <p class="title">Incurs Balance</p>
+                            <p class="title">Incurred Balance</p>
                             <p class="value">{{ model.incurred_balance }}</p>
                         </div>
 
@@ -110,14 +119,14 @@
                 {% if model.status == -1 or model.status == 5 %}
                     <div class="field has-addons is-pulled-right">
                         <p class="control">
-                            <button class="button is-large is-danger" @click="modals.confirm = true; disableAction = true" :disabled="disableAction">
+                            <button class="button is-danger" @click="modals.confirm = true; disableAction = true" :disabled="disableAction">
                                 <i class="fa fa-thumbs-down"></i>
                                 <span>Disapprove</span>
                             </button>
                         </p>
                       
                         <p class="control">
-                            <button class="button is-large is-success" @click="submitForm('approveForm'); disableAction = true; buttons.approveLoading = true" :disabled="disableAction" :class="{ 'is-loading' : buttons.approveLoading }">
+                            <button class="button is-success" @click="submitForm('approveForm'); disableAction = true; buttons.approveLoading = true" :disabled="disableAction" :class="{ 'is-loading' : buttons.approveLoading }">
                                 <i class="fa fa-thumbs-up"></i>
                                 <span>Approve</span>
                             </button>

@@ -5,8 +5,7 @@
     'request_id' => $request->id,
     'type_name' => $request->type_name,
     'approver_name' => $request->approver ? $request->approver->name : 'Unknown',
-    'requestor_name' => $request->requestor ? $request->requestor->name : 'Unknown',
-    'time' => $request->responded_at
+    'requestor_name' => $request->requestor ? $request->requestor->name : 'Unknown'
 ]) }}
 
 @component('mail::button', [

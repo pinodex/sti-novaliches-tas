@@ -177,6 +177,8 @@ class Request extends Model
 
         if ($this->approver && !$this->approver->department) {
             $this->status = static::STATUS_APPROVED;
+            $this->responded_at = now();
+            
             $this->save();
 
             $this->requestor->notify(new RequestApproved($this));

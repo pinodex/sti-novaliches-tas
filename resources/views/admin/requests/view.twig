@@ -1,31 +1,43 @@
 {% extends '/layouts/dashboard.twig' %}
 
 {% set page_title = 'View request' %}
-{% set active_menu = 'inbox' %}
+{% set active_menu = 'requests' %}
+{% set enable_bulletin = false %}
 
 {% block subcontent %}
     <div class="columns">
         <div class="column is-3">
             <div class="card">
-                <div class="card-image">
-                    <figure class="image">
-                        <img src="{{ model.requestor.picture['image'] }}" alt="User Avatar" />
-                    </figure>
-                </div>
+                {% if model.requestor %}
+                    <div class="card-image">
+                        <figure class="image">
+                            <img src="{{ model.requestor.picture['image'] }}" alt="User Avatar" />
+                        </figure>
+                    </div>
+                {% endif %}
                             
                 <div class="card-content">
-                    <div class="media">
-                        <div class="media-content">
-                            <p class="title is-4">{{ model.requestor.name }}</p>
-                            <p class="subtitle is-6">Requestor</p>
+                    {% if model.requestor %}
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">
+                                    <a href="{{ route('admin.users.view', { id: model.requestor }) }}">{{ model.requestor.name }}</a>
+                                </p>
+
+                                <p class="subtitle is-6">Requestor</p>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
 
                     <div class="content">
+                        {% if model.approver %}
                         <div class="info">
-                            <p class="title">Department</p>
-                            <p class="value">{{ model.requestor.department ? model.requestor.department.name : 'N/A' }}</p>
+                            <p class="title">Approver</p>
+                            <p class="value">
+                                <a href="{{ route('admin.users.view', { id: model.approver }) }}">{{ model.approver.name }}</a>
+                            </p>
                         </div>
+                        {% endif %}
 
                         <div class="info">
                             <p class="title">Leaves Balance</p>
@@ -33,7 +45,7 @@
                         </div>
 
                         <div class="info">
-                            <p class="title">Incurs Balance</p>
+                            <p class="title">Incurred Balance</p>
                             <p class="value">{{ model.incurred_balance }}</p>
                         </div>
 

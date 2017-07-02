@@ -79,8 +79,6 @@ class RequestController extends Controller
      */
     public function printable(Request $request, RequestModel $model)
     {
-        $model->load('requestor', 'requestor.department', 'approver', 'approver.department');
-
         return view('commons.print.request', [
             'model' => $model
         ]);

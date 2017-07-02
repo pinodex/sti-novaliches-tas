@@ -71,6 +71,8 @@ let app = new Vue({
         unreadNotificationCount: 0,
         groupDeleteAction: 'move',
 
+        showSignatureLines: false,
+
         request: {
             disabled: false,
             incurredBalance: '0 days',

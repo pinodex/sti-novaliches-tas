@@ -28,6 +28,12 @@ class EditRequestForm extends Form
             'required'  => false
         ]);
 
+        $this->add('subtype', Type\ChoiceType::class, [
+            'choices'   => array_flip(Request::$typeLabels)
+        ]);
+
+        $this->add('incurred_balance', Type\NumberType::class);
+
         $this->add('status', Type\ChoiceType::class, [
             'label'     => 'Status',
             'choices'   => array_flip(Request::$statusLabels)
