@@ -12,10 +12,10 @@
 namespace App\Exceptions;
 
 use Exception;
-use ErrorException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -59,10 +59,6 @@ class Handler extends ExceptionHandler
             if ($exception instanceof TokenMismatchException) {
                 return response()->view('errors.403', [], 403);
             }
-
-            if ($exception instanceof ErrorException) {
-                return response()->view('errors.500', [], 500);
-            }
         }
 
         return parent::render($request, $exception);
@@ -82,5 +78,25 @@ class Handler extends ExceptionHandler
         }
 
         return redirect()->guest(route('login'));
+    }
+
+    /**
+     * Prepare response containing exception render.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Exception $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function prepareResponse($request, Exception $e)
+    {
+        if (! $this->isHttpException($e) && config('app.debug')) {
+            return $this->toIlluminateResponse($this->convertExceptionToResponse($e), $e);
+        }
+
+        if (! $this->isHttpException($e)) {
+            $e = new HttpException(500, $e->getMessage());
+        }
+
+        return $this->toIlluminateResponse($this->renderHttpException($e), $e);
     }
 }

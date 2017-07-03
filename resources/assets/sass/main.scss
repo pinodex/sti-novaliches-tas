@@ -16,7 +16,10 @@ body {
 
     &.error-page {
         background: #fff;
-        padding-top: 60px;
+
+        .main-container {
+            padding-top: 0;
+        }
     }
 
     &.print-page {
@@ -227,7 +230,7 @@ nav.nav {
 }
 
 .main-container {
-    margin-top: 52px;
+    padding-top: 52px;
     padding-left: 52px;
     overflow: hidden;
     width: 100%;
