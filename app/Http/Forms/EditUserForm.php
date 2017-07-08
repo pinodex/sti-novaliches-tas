@@ -55,9 +55,9 @@ class EditUserForm extends Form
                 ]),
 
                 new Assert\Regex([
-                    'pattern'   => '/^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$/',
+                    'pattern'   => '/^[A-Za-z0-9]+((_|\.)[A-Za-z0-9]+)*$/',
                     'match'     => true,
-                    'message'   => 'Username can only contain alphanumeric characters and dashes'
+                    'message'   => 'Username can only contain alphanumeric characters, underscores, and dots'
                 ]),
 
                 new Assert\Length([
