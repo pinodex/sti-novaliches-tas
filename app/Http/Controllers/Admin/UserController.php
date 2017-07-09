@@ -184,9 +184,7 @@ class UserController extends Controller
             $model->fill($data);
             
             if ($data['picture']) {
-                try {
-                    $model->picture = $data['picture'];
-                } catch (\Exception $e) {}
+                $model->picture = $data['picture'];
             }
 
             $model->save();
