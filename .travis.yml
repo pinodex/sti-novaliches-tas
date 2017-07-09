@@ -29,3 +29,9 @@ deploy:
 branches:
   only:
   - master
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+    - $HOME/.npm
+    - node_modules
