@@ -1,0 +1,79 @@
+{% extends '/admin/sso/_layout.twig' %}
+
+{% set section_title = 'Client' %}
+{% set active_menu = 'sso' %}
+{% set active_section = 'index' %}
+
+{% block sectioncontent %}
+    <div class="columns">
+        <div class="column is-12">
+            <div class="panel">
+                <p class="panel-heading is-small">{{ page_title }}</p>
+
+                <div class="box is-clearfix">
+                    <div class="columns">
+                        <div class="column is-6 is-offset-3">
+                            <div class="info">
+                                <p class="title">Name</p>
+                                <p class="value">{{ model.name }}</p>
+                            </div>
+
+                            <div class="info">
+                                <p class="title">Client ID</p>
+                                <p class="value">{{ model.id }}</p>
+                            </div>
+
+                            <div class="info">
+                                <p class="title">Client Secret</p>
+                                <p class="value">{{ model.secret }}</p>
+                            </div>
+
+                            <div class="info">
+                                <p class="title">Last Accessed</p>
+                                <p class="value">{{ model.last_accessed ? model.last_accessed|date('M d, h:i a') : 'N/A' }}</p>
+                            </div>
+
+                            <div class="has-contents-above">
+                                <div class="field is-grouped">
+                                    <p class="control">
+                                        <a href="{{ route('admin.sso.clients.edit', { model: model }, false) }}" class="button is-outlined is-small">
+                                            <i class="fa fa-pencil"></i> Edit Client
+                                        </a>
+                                    </p>
+
+                                    <p class="control">
+                                        <button class="button is-danger is-small" :class="{ 'is-loading' : buttons.postLoading }" @click="modals.confirm = true">
+                                            <i class="fa fa-refresh"></i> Reset Client Secret
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <modal :show.sync="modals.confirm">
+        <h3 slot="header">Confirm action</h3>
+        
+        <div slot="body">
+            <p>Are you sure you want to reset client secret?</p>
+        </div>
+
+        <div slot="footer">
+            <form method="post" action="{{ route('admin.sso.clients.reset_secret', { model: model }, false) }}" @submit="buttons.postLoading = true">
+                {{ csrf_field() }}
+                    
+                <button type="button" class="button is-light" @click="modals.confirm = false" :disabled="buttons.postLoading">
+                    Cancel
+                </button>
+
+                <button type="submit" class="button is-danger" :class="{ 'is-loading' : buttons.postLoading }">
+                    <i class="fa fa-refresh"></i> Reset Secret
+                </button>
+            </form>
+        </div>
+    </modal>
+{% endblock %}

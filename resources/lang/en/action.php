@@ -34,6 +34,9 @@ return [
     'department_purged'         => 'Purged department :name',
 
     'profile_saved'             => 'Saved profile :name',
-    'profile_deleted'           => 'Deleted profile :name'
+    'profile_deleted'           => 'Deleted profile :name',
+
+    'sso_client_saved'          => 'Saved SSO Client :name',
+    'sso_client_deleted'        => 'Delete SSO Client :name'
 
 ];

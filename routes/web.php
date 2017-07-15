@@ -128,6 +128,23 @@ Route::group([
 
     });
 
+    // Sso\MainController
+    Route::group(['namespace' => 'Sso', 'prefix' => 'sso', 'as' => 'sso.'], function () {
+
+        Route::get('/', 'ClientController@index')->name('index');
+
+        Route::group(['prefix' => 'clients', 'as' => 'clients.'], function () {
+            
+            Route::match(['get', 'post'], '/add', 'ClientController@edit')->name('add');
+            Route::get('/{model}', 'ClientController@view')->name('view');
+            Route::get('/{model}/edit', 'ClientController@edit')->name('edit');
+            Route::post('/{model}/reset_secret', 'ClientController@resetSecret')->name('reset_secret');
+            Route::post('/{model}/delete', 'ClientController@delete')->name('delete');
+
+        });
+
+    });
+
 });
 
 Route::group([

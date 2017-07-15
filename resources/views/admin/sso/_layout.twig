@@ -1,0 +1,40 @@
+{% extends '/layouts/dashboard.twig' %}
+
+{%
+    set sections = {
+        index: { text: 'Clients', icon: 'rocket', route: 'admin.sso.index' },
+    }
+%}
+
+{% set page_title = section_title ~ ' < SSO' %}
+{% set active_menu = 'sso' %}
+{% set enable_bulletin = false %}
+
+{% block pageheader %}
+    <section class="hero is-light is-bold">
+        <div class="hero-body has-tabs">
+            <div class="container is-fluid">
+                <div class="tabs is-boxed is-blend">
+                    <ul>
+                        {% for id, item in sections %}
+                            <li{{ active_section == id ? ' class="is-active"' : '' }}>
+                                <a href="{{ route(item.route) }}">
+                                    <span class="icon is-small"><i class="fa fa-{{ item.icon }}"></i></span>
+                                    <span>{{ item.text }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block subcontent %}
+    <div class="columns">
+        <div class="column is-12">
+            {% block sectioncontent %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

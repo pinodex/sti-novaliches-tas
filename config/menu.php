@@ -90,6 +90,14 @@ return [
                 'route'         => 'admin.profiles.index',
                 'name'          => 'Profiles',
                 'visibility'    => [ Acl::ADMIN_PROFILES ],
+            ],
+
+            [
+                'icon'          => 'shield',
+                'identifier'    => 'sso',
+                'route'         => 'admin.sso.index',
+                'name'          => 'Single sign-on',
+                'visibility'    => [ Acl::ADMIN_SSO ],
             ]
         ]  
     ],

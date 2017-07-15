@@ -1,0 +1,94 @@
+{% extends '/admin/sso/_layout.twig' %}
+
+{% set section_title = 'Clients' %}
+{% set active_menu = 'sso' %}
+{% set active_section = 'index' %}
+
+{% block sectioncontent %}
+    <div class="columns">
+        <div class="column is-12">
+            <div class="level is-small">
+                <div class="level-left"></div>
+
+                <div class="level-right">
+                    <form action="{{ app.request.getRequestUri() }}" class="level-item">
+                        <div class="field has-addons is-small">
+                            <p class="control">
+                                <a href="{{ route('admin.sso.clients.add', {}, false) }}" class="button is-primary is-small">
+                                    <i class="fa fa-plus"></i> Add Client
+                                </a>
+                            </p>
+
+                            <p class="control has-icon">
+                                <input class="input is-small" type="text" name="name" value="{{ input_get('name') }}" placeholder="Search by name&hellip;" />
+
+                                <span class="icon is-small">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </p>
+
+                            <p class="control">
+                                <button type="submit" class="button is-dark is-small">
+                                    <i class="fa fa-search is-marginless"></i>
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="scrollable-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Last Accessed</th>
+                            <th class="is-fit"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in result %}
+                            <tr class="is-link">
+                                <td>
+                                    <a href="{{ route('admin.sso.clients.view', { model: item }, false) }}">
+                                        {{ item.name }}
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('admin.sso.clients.view', { model: item }, false) }}">
+                                        {{ item.last_accessed ? item.last_accessed|date('M d, h:i a') : 'N/A' }}
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('admin.sso.clients.edit', { model: item }, false) }}">
+                                        <button class="button is-small is-outlined">
+                                            <i class="fa fa-pencil"></i> Edit
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="2">No results found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="columns">
+                <div class="column is-3 is-offset-9 is-paddingless">
+                    <span class="select">
+                        <select name="pages" @change="changePaginationPage" v-model="paginationPage">
+                            {% for i in 1..result.lastPage %}
+                                <option value="{{ i }}">Page {{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

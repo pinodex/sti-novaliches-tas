@@ -24,6 +24,7 @@ class Acl
     const ADMIN_DEPARTMENTS = 'admin_departments';
     const ADMIN_EMPLOYEES = 'admin_employees';
     const ADMIN_PROFILES = 'admin_profiles';
+    const ADMIN_SSO = 'admin_sso';
     const APPROVE_DISAPPROVE_REQUESTS = 'approve_disapprove_requests';
 
     /**

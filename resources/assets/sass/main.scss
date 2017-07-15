@@ -594,6 +594,10 @@ label, .label {
     margin-bottom: 1rem;
 }
 
+.has-contents-above {
+    margin-top: 10px;
+}
+
 .has-contents-below {
     margin-bottom: 10px;
 }
@@ -775,13 +779,24 @@ input[readonly] {
     }
 }
 
-.card .media:not(:last-child) {
-    margin-bottom: 30px;
+.hero-body.has-tabs {
+    padding-top: 1rem;
+    padding-bottom: 0;
 }
 
-.title,
-.subtitle {
-    font-weight: 400;
+.hero.is-light {
+    .tabs.is-boxed.is-blend {
+        li.is-active a,
+        li.is-active a:hover {
+            background: #f6f9fc;
+            border-color: #f6f9fc;
+            color: #363636;
+        }
+    }
+}
+
+.card .media:not(:last-child) {
+    margin-bottom: 30px;
 }
 
 .info {
