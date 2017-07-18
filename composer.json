@@ -15,6 +15,7 @@
         "jenssegers/agent": "^2.5",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "league/uri": "^5.0",
         "ramsey/uuid": "^3.6",
         "rcrowe/twigbridge": "^0.9.4",
         "symfony/form": "3.0.*",

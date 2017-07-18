@@ -37,6 +37,7 @@ return [
     'profile_deleted'           => 'Deleted profile :name',
 
     'sso_client_saved'          => 'Saved SSO Client :name',
-    'sso_client_deleted'        => 'Delete SSO Client :name'
+    'sso_client_deleted'        => 'Delete SSO Client :name',
+    'sso_authorized_client'     => 'Authorized account access to :name'
 
 ];

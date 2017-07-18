@@ -57,7 +57,7 @@
 
                                 <td>
                                     <a href="{{ route('admin.sso.clients.view', { model: item }, false) }}">
-                                        {{ item.last_accessed ? item.last_accessed|date('M d, h:i a') : 'N/A' }}
+                                        {{ item.last_accessed_at ? item.last_accessed_at|date('M d, Y, h:i a') : 'N/A' }}
                                     </a>
                                 </td>
 

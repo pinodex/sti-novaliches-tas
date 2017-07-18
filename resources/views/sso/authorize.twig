@@ -1,0 +1,82 @@
+{% extends '/layouts/main.twig' %}
+
+{% form_theme form '/layouts/bulma.twig' %}
+
+{% set body_class = 'login-page' %}
+{% set page_title = 'Login' %}
+
+{% block content %}
+    <section class="hero is-medium">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns login-container">
+                    <div class="column is-offset-1 is-one-third is-clearfix">
+                        <div class="login-logo is-hidden-touch is-pulled-right"></div>
+                        <div class="login-logo is-hidden-desktop "></div>
+                    </div>
+
+                    <div class="column is-one-third">
+                        <h1 class="title">{{ client.name }} Login</h1>
+                        <h2 class="subtitle">Sign in to continue to <strong>{{ client.name }}</strong></h2>
+
+                        {% if session_get('message') %}
+                            <div class="notification is-{{ session_get('message')[0] }} is-small">
+                                {{ session_get('message')[1] }}
+                            </div>
+                        {% endif %}
+
+                        <form action="{{ app.request.getRequestUri() }}" method="POST">
+                            {{ csrf_field() }}
+
+                            {% if username %}
+                                <div class="field">
+                                    <p class="control has-icon">
+                                        <input class="input" type="text" name="id" value="{{ username }}" readonly />
+                                        <span class="icon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            {% else %}
+                                <div class="field">
+                                    <p class="control has-icon">
+                                        <input class="input" type="text" name="id" placeholder="Username or E-mail" v-focus />
+                                        <span class="icon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            {% endif %}
+
+                            {% if username %}
+                                <div class="field">
+                                    <p class="control has-icon">
+                                        <input class="input" type="password" name="password" placeholder="Password" v-focus />
+                                        <span class="icon">
+                                            <i class="fa fa-key"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            {% else %}
+                                <div class="field">
+                                    <p class="control has-icon">
+                                        <input class="input" type="password" name="password" placeholder="Password" />
+                                        <span class="icon">
+                                            <i class="fa fa-key"></i>
+                                        </span>
+                                    </p>
+                                </div>
+                            {% endif %}
+
+                            <div class="field">
+                                <button class="button is-primary is-pulled-right">
+                                    <i class="fa fa-sign-in"></i> Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

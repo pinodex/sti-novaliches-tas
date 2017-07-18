@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSsoClientsTable extends Migration
+class CreateSsoTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateSsoClientsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sso_clients', function (Blueprint $table) {
-            $table->char('id', 36)->primary();
-            $table->string('name');
-            $table->string('secret');
-            $table->string('redirect_uri')->nullable();
+        Schema::create('sso_tokens', function (Blueprint $table) {
+            $table->increments('id');
+            $table->char('client_id', 36);
+            $table->integer('user_id');
+            $table->string('code');
+            $table->timestamp('expires_at')->nullable();
             $table->timestamp('last_accessed_at')->nullable();
             $table->timestamps();
         });
@@ -30,6 +31,6 @@ class CreateSsoClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sso_clients');
+        Schema::dropIfExists('sso_tokens');
     }
 }

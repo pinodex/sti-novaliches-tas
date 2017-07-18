@@ -9,6 +9,12 @@ import axios from 'axios'
 import timeago from 'timeago.js'
 import qs from 'qs'
 
+Vue.directive('focus', {
+    inserted: (el) => {
+        el.focus()
+    }
+})
+
 const isNumeric = function isNumeric(value) {
     return Number(parseFloat(value)) == value;
 }

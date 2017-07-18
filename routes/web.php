@@ -26,15 +26,27 @@ Route::get('/notifications', ['as' => 'notifications', 'uses' => 'MainController
 
 Route::get('/notifications/{notification}', ['as' => 'notifications.view', 'uses' => 'MainController@viewNotification']);
 
-Route::group([
-    'prefix'    => 'auth',
-    'as'        => 'auth.'
-], function () {
+Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 
     Route::match(['get', 'post'], '/login', 'AuthController@login')->name('login')->middleware('guest');
     Route::get('/logout', 'AuthController@logout')->name('logout');
 
     Route::match(['get', 'post'], '/reset/{email}/{token}', 'AuthController@reset')->name('reset')->middleware('guest');
+    
+});
+
+Route::group(['namespace' => 'Sso', 'prefix' => 'sso', 'as' => 'sso.'], function () {
+
+    Route::match(['get', 'post'], '/authorize', 'AuthorizeController')->middleware('guest');
+
+    Route::group(['prefix' => 'identity', 'middleware' => ['auth.sso']], function () {
+        
+        Route::get('/', 'IdentityController@index');
+        Route::get('/picture', 'IdentityController@picture');
+        Route::get('/picture/image', 'IdentityController@pictureImage');
+        Route::get('/picture/thumb', 'IdentityController@pictureThumb');
+
+    });
     
 });
 

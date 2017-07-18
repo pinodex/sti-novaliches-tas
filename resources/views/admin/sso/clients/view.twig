@@ -29,6 +29,11 @@
                             </div>
 
                             <div class="info">
+                                <p class="title">Redirect URI</p>
+                                <p class="value">{{ model.redirect_uri }}</p>
+                            </div>
+
+                            <div class="info">
                                 <p class="title">Last Accessed</p>
                                 <p class="value">{{ model.last_accessed ? model.last_accessed|date('M d, h:i a') : 'N/A' }}</p>
                             </div>

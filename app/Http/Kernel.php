@@ -50,12 +50,13 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \App\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'can' => \App\Http\Middleware\AccessControl::class,
-        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'require_password_change' => \App\Http\Middleware\RequirePasswordChange::class,
+        'auth'                      => \App\Http\Middleware\Authenticate::class,
+        'auth.sso'                  => \App\Http\Middleware\SsoAuthenticate::class,
+        'auth.basic'                => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings'                  => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can'                       => \App\Http\Middleware\AccessControl::class,
+        'guest'                     => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle'                  => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'require_password_change'   => \App\Http\Middleware\RequirePasswordChange::class,
     ];
 }

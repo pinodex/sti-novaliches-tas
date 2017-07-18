@@ -18,5 +18,9 @@ class EditSsoClientForm extends Form
     public function create()
     {
         $this->add('name', Type\TextType::class);
+
+        $this->add('redirect_uri', Type\TextType::class, [
+            'label' => 'Redirect URI'
+        ]);
     }
 }
