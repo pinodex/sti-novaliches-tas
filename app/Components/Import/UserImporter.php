@@ -84,6 +84,20 @@ class UserImporter extends Importer
     ];
 
     /**
+     * @var array Sets of accented characters and their ASCII equivalents
+     */
+    protected $accents = [
+        'Š'=>'S', 'š'=>'s', 'Ð'=>'Dj','Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A',
+        'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I',
+        'Ï'=>'I', 'Ñ'=>'N', 'Ń'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U',
+        'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss','à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a',
+        'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e', 'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i',
+        'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ń'=>'n', 'ò'=>'o', 'ó'=>'o', 'ô'=>'o', 'õ'=>'o', 'ö'=>'o',
+        'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ü'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b', 'ÿ'=>'y', 'ƒ'=>'f',
+        'ă'=>'a', 'î'=>'i', 'â'=>'a', 'ș'=>'s', 'ț'=>'t', 'Ă'=>'A', 'Î'=>'I', 'Â'=>'A', 'Ș'=>'S', 'Ț'=>'T',
+    ];
+
+    /**
      * @var array Columns to resolve ID from model
      */
     protected $resolveIds = [
@@ -158,9 +172,6 @@ class UserImporter extends Importer
         }
 
         return parent::getContents()
-            ->filter(function ($entry) {
-                return filter_var($entry['email'], FILTER_VALIDATE_EMAIL);
-            })
             ->map(function ($entry) use ($normalize) {
                 if (!$entry['username']) {
                     $entry['username'] = $this->generateUsername($entry['first_name'], $entry['last_name']);
@@ -179,13 +190,16 @@ class UserImporter extends Importer
                     $entry['middle_name'] = $this->properText($entry['middle_name']);
                     $entry['last_name'] = $this->properText($entry['last_name']);
 
-                    $entry['email'] = Str::ascii(str_replace(' ', '', $entry['email']));
+                    $entry['email'] = $this->normalizeAccents(str_replace(' ', '', $entry['email']));
 
                     $entry['username'] = str_slug($entry['username']);
                     $entry['password'] = str_slug($entry['password']);
                 }
 
                 return $entry;
+            })
+            ->filter(function ($entry) {
+                return filter_var($entry['email'], FILTER_VALIDATE_EMAIL);
             })
             ->unique('username')
             ->unique('email');
@@ -301,5 +315,17 @@ class UserImporter extends Importer
     protected function properText($text)
     {
         return Str::title(Str::lower($text));
+    }
+
+    /**
+     * Convert accented characters to their ASCII equivalents
+     * 
+     * @param string $text Input text
+     * 
+     * @return string
+     */
+    protected function normalizeAccents($text)
+    {
+        return strtr($text, $this->accents);
     }
 }
