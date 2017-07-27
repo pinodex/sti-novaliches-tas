@@ -75,6 +75,7 @@ class UserImportController extends Controller
             $data = $form->getData();
             
             $filePath = $data['file']->getPathname();
+            
             $defaults = [
                 'department_id'    => $data['default_department'],
                 'group_id'         => $data['default_group'],
@@ -82,8 +83,12 @@ class UserImportController extends Controller
                 'password'         => $data['default_password']
             ];
 
+            $options = [
+                'normalize_data'   => $data['normalize_data']
+            ];
+
             try {
-                $importer = UserImporter::create($filePath, $defaults);
+                $importer = UserImporter::create($filePath, $defaults, $options);
             } catch (InvalidSheetException $e) {
                 return redirect()->route('admin.users.import.index')
                     ->with('message', ['danger', $e->getMessage()]);

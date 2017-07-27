@@ -11,6 +11,7 @@
 
 namespace App\Components\Import;
 
+use Illuminate\Support\Str;
 use Box\Spout\Reader\ReaderFactory;
 use Box\Spout\Common\Type;
 use App\Models\Department;
@@ -91,7 +92,7 @@ class UserImporter extends Importer
         'group_id'      => 'group'
     ];
 
-    public function __construct($sessionId, $filePath, $defaults = [], $duration = 60)
+    public function __construct($sessionId, $filePath, $defaults = [], $options = [], $duration = 60)
     {
         $this->departments = Department::all();
         $this->profiles = Profile::all();
@@ -108,7 +109,7 @@ class UserImporter extends Importer
         $this->tableName = $model->getTable();
         $this->fillable = array_merge($model->getFillable(), $model->getDates());
 
-        parent::__construct($sessionId, $filePath, $defaults, $duration);
+        parent::__construct($sessionId, $filePath, $defaults, $options, $duration);
     }
 
     public function loadContents()
@@ -150,11 +151,17 @@ class UserImporter extends Importer
      */
     public function getContents()
     {
+        $normalize = false;
+
+        if (array_key_exists('normalize_data', $this->options)) {
+            $normalize = $this->options['normalize_data'] === true;
+        }
+
         return parent::getContents()
             ->filter(function ($entry) {
                 return filter_var($entry['email'], FILTER_VALIDATE_EMAIL);
             })
-            ->map(function ($entry) {
+            ->map(function ($entry) use ($normalize) {
                 if (!$entry['username']) {
                     $entry['username'] = $this->generateUsername($entry['first_name'], $entry['last_name']);
                 }
@@ -167,7 +174,16 @@ class UserImporter extends Importer
                 $entry['profile'] = $this->getModel('profile', $entry['profile']);
                 $entry['group'] = $this->getModel('group', $entry['group']);
 
+                if ($normalize) {
+                    $entry['first_name'] = $this->properText($entry['first_name']);
+                    $entry['middle_name'] = $this->properText($entry['middle_name']);
+                    $entry['last_name'] = $this->properText($entry['last_name']);
 
+                    $entry['email'] = Str::ascii(str_replace(' ', '', $entry['email']));
+
+                    $entry['username'] = str_slug($entry['username']);
+                    $entry['password'] = str_slug($entry['password']);
+                }
 
                 return $entry;
             })
@@ -273,5 +289,17 @@ class UserImporter extends Importer
         $generated = strtolower(substr($firstName, 0, 1) . $lastName);
 
         return $generated;
+    }
+
+    /**
+     * Convert text to proper text
+     * 
+     * @param string $text Input text
+     * 
+     * @return string
+     */
+    protected function properText($text)
+    {
+        return Str::title(Str::lower($text));
     }
 }
