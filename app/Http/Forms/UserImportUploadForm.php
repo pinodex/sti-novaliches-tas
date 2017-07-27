@@ -47,6 +47,11 @@ class UserImportUploadForm extends Form
             'choices'   => $this->toChoices($profiles, true)
         ]);
 
-        $this->add('default_password', Type\TextType::class);
+        $this->add('default_password', Type\PasswordType::class);
+
+        $this->add('normalize_data', Type\CheckboxType::class, [
+            'required'  => false,
+            'data'      => true
+        ]);
     }
 }
