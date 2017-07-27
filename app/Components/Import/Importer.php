@@ -43,6 +43,11 @@ abstract class Importer
     protected $defaults;
 
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
      * @var bool
      */
     protected $isLocked = false;
@@ -53,13 +58,15 @@ abstract class Importer
      * @param string $sessionId Cache entry identifier
      * @param string $filePath Path to file
      * @param array $defaults Default values of blank column values
+     * @param array $options Import options
      * @param int|\DateTime $expiration Session duration in minutes or in DateTime object
      */
-    public function __construct($sessionId, $filePath, $defaults = [], $duration = 60)
+    public function __construct($sessionId, $filePath, $defaults = [], $options = [], $duration = 60)
     {
         $this->sessionId = $sessionId;
         $this->filePath = $filePath;
         $this->defaults = $defaults;
+        $this->options = $options;
         $this->duration = $duration;
 
         $this->contents = new Collection;
@@ -70,15 +77,16 @@ abstract class Importer
      * 
      * @param string $filePath Path to file
      * @param array $defaults Default values of blank column values
+     * @param array $options Import options
      * @param int|\DateTime $duration Session duration in minutes or in DateTime object
      * 
      * @return \App\Components\Import\Importer
      */
-    public static function create($filePath, $defaults = [], $duration = 60)
+    public static function create($filePath, $defaults = [], $options = [], $duration = 60)
     {
         $uuid = Uuid::uuid4()->toString();
         
-        return (new static($uuid, $filePath, $defaults, $duration))
+        return (new static($uuid, $filePath, $defaults, $options, $duration))
             ->loadContents()
             ->write();
     }
