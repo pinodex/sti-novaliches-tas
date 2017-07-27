@@ -11,9 +11,9 @@
 
 namespace App\Listeners;
 
-use Illuminate\Auth\Events\Logout;
+use Illuminate\Auth\Events\Login;
 
-class AuthLogoutListener
+class AuthLoginListener
 {
     /**
      * Create the event listener.
@@ -28,12 +28,12 @@ class AuthLogoutListener
     /**
      * Handle the event.
      *
-     * @param \Illuminate\Auth\Events\Logout $event
+     * @param \Illuminate\Auth\Events\Login $event
      */
-    public function handle(Logout $event)
+    public function handle(Login $event)
     {
         if ($event->user) {
-            $event->user->log('logout');
+            $event->user->log('login');
         }
     }
 }
