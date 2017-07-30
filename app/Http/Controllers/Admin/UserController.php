@@ -39,7 +39,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $result = User::with('department', 'group');
+        $result = User::with('department', 'group')
+            ->orderBy('first_name', 'ASC')
+            ->orderBy('middle_name', 'ASC')
+            ->orderBy('last_name', 'ASC');
+
         $departments = Department::all();
         $groups = Group::all();
 
