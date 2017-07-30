@@ -33,5 +33,4 @@ branches:
 cache:
   directories:
     - $HOME/.composer/cache/files
-    - $HOME/.npm
     - node_modules
