@@ -18,15 +18,15 @@ echo "Adding files to deploy"
 
 git init
 git config user.name "Travis CI"
-git config user.email "travis@domain.com"
+git config user.email "travis@stinovaliches"
 git config --global push.default simple
-git remote add production ${PRODUCTION_REPO}
+git remote add staging ${STAGING_REPO}
 
 {
     git add . 
     git commit -m "Travis CI Build"
 } &> /dev/null
 
-echo "Pushing build to production..."
+echo "Pushing build to staging..."
 
-git push production master --force
+git push staging master --force

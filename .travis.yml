@@ -24,11 +24,11 @@ deploy:
   provider: script
   script: .travis/deploy
   on:
-    branch: master
+    branch: staging
 
 branches:
   only:
-  - master
+  - staging
 
 cache:
   directories:

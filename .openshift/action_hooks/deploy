@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Deploying..."
+build_config
+
+cd $OPENSHIFT_REPO_DIR
+ln -s "${OPENSHIFT_DATA_DIR}storage/tas/public/" public/storage
