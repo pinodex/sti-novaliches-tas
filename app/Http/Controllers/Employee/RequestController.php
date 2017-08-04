@@ -164,7 +164,11 @@ class RequestController extends Controller
             abort(404);
         }
 
-        $model = $requestForm->getType()->makeModel($request);
+        try {
+            $model = $requestForm->getType()->makeModel($request);
+        } catch (RequestException $e) {
+            abort(401);
+        }
 
         return [
             'incurred_balance' => $model->incurred_balance
