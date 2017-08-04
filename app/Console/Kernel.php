@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
         Commands\Lab\Email::class,
         Commands\Lab\QueuedEmail::class,
         Commands\Lab\Notify::class,
-        Commands\Lab\Queue::class
+        Commands\Lab\Queue::class,
+        \Bugsnag\BugsnagLaravel\Commands\DeployCommand::class
     ];
 
     /**
