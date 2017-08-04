@@ -212,6 +212,8 @@ let app = new Vue({
                     }
 
                     this.request.incurredBalance = `${response.data.incurred_balance} days`
+                }).catch(error => {
+                    this.request.incurredBalance = 'Error'
                 })
             },
 
