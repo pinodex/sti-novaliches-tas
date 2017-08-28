@@ -162,6 +162,22 @@ class UserController extends Controller
     }
 
     /**
+     * User hierarchy page
+     * 
+     * @param  \Illuminate\Http\Request $request Request object
+     * @param  \App\Models\User $model User model object
+     * 
+     * @return mixed
+     */
+    public function hierarchy(Request $request, User $model)
+    {
+        return view('admin.users.hierarchy', [
+            'user'      => $model,
+            'hierarchy' => $model->getHierarchy()
+        ]);
+    }
+
+    /**
      * User edit page
      * 
      * @param \Illuminate\Http\Request $request Request object

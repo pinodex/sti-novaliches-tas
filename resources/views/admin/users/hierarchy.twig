@@ -1,0 +1,57 @@
+{% extends '/admin/users/view.twig' %}
+
+{% block viewcontent %}
+    <div class="box">
+        <div class="content">
+            <div class="columns">
+                <div class="column is-6 is-offset-3">
+                    {% for user in hierarchy %}
+                        <article class="media has-contents-below">
+                            <figure class="media-left">
+                                <p class="image is-48x48">
+                                    <img src="{{ user.picture['thumb'] }}" alt="User Picture" />
+                                </p>
+                            </figure>
+                        
+                            <div class="media-content">
+                                <p>
+                                    <strong><a href="{{ route('admin.users.hierarchy', { model: user }) }}">{{ user.name }}</a></strong><br />
+
+                                    {% if user.department %}
+                                        Member of {{ user.department.name }} department<br />
+                                    {% endif %}
+
+                                    {% if user.headedDepartment %}
+                                        Head of {{ user.headedDepartment.name }} department
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </article>
+                    {% endfor %}
+
+                    <article class="media has-contents-below">
+                        <figure class="media-left">
+                            <p class="image is-48x48">
+                                <img src="{{ user.picture['thumb'] }}" alt="User Picture" />
+                            </p>
+                        </figure>
+                        
+                        <div class="media-content">
+                            <p>
+                                <strong>{{ user.name }}</strong><br />
+
+                                {% if user.department %}
+                                    Member of {{ user.department.name }} department<br />
+                                {% endif %}
+
+                                {% if user.headedDepartment %}
+                                    Head of {{ user.headedDepartment.name }} department
+                                {% endif %}
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

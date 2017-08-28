@@ -83,6 +83,7 @@ Route::group([
         Route::match(['get', 'post'], '/add', 'UserController@edit')->name('add');
         Route::get('/{model}', 'UserController@view')->name('view');
         Route::get('/{model}/logs', 'UserController@logs')->name('logs');
+        Route::get('/{model}/hierarchy', 'UserController@hierarchy')->name('hierarchy');
         Route::post('/{model}/delete', 'UserController@delete')->name('delete');
         Route::post('/{model}/reset-password', 'UserController@resetPassword')->name('reset_password');
         Route::match(['get', 'post'], '/{model}/edit', 'UserController@edit')->name('edit');

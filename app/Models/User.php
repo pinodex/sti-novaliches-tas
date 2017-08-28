@@ -72,6 +72,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * User department hierarchy
+     * 
+     * @var array
+     */
+    protected $hierarchy;
+
+    /**
      * Get user group
      */
     public function group()
@@ -164,6 +171,45 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if user has granted permissions
+     * 
+     * @param string $permissions,... Permission name
+     * 
+     * @return boolean
+     */
+    public function canDo($permissions)
+    {
+        return Acl::for($this)->can($permissions);
+    }
+
+    /**
+     * Get user department hierarchy
+     * 
+     * @return array
+     */
+    public function getHierarchy()
+    {
+        if ($this->hierarchy) {
+            return $this->hierarchy;
+        }
+
+        $intermediate = $this;
+        $this->hierarchy = [];
+
+        while ($intermediate->department) {
+            if (!$intermediate->department->head) {
+                break;
+            }
+
+            array_unshift($this->hierarchy, $intermediate->department->head);
+
+            $intermediate = $intermediate->department->head;
+        }
+
+        return $this->hierarchy;
+    }
+
+    /**
      * Get leave balance
      * 
      * @return int
@@ -182,18 +228,6 @@ class User extends Authenticatable
         }
 
         return $balance;
-    }
-
-    /**
-     * Check if user has granted permissions
-     * 
-     * @param string $permissions,... Permission name
-     * 
-     * @return boolean
-     */
-    public function canDo($permissions)
-    {
-        return Acl::for($this)->can($permissions);
     }
 
     /**
