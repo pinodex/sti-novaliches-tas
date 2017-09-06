@@ -4,7 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands;
 
 class Kernel extends ConsoleKernel
 {
@@ -14,10 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\Lab\Email::class,
-        Commands\Lab\QueuedEmail::class,
-        Commands\Lab\Notify::class,
-        Commands\Lab\Queue::class,
         \Bugsnag\BugsnagLaravel\Commands\DeployCommand::class
     ];
 
